@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int              @id @default(autoincrement())
+  username      String           @db.VarChar(100)
+  password      String           @db.VarChar(100)
+  token         String?          @db.VarChar(100)
+  userRoles     UserRoles[]
+  userPermision UserPermission[]
+  created_at    DateTime         @default(now())
+  updated_at    DateTime         @updatedAt
+
+  @@map("user")
+}
+
+model Role {
+  id        Int         @id @default(autoincrement())
+  name      String      @db.VarChar(100)
+  UserRoles UserRoles[]
+
+  @@map("role")
+}
+
+model UserRoles {
+  user    User @relation(fields: [user_id], references: [id])
+  user_id Int
+  role    Role @relation(fields: [role_id], references: [id])
+  role_id Int
+
+  @@id([user_id, role_id])
+  @@map("user_roles")
+}
+
+model Permission {
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(100)
+  UserPermission UserPermission[]
+
+  @@map("permission")
+}
+
+model UserPermission {
+  user          User       @relation(fields: [user_id], references: [id])
+  user_id       Int
+  permission    Permission @relation(fields: [permission_id], references: [id])
+  permission_id Int
+
+  @@id([user_id, permission_id])
+  @@map("user_permission")
+}
+
+model Student {
+  id                Int           @id @default(autoincrement())
+  nis               String        @unique
+  first_name        String
+  middle_name       String?
+  last_name         String
+  birth_day         String // Consider using a Date type if storing dates
+  student_parent    StudentParent @relation(fields: [student_parent_id], references: [id])
+  student_parent_id Int
+  gender            String // Consider using an Enum type if the gender has predefined values
+  classroom         Classroom     @relation(fields: [classroom_id], references: [id])
+  classroom_id      Int
+  foto_url          String
+  created_at        DateTime      @default(now())
+  updated_at        DateTime      @updatedAt
+
+  @@map("student")
+}
+
+model StudentParent {
+  id           Int       @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  relationship String
+  phone        String
+  email        String
+  address      String
+  students     Student[]
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  @@map("student_parent")
+}
+
+model Classroom {
+  id             Int        @id @default(autoincrement())
+  code           String
+  level          String
+  year_group     String
+  is_active      Boolean    @default(true)
+  students       Student[]
+  classMajor     ClassMajor @relation(fields: [class_major_id], references: [id])
+  class_major_id Int
+  created_at     DateTime   @default(now())
+  updated_at     DateTime   @updatedAt
+
+  @@map("classroom")
+}
+
+model ClassMajor {
+  id         Int         @id @default(autoincrement())
+  name       String
+  classrooms Classroom[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+
+  @@map("class_major")
+}
