@@ -11,14 +11,14 @@ datasource db {
 }
 
 model User {
-  id            Int              @id @default(autoincrement())
+  id            String           @id @default(uuid()) @db.Uuid
   username      String           @db.VarChar(100)
   password      String           @db.VarChar(100)
-  token         String?          @db.VarChar(100)
   userRoles     UserRoles[]
   userPermision UserPermission[]
   created_at    DateTime         @default(now())
   updated_at    DateTime         @updatedAt
+  StudentUser   StudentUser[]
 
   @@map("user")
 }
@@ -32,9 +32,9 @@ model Role {
 }
 
 model UserRoles {
-  user    User @relation(fields: [user_id], references: [id])
-  user_id Int
-  role    Role @relation(fields: [role_id], references: [id])
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String @db.Uuid
+  role    Role   @relation(fields: [role_id], references: [id])
   role_id Int
 
   @@id([user_id, role_id])
@@ -51,7 +51,7 @@ model Permission {
 
 model UserPermission {
   user          User       @relation(fields: [user_id], references: [id])
-  user_id       Int
+  user_id       String     @db.Uuid
   permission    Permission @relation(fields: [permission_id], references: [id])
   permission_id Int
 
@@ -60,26 +60,36 @@ model UserPermission {
 }
 
 model Student {
-  id                Int           @id @default(autoincrement())
-  nis               String        @unique
+  id                String             @id @default(uuid()) @db.Uuid
+  nis               String             @unique
   first_name        String
   middle_name       String?
   last_name         String
   birth_day         String // Consider using a Date type if storing dates
-  student_parent    StudentParent @relation(fields: [student_parent_id], references: [id])
-  student_parent_id Int
+  student_parent    StudentParent      @relation(fields: [student_parent_id], references: [id])
+  student_parent_id String             @db.Uuid
   gender            String // Consider using an Enum type if the gender has predefined values
-  classroom         Classroom     @relation(fields: [classroom_id], references: [id])
-  classroom_id      Int
   foto_url          String
-  created_at        DateTime      @default(now())
-  updated_at        DateTime      @updatedAt
+  created_at        DateTime           @default(now())
+  updated_at        DateTime           @updatedAt
+  StudentClassroom  StudentClassroom[]
+  StudentUser       StudentUser[]
 
   @@map("student")
 }
 
+model StudentUser {
+  student    Student @relation(fields: [student_id], references: [id])
+  student_id String  @db.Uuid
+  user       User    @relation(fields: [user_id], references: [id])
+  user_id    String  @db.Uuid
+
+  @@id([student_id, user_id])
+  @@map("student_user")
+}
+
 model StudentParent {
-  id           Int       @id @default(autoincrement())
+  id           String    @id @default(uuid()) @db.Uuid
   first_name   String
   last_name    String
   relationship String
@@ -93,17 +103,27 @@ model StudentParent {
   @@map("student_parent")
 }
 
+model StudentClassroom {
+  student      Student   @relation(fields: [student_id], references: [id])
+  student_id   String    @db.Uuid
+  classroom    Classroom @relation(fields: [classroom_id], references: [id])
+  classroom_id Int
+
+  @@id([student_id, classroom_id])
+  @@map("student_classroom")
+}
+
 model Classroom {
-  id             Int        @id @default(autoincrement())
-  code           String
-  level          String
-  year_group     String
-  is_active      Boolean    @default(true)
-  students       Student[]
-  classMajor     ClassMajor @relation(fields: [class_major_id], references: [id])
-  class_major_id Int
-  created_at     DateTime   @default(now())
-  updated_at     DateTime   @updatedAt
+  id               Int                @id @default(autoincrement())
+  code             String
+  level            String
+  year_group       String
+  is_active        Boolean            @default(true)
+  classMajor       ClassMajor         @relation(fields: [class_major_id], references: [id])
+  class_major_id   Int
+  created_at       DateTime           @default(now())
+  updated_at       DateTime           @updatedAt
+  StudentClassroom StudentClassroom[]
 
   @@map("classroom")
 }

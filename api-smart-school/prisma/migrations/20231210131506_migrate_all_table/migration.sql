@@ -1,9 +1,8 @@
 -- CreateTable
 CREATE TABLE "user" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "username" VARCHAR(100) NOT NULL,
     "password" VARCHAR(100) NOT NULL,
-    "token" VARCHAR(100),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -20,7 +19,7 @@ CREATE TABLE "role" (
 
 -- CreateTable
 CREATE TABLE "user_roles" (
-    "user_id" INTEGER NOT NULL,
+    "user_id" UUID NOT NULL,
     "role_id" INTEGER NOT NULL,
 
     CONSTRAINT "user_roles_pkey" PRIMARY KEY ("user_id","role_id")
@@ -36,7 +35,7 @@ CREATE TABLE "permission" (
 
 -- CreateTable
 CREATE TABLE "user_permission" (
-    "user_id" INTEGER NOT NULL,
+    "user_id" UUID NOT NULL,
     "permission_id" INTEGER NOT NULL,
 
     CONSTRAINT "user_permission_pkey" PRIMARY KEY ("user_id","permission_id")
@@ -44,15 +43,14 @@ CREATE TABLE "user_permission" (
 
 -- CreateTable
 CREATE TABLE "student" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "nis" TEXT NOT NULL,
     "first_name" TEXT NOT NULL,
     "middle_name" TEXT,
     "last_name" TEXT NOT NULL,
     "birth_day" TEXT NOT NULL,
-    "student_parent_id" INTEGER NOT NULL,
+    "student_parent_id" UUID NOT NULL,
     "gender" TEXT NOT NULL,
-    "classroom_id" INTEGER NOT NULL,
     "foto_url" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -61,8 +59,16 @@ CREATE TABLE "student" (
 );
 
 -- CreateTable
+CREATE TABLE "student_user" (
+    "student_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+
+    CONSTRAINT "student_user_pkey" PRIMARY KEY ("student_id","user_id")
+);
+
+-- CreateTable
 CREATE TABLE "student_parent" (
-    "id" SERIAL NOT NULL,
+    "id" UUID NOT NULL,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "relationship" TEXT NOT NULL,
@@ -73,6 +79,14 @@ CREATE TABLE "student_parent" (
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "student_parent_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "student_classroom" (
+    "student_id" UUID NOT NULL,
+    "classroom_id" INTEGER NOT NULL,
+
+    CONSTRAINT "student_classroom_pkey" PRIMARY KEY ("student_id","classroom_id")
 );
 
 -- CreateTable
@@ -118,7 +132,16 @@ ALTER TABLE "user_permission" ADD CONSTRAINT "user_permission_permission_id_fkey
 ALTER TABLE "student" ADD CONSTRAINT "student_student_parent_id_fkey" FOREIGN KEY ("student_parent_id") REFERENCES "student_parent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "student" ADD CONSTRAINT "student_classroom_id_fkey" FOREIGN KEY ("classroom_id") REFERENCES "classroom"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "student_user" ADD CONSTRAINT "student_user_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student_user" ADD CONSTRAINT "student_user_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student_classroom" ADD CONSTRAINT "student_classroom_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student_classroom" ADD CONSTRAINT "student_classroom_classroom_id_fkey" FOREIGN KEY ("classroom_id") REFERENCES "classroom"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "classroom" ADD CONSTRAINT "classroom_class_major_id_fkey" FOREIGN KEY ("class_major_id") REFERENCES "class_major"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

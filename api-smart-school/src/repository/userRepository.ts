@@ -15,7 +15,7 @@ class UserRepository {
     }
 
 
-    async getById(id: number) {
+    async getById(id: string) {
         return prismaClient.user.findFirst({
             where: {
                 id: id
