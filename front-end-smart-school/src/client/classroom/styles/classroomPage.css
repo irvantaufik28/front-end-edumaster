@@ -1,0 +1,22 @@
+.add-classroom {
+    padding: 6px;
+  }
+  
+  .right-button-classroom-list {
+    justify-content: end;
+    display: flex;
+    padding: 6px;
+    column-gap: 20px;
+  }
+  
+  .search-box-global {
+    background: white;
+    box-shadow: 0 0 5px rgba(189, 185, 185, 0.5);
+    padding: 20px;
+  }
+  
+  .button-search-classroom {
+    display: flex;
+    column-gap: 11px;
+    padding: 10px;
+  }

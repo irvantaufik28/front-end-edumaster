@@ -2,6 +2,7 @@ import express from "express";
 // import {publicRouter} from "../route/public-api.js";
 import { errorMiddleware } from "../middleware/error-middleware";
 import { userRouter } from "../routes/api";
+import cors from "cors"
 
 import UserRepository from "../repository/userRepository";
 import ClassroomService from "../service/classroomService";
@@ -25,6 +26,9 @@ web.use((req: any, res: any, next: any) => {
     next()
 })
 
+
+
+web.use(cors());
 
 // web.use(publicRouter);
 web.use(userRouter);

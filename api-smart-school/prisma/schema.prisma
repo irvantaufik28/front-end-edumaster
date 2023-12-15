@@ -60,20 +60,23 @@ model UserPermission {
 }
 
 model Student {
-  id                String             @id @default(uuid()) @db.Uuid
-  nis               String             @unique
-  first_name        String
-  middle_name       String?
-  last_name         String
-  birth_day         String // Consider using a Date type if storing dates
-  student_parent    StudentParent      @relation(fields: [student_parent_id], references: [id])
-  student_parent_id String             @db.Uuid
-  gender            String // Consider using an Enum type if the gender has predefined values
-  foto_url          String
-  created_at        DateTime           @default(now())
-  updated_at        DateTime           @updatedAt
-  StudentClassroom  StudentClassroom[]
-  StudentUser       StudentUser[]
+  id                   String             @id @default(uuid()) @db.Uuid
+  nis                  String             @unique
+  first_name           String
+  middle_name          String?
+  last_name            String
+  birth_day            String // Consider using a Date type if storing dates
+  student_parent       StudentParent      @relation(fields: [student_parent_id], references: [id])
+  student_parent_id    String             @db.Uuid
+  gender               String
+  foto_url             String
+  current_classroom_id Int?
+  register_year        String
+  status               String
+  created_at           DateTime           @default(now())
+  updated_at           DateTime           @updatedAt
+  StudentClassroom     StudentClassroom[]
+  StudentUser          StudentUser[]
 
   @@map("student")
 }
@@ -117,8 +120,8 @@ model Classroom {
   id               Int                @id @default(autoincrement())
   code             String
   level            String
-  year_group       String
-  is_active        Boolean            @default(true)
+  year_group       String             @default("active")
+  status           String
   classMajor       ClassMajor         @relation(fields: [class_major_id], references: [id])
   class_major_id   Int
   created_at       DateTime           @default(now())

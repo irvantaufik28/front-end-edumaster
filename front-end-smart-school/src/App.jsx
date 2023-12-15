@@ -1,8 +1,4 @@
-import { useState } from 'react'
-import { Header } from './components/layouts/Header'
-import Footer from './components/layouts/Footer'
-import { Home } from './components/layouts/Home'
-import { SideNav } from './components/layouts/SideNav'
+import IndexRoutes from './routes/Index.Routes'
 
 
 function App() {
@@ -10,10 +6,11 @@ function App() {
   return (
     <div className='wrapper'>
 
-      <Header />
-      <Home />
-      <SideNav />
-      <Footer />
+      {/* <Header />
+      <Home /> */}
+      <IndexRoutes />
+      {/* <SideNav />
+      <Footer /> */}
   
     </div>
   )

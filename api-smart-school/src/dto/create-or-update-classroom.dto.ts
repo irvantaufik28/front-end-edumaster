@@ -14,8 +14,8 @@ export class CreateOrUpdateClassroomDto {
     year_group: string
    
     @IsNotEmpty()
-    @IsBoolean()
-    is_active: boolean
+    @IsString()
+    status: string
 
     @IsNotEmpty()
     @IsNumber()

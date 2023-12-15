@@ -7,8 +7,15 @@ import { ResponseError } from '../error/response-error';
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
         const request = {
+            first_name: req.query.first_name,
+            middle_name: req.query.middle_name,
+            last_name: req.query.last_name,
+            gender: req.query.gender,
+            nis: req.query.nis,
             page: req.query.page,
-            size: req.query.size
+            size: req.query.size,
+            orderBy: req.query.orderBy,
+            sortBy: req.query.sortBy
         }
         const result = await req.studentUC.get(request)
         return res.status(200).json(result );

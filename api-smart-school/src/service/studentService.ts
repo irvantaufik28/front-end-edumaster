@@ -16,8 +16,32 @@ class StudentService {
 
         if (request.nis) {
             filters.push({
-                code: {
+                nis: {
                     contains: request.nis
+                }
+            })
+        }
+        if (request.first_name) {
+            filters.push({
+                first_name: {
+                    contains: request.first_name,
+                    mode: 'insensitive'
+                } 
+            })
+        }
+        if (request.middle_name) {
+            filters.push({
+                middle_name: {
+                    equals: request.middle_name,
+                    mode: 'insensitive'
+                }
+            })
+        } 
+        if (request.last_name) {
+            filters.push({
+                last_name: {
+                    equals: request.last_name,
+                    mode: 'insensitive'
                 }
             })
         }
@@ -29,9 +53,13 @@ class StudentService {
                 }
             })
         }
+        let orders = {
+            [request.orderBy || 'created_at']: request.sortBy || 'desc',
+        };
 
 
         const students = await prismaClient.student.findMany({
+            orderBy: orders,
             where: {
                 AND: filters
             },
@@ -89,12 +117,12 @@ class StudentService {
 
         const student = await prismaClient.student.create({
             data: {
-                nis :generateNIS(new Date().getFullYear()),
-                student_parent_id : studentParent.id,
-                first_name : request.first_name,
-                middle_name : request.middle_name,
-                last_name : request.last_name,
-                birth_day : request.birth_day,
+                nis: generateNIS(new Date().getFullYear()),
+                student_parent_id: studentParent.id,
+                first_name: request.first_name,
+                middle_name: request.middle_name,
+                last_name: request.last_name,
+                birth_day: request.birth_day,
                 gender: request.gender,
                 foto_url: request.foto_url
             },
@@ -146,7 +174,7 @@ class StudentService {
             include: {
                 student_parent: true,
                 StudentUser: {
-                    include : {
+                    include: {
                         user: true
                     }
                 }
