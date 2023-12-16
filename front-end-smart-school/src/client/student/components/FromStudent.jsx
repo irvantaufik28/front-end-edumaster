@@ -6,21 +6,17 @@ import axios from "axios";
 import config from "../../../config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../styles/fromstudent.css";
 import {
   Button,
   Card,
   Col,
   Form,
-  InputGroup,
-  Modal,
   Row,
 } from "react-bootstrap";
 import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
-import ConfirmationEdit from "../../../components/modals/ConfirmationEdit";
 import { useDispatch, useSelector } from "react-redux";
-import { classMajorSelector, getAll } from "../../../features/classMajorSlice";
-import "../styles/fromstudent.css";
 import default_person from "../../../assets/default/default_person.jpg";
 import moment from "moment";
 
@@ -58,14 +54,35 @@ const FormStudent = (props) => {
   );
   console.log(dataInitialValues);
   const [initialValues, setInitialValues] = useState(defaultValues);
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/s;
 
-  // const validationSchema = Yup.object().shape({
-  //   code: Yup.string().required("code is required"),
-  //   level: Yup.string().required("level is required"),
-  //   status: Yup.string().required("status is required"),
-  //   year_group: Yup.string().required("year is required"),
-  //   class_major_id: Yup.number().required("class major is required"),
-  // });
+  const validationSchema = Yup.object().shape({
+    birth_certificate_no: Yup.string().required(
+      "birth certificate number is required"
+    ),
+    family_identity_no: Yup.string().required("family identity no is required"),
+    first_name: Yup.string().required("first name is required"),
+    last_name: Yup.string().required("last name is required"),
+    religion: Yup.string().required("religion is required"),
+    birth_place: Yup.string().required("birth place is required"),
+    birth_date: Yup.string().required("birth date is required"),
+    gender: Yup.string().required("gender is required"),
+    register_year: Yup.string().required("register year is required"),
+    origin_academy: Yup.string().required("origin academy is required"),
+    student_parents: Yup.array().of(
+      Yup.object().shape({
+        nik: Yup.string().matches(/^\d{16}$/, "Nik number is not valid").required(" NIK is Required"),
+        first_name: Yup.string().required(" first name is Required"),
+        last_name: Yup.string().required("last name is required"),
+        relationship: Yup.string().required("relationship is required"),
+        email: Yup.string().matches(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, "Email not valid"),
+        phone: Yup.string().matches(phoneRegExp, "Phone number is not valid").required("phone is required"),
+        job: Yup.string().required("Job is required"),
+        address: Yup.string().required("address is required"),
+      })
+    ).min(1, "min 1"),
+  });
   let title = "Add Classroom";
   if (dataInitialValues.type === "edit") title = "student";
 
@@ -126,14 +143,10 @@ const FormStudent = (props) => {
       setPreviewSource(reader.result);
     };
   };
-  // const [selectedGender, setSelectedGender] = useState(null);
-  // const handleGenderChange = (event) => {
-  //   setSelectedGender(event.target.value);
-  // };
   return (
     <Formik
       initialValues={initialValues}
-      // validationSchema={validationSchema}
+      validationSchema={validationSchema}
       onSubmit={handleSubmit}
       enableReinitialize
     >
@@ -311,7 +324,7 @@ const FormStudent = (props) => {
                             <option value={"konghucu"}>Konghucu</option>
                           </Form.Select>
                           <Form.Control.Feedback type="invalid">
-                            {touched.level && errors.level}
+                            {touched.religion && errors.religion}
                           </Form.Control.Feedback>
                         </Col>
                       </div>
@@ -372,17 +385,26 @@ const FormStudent = (props) => {
                                 value="male"
                                 checked={values.gender === "male"}
                                 onChange={handleChange}
+                                isInvalid={touched.gender && errors.gender}
                               />
                             </Col>
-                            <Form.Check
-                              type="radio"
-                              label="Female"
-                              name="gender"
-                              value="female"
-                              checked={values.gender === "female"}
-                              onChange={handleChange}
-                            />
+                            <Col md={6}>
+                              <Form.Check
+                                type="radio"
+                                label="Female"
+                                name="gender"
+                                value="female"
+                                checked={values.gender === "female"}
+                                onChange={handleChange}
+                                isInvalid={touched.gender && errors.gender}
+                              />
+                            </Col>
                           </Row>
+                          {touched.gender && errors.gender && (
+                            <Form.Control.Feedback type="invalid">
+                              {errors.gender}
+                            </Form.Control.Feedback>
+                          )}
                         </Form.Group>
                       </Col>
 
@@ -431,265 +453,30 @@ const FormStudent = (props) => {
                   <h4>Student Parents Information</h4>
                 </div>
                 <hr></hr>
-                <Row className="mb-3">
-                  <Col>
-                    <FieldArray name="student_parents">
-                      {({ insert, remove, push }) => (
-                        <>
-                          {values.student_parents.length > 0 &&
-                            values.student_parents.map((parent, index) => (
-                              <>
-                                <InputGroup>
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      NIK {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.nik`}
-                                      value={values.student_parents[index].nik}
-                                      placeholder={`Enter Job ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]?.nik &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.nik
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      First Name {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.first_name`}
-                                      value={
-                                        values.student_parents[index].first_name
-                                      }
-                                      placeholder={`Enter First Name ${
-                                        index + 1
-                                      }`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]
-                                          ?.first_name &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]
-                                          ?.first_name
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Last Name {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.last_name`}
-                                      value={
-                                        values.student_parents[index].last_name
-                                      }
-                                      placeholder={`Enter Last Name ${
-                                        index + 1
-                                      }`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]
-                                          ?.last_name &&
-                                        errors.last_name &&
-                                        errors.student_parents[index]?.last_name
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Relationship {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      as="select"
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.relationship`}
-                                      value={
-                                        values.student_parents[index]
-                                          .relationship
-                                      }
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]
-                                          ?.relationship &&
-                                        errors.relationship &&
-                                        errors.student_parents[index]
-                                          ?.relationship
-                                      }
-                                      onChange={handleChange}
-                                    >
-                                      <option value="">
-                                        Select Relationship
-                                      </option>
-                                      <option value="ayah">Ayah</option>
-                                      <option value="ibu">Ibu</option>
-                                      <option value="tante">Tante</option>
-                                    </Form.Control>
-                                  </Col>
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Phone {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.phone`}
-                                      value={
-                                        values.student_parents[index].phone
-                                      }
-                                      placeholder={`Enter Phone ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]?.phone &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.phone
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Email {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.email`}
-                                      value={
-                                        values.student_parents[index].email
-                                      }
-                                      placeholder={`Enter Email ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]?.email &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.email
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Job {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.job`}
-                                      value={values.student_parents[index].job}
-                                      placeholder={`Enter Job ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]?.job &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.job
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Salary {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.salary`}
-                                      value={
-                                        values.student_parents[index].salary
-                                      }
-                                      placeholder={`Enter Salary ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]
-                                          ?.salary &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.salary
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-
-                                  <Col md={4} className="student-parent-label">
-                                    <Form.Label className="col-sm-4">
-                                      Address {index + 1} :
-                                    </Form.Label>
-                                  </Col>
-                                  <Col md={8}>
-                                    <Form.Control
-                                      className="input-form-parent-student mb-3"
-                                      name={`student_parents.${index}.address`}
-                                      value={
-                                        values.student_parents[index].address
-                                      }
-                                      placeholder={`Enter Job ${index + 1}`}
-                                      isInvalid={
-                                        touched.student_parents &&
-                                        touched.student_parents[index]
-                                          ?.address &&
-                                        errors.student_parents &&
-                                        errors.student_parents[index]?.address
-                                      }
-                                      onChange={handleChange}
-                                    />
-                                  </Col>
-                                  <hr></hr>
-
-                                  {index + 1 < values.student_parents.length ? (
-                                    <Button
-                                      variant="outline-secondary"
-                                      onClick={() => remove(index)}
-                                    >
-                                      x
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      variant="outline-secondary"
-                                      onClick={() =>
-                                        push({
-                                          nik: "",
-                                          first_name: "",
-                                          last_name: "",
-                                          relationship: "",
-                                          phone: "",
-                                          email: "",
-                                          job: "",
-                                          salary: "",
-                                          address: "",
-                                        })
-                                      }
-                                    >
-                                      +
-                                    </Button>
-                                  )}
-                                </InputGroup>
+                <FieldArray name="student_parents">
+                  {({ insert, remove, push }) => (
+                    <>
+                      {values.student_parents.length > 0 &&
+                        values.student_parents.map((parent, index) => (
+                          <>
+                            <Row>
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  NIK {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.nik`}
+                                  value={values.student_parents[index].nik}
+                                  placeholder={`Enter Job ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.nik &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.nik
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.nik &&
@@ -702,6 +489,28 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].nik}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  First Name {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.first_name`}
+                                  value={
+                                    values.student_parents[index].first_name
+                                  }
+                                  placeholder={`Enter First Name ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]
+                                      ?.first_name &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.first_name
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.first_name &&
@@ -714,6 +523,27 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].first_name}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Last Name {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.last_name`}
+                                  value={
+                                    values.student_parents[index].last_name
+                                  }
+                                  placeholder={`Enter Last Name ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.last_name &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.last_name
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.last_name &&
@@ -726,6 +556,35 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].last_name}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+                            </Row>
+
+                            <Row>
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Relationship {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  as="select"
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.relationship`}
+                                  value={
+                                    values.student_parents[index].relationship
+                                  }
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]
+                                      ?.relationship &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.relationship
+                                  }
+                                  onChange={handleChange}
+                                >
+                                  <option value="">Select Relationship</option>
+                                  <option value="ayah">Ayah</option>
+                                  <option value="ibu">Ibu</option>
+                                  <option value="tante">Tante</option>
+                                </Form.Control>
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]
@@ -743,6 +602,25 @@ const FormStudent = (props) => {
                                       }
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Phone {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.phone`}
+                                  value={values.student_parents[index].phone}
+                                  pattern="^-?[0-9]\d*\.?\d*$"
+                                  placeholder={`Enter Phone ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.phone &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.phone
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.phone &&
@@ -755,7 +633,25 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].phone}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
 
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Email {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.email`}
+                                  value={values.student_parents[index].email}
+                                  placeholder={`Enter Email ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.email &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.email
+                                  }
+                                  onChange={handleChange}
+                                />
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.email &&
                                   errors.student_parents &&
@@ -767,6 +663,26 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].email}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Job {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.job`}
+                                  value={values.student_parents[index].job}
+                                  placeholder={`Enter Job ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.job &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.job
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.job &&
@@ -779,6 +695,24 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].job}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Salary {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.salary`}
+                                  value={values.student_parents[index].salary}
+                                  placeholder={`Enter Salary ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.salary &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.salary
+                                  }
+                                  onChange={handleChange}
+                                />
 
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.salary &&
@@ -791,7 +725,25 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].salary}
                                     </Form.Control.Feedback>
                                   )}
+                              </Col>
 
+                              <Col md={4}>
+                                <Form.Label className="col-sm-4">
+                                  Address {index + 1} :
+                                </Form.Label>
+                                <Form.Control
+                                  className="input-form-parent-student mb-3"
+                                  name={`student_parents.${index}.address`}
+                                  value={values.student_parents[index].address}
+                                  placeholder={`Enter Address ${index + 1}`}
+                                  isInvalid={
+                                    touched.student_parents &&
+                                    touched.student_parents[index]?.address &&
+                                    errors.student_parents &&
+                                    errors.student_parents[index]?.address
+                                  }
+                                  onChange={handleChange}
+                                />
                                 {touched.student_parents &&
                                   touched.student_parents[index]?.address &&
                                   errors.student_parents &&
@@ -803,13 +755,43 @@ const FormStudent = (props) => {
                                       {errors.student_parents[index].address}
                                     </Form.Control.Feedback>
                                   )}
-                              </>
-                            ))}
-                        </>
-                      )}
-                    </FieldArray>
-                  </Col>
-                </Row>
+                              </Col>
+                            </Row>
+
+                            <hr></hr>
+
+                            {index + 1 < values.student_parents.length ? (
+                              <Button
+                                variant="outline-secondary"
+                                onClick={() => remove(index)}
+                              >
+                                x
+                              </Button>
+                            ) : (
+                              <Button
+                                variant="outline-secondary"
+                                onClick={() =>
+                                  push({
+                                    nik: "",
+                                    first_name: "",
+                                    last_name: "",
+                                    relationship: "",
+                                    phone: "",
+                                    email: "",
+                                    job: "",
+                                    salary: "",
+                                    address: "",
+                                  })
+                                }
+                              >
+                                +
+                              </Button>
+                            )}
+                          </>
+                        ))}
+                    </>
+                  )}
+                </FieldArray>
               </Form>
             </Card.Body>
           </Card>
