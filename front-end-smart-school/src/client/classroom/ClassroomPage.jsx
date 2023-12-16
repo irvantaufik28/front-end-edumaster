@@ -163,7 +163,7 @@ export const ClassroomPage = () => {
                   icon={<SiAddthis />}
                 />
               </div>
-              <div className="col-md-6 right-button-student-list">
+              <div className="col-md-6 right-button-classroom-list">
                 <div>
                   <ButtonSecondary title="Import" icon={<CgImport />} />
                 </div>

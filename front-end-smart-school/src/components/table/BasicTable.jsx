@@ -26,6 +26,7 @@ const BasicTable = ({
     headerGroups,
     prepareRow,
     page,
+    rows,
     canPreviousPage,
     canNextPage,
     pageOptions,
@@ -223,6 +224,7 @@ const BasicTable = ({
             </tr>
           ))}
         </thead>
+    
         <tbody {...getTableBodyProps()}>
           {page.map((row, i) => {
             prepareRow(row);
@@ -230,7 +232,17 @@ const BasicTable = ({
               <tr key={i} {...row.getRowProps()}>
                 {row.cells.map((cell, cellIdx) => {
                   return (
-                    <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    <td {...cell.getCellProps()}>
+                    {cell.column.id === 'foto_url' ? (
+                      <img
+                        src={cell.value}
+                        alt="Foto"
+                        style={{ width: '50px', height: '50px' }}
+                      />
+                    ) : (
+                      cell.render('Cell')
+                    )}
+                  </td>
                   );
                 })}
               </tr>

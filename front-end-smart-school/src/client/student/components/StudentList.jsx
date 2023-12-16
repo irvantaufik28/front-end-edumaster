@@ -26,10 +26,10 @@ const ListOrderTable = forwardRef((props, ref) => {
         Header: "NIS",
         accessor: "nis",
       },
-      //   {
-      //     Header: 'Name',
-      //     accessor: row => `${row.first_name} ${row.last_name}`,
-      //   },
+      {
+        Header: "Foto",
+        accessor: "foto_url",
+      },
       {
         Header: "First Name",
         accessor: "first_name",
@@ -46,14 +46,21 @@ const ListOrderTable = forwardRef((props, ref) => {
         Header: "Birth Day",
         accessor: "birth_day",
       },
+
+      {
+        Header: "Register",
+        accessor: "register_year",
+      },
       {
         Header: "Gender",
         accessor: "gender",
       },
-
+      {
+        Header: "Status",
+        accessor: "status",
+      },
       {
         Header: "Action",
-        // accessor: "birthDate",
         Cell: ({ row }) => (
           <>
             <Button

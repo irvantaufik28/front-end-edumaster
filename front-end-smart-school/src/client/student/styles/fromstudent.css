@@ -1,0 +1,47 @@
+
+.title-form-student {
+    font-size: 30px;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+  
+  .dropzone {
+    border: 2px dashed #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    height: 400px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+  }
+  
+  .dropzone.active {
+    border: 2px dashed #007bff;
+  }
+  
+  .dropzone.accept {
+    border: 2px dashed #00e676;
+  }
+  
+  .dropzone.reject {
+    border: 2px dashed #ff1744;
+  }
+  
+  .react-datepicker-wrapper {
+    width: 100% !important;
+  }
+  .student-parent-label {
+      display: flex;
+      justify-content: end;
+  }
+
+  .input-form-parent-student{
+    width: 70% !important;
+  }
+
+  .student-parents-information{
+    padding-top: 40px;
+  }
