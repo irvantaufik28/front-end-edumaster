@@ -14,8 +14,8 @@ model User {
   id            String           @id @default(uuid()) @db.Uuid
   username      String           @db.VarChar(100)
   password      String           @db.VarChar(100)
-  userRoles     UserRoles[]
-  userPermision UserPermission[]
+  user_roles     UserRoles[]
+  user_permision UserPermission[]
   created_at    DateTime         @default(now())
   updated_at    DateTime         @updatedAt
   StudentUser   StudentUser[]
@@ -26,7 +26,7 @@ model User {
 model Role {
   id        Int         @id @default(autoincrement())
   name      String      @db.VarChar(100)
-  UserRoles UserRoles[]
+  user_roles UserRoles[]
 
   @@map("role")
 }
@@ -65,18 +65,22 @@ model Student {
   first_name           String
   middle_name          String?
   last_name            String
-  birth_day            String // Consider using a Date type if storing dates
-  student_parent       StudentParent      @relation(fields: [student_parent_id], references: [id])
-  student_parent_id    String             @db.Uuid
+  birth_date           String
+  birth_place          String
+  birth_certificate_no String
+  family_identity_no   String
   gender               String
   foto_url             String
   current_classroom_id Int?
   register_year        String
+  religion             String
+  origin_academy       String?
   status               String
   created_at           DateTime           @default(now())
   updated_at           DateTime           @updatedAt
-  StudentClassroom     StudentClassroom[]
-  StudentUser          StudentUser[]
+  student_classrooms    StudentClassroom[]
+  student_user         StudentUser[]
+  student_parents      StudentParent[]
 
   @@map("student")
 }
@@ -92,16 +96,20 @@ model StudentUser {
 }
 
 model StudentParent {
-  id           String    @id @default(uuid()) @db.Uuid
+  id           String   @id @default(uuid()) @db.Uuid
+  nik          String
   first_name   String
   last_name    String
   relationship String
   phone        String
   email        String
+  job          String
+  salary       String?
   address      String
-  students     Student[]
-  created_at   DateTime  @default(now())
-  updated_at   DateTime  @updatedAt
+  student      Student  @relation(fields: [student_id], references: [id])
+  student_id   String   @db.Uuid
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
 
   @@map("student_parent")
 }
@@ -126,7 +134,7 @@ model Classroom {
   class_major_id   Int
   created_at       DateTime           @default(now())
   updated_at       DateTime           @updatedAt
-  StudentClassroom StudentClassroom[]
+  students_classroom StudentClassroom[]
 
   @@map("classroom")
 }

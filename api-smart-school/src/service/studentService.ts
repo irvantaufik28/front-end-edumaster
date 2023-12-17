@@ -26,33 +26,43 @@ class StudentService {
                 first_name: {
                     contains: request.first_name,
                     mode: 'insensitive'
-                } 
+                }
             })
         }
         if (request.middle_name) {
             filters.push({
                 middle_name: {
-                    equals: request.middle_name,
+                    contains: request.middle_name,
                     mode: 'insensitive'
                 }
             })
-        } 
+        }
         if (request.last_name) {
             filters.push({
                 last_name: {
-                    equals: request.last_name,
+                    contains: request.last_name,
                     mode: 'insensitive'
+                }
+            })
+        }
+        if (request.status) {
+            filters.push({
+                status: {
+                    equals: request.status,
+
+                }
+            })
+        }
+        if (request.register_year) {
+            filters.push({
+                register_year: {
+                    equals: request.register_year,
+
                 }
             })
         }
 
-        if (request.classroom_id) {
-            filters.push({
-                classroom_id: {
-                    equals: parseInt(request.classroom_id)
-                }
-            })
-        }
+
         let orders = {
             [request.orderBy || 'created_at']: request.sortBy || 'desc',
         };
@@ -64,8 +74,7 @@ class StudentService {
                 AND: filters
             },
             include: {
-                student_parent: true,
-                StudentClassroom: {
+                student_classrooms: {
                     include: {
                         classroom: true
                     }
@@ -93,6 +102,7 @@ class StudentService {
     }
 
 
+
     async create(request: any) {
         // try {
         //     await transformAndValidate(CreateOrUpdateClassroomDto, request);
@@ -100,30 +110,21 @@ class StudentService {
         //     throw new ResponseError(400, e.toString())
         // }
 
-
-        const studentParent = await prismaClient.studentParent.create({
-            data: {
-                first_name: request.student_parent.first_name,
-                last_name: request.student_parent.last_name,
-                relationship: request.student_parent.relationship,
-                phone: request.student_parent.phone,
-                email: request.student_parent.email,
-                address: request.student_parent.address
-            },
-            select: {
-                id: true,
-            }
-        })
-
         const student = await prismaClient.student.create({
             data: {
                 nis: generateNIS(new Date().getFullYear()),
-                student_parent_id: studentParent.id,
                 first_name: request.first_name,
                 middle_name: request.middle_name,
                 last_name: request.last_name,
-                birth_day: request.birth_day,
+                birth_date: request.birth_date,
+                birth_place: request.birth_place,
+                birth_certificate_no: request.birth_certificate_no,
+                family_identity_no: request.family_identity_no,
+                origin_academy: request.origin_academy,
+                religion: request.religion,
                 gender: request.gender,
+                status: "preparation",
+                register_year: request.register_year,
                 foto_url: request.foto_url
             },
             select: {
@@ -131,6 +132,29 @@ class StudentService {
                 nis: true
             }
         })
+
+        const student_parents = request.student_parent
+
+        for (const data of student_parents) {
+            await prismaClient.studentParent.create({
+                data: {
+                    nik: data.nik,
+                    first_name: data.first_name,
+                    last_name: data.last_name,
+                    relationship: data.relationship,
+                    phone: data.phone,
+                    email: data.email,
+                    job: data.job,
+                    salary: data.salary,
+                    address: data.address,
+                    student_id: student.id
+                },
+                select: {
+                    id: true,
+                }
+            })
+        }
+
 
         const user_data = {
             username: student.nis,
@@ -172,8 +196,8 @@ class StudentService {
                 id: student.id,
             },
             include: {
-                student_parent: true,
-                StudentUser: {
+                student_parents: true,
+                student_user: {
                     include: {
                         user: true
                     }
@@ -181,6 +205,123 @@ class StudentService {
             }
         })
     }
+
+
+    async update(request: any, id: string) {
+        // try {
+        //     await transformAndValidate(CreateOrUpdateClassroomDto, request);
+        // } catch (e: any) {
+        //     throw new ResponseError(400, e.toString())
+        // }
+
+        const student = await prismaClient.student.update({
+            where: {
+                id: id
+            },
+            data: {
+                first_name: request.first_name,
+                middle_name: request.middle_name,
+                last_name: request.last_name,
+                birth_date: request.birth_date,
+                birth_place: request.birth_place,
+                birth_certificate_no: request.birth_certificate_no,
+                family_identity_no: request.family_identity_no,
+                origin_academy: request.origin_academy,
+                religion: request.religion,
+                gender: request.gender,
+                status: request.status,
+                register_year: request.register_year,
+                foto_url: request.foto_url
+            },
+            select: {
+                id: true,
+                nis: true
+            }
+        })
+
+
+        const parentsUpdateDataIds = request.student_parents.filter((o: any) => o.id).map((o: any) => o.id)
+        const existStudentParents = await prismaClient.studentParent.findMany({
+            where: {
+                student_id: id,
+                id: {
+                    notIn: parentsUpdateDataIds
+                }
+            },
+            select: {
+                id: true
+            },
+
+        })
+
+        const deleteParentIds = existStudentParents.filter((o: any) => o.id).map((o: any) => o.id)
+
+        if (existStudentParents.length > 0) {
+            await prismaClient.studentParent.deleteMany({
+                where: {
+                    id: {
+                        in: deleteParentIds,
+                    },
+                },
+            });
+        }
+
+        for (const data of request.student_parents) {
+            if (data.id) {
+                await prismaClient.studentParent.update({
+                    where: {
+                        id: data.id
+                    },
+                    data: {
+                        nik: data.nik,
+                        first_name: data.first_name,
+                        last_name: data.last_name,
+                        relationship: data.relationship,
+                        phone: data.phone,
+                        email: data.email,
+                        job: data.job,
+                        salary: data.salary,
+                        address: data.address,
+                        student_id: student.id
+                    },
+                    select: {
+                        id: true,
+                    }
+                })
+            } else {
+                await prismaClient.studentParent.create({
+                    data: {
+                        nik: data.nik,
+                        first_name: data.first_name,
+                        last_name: data.last_name,
+                        relationship: data.relationship,
+                        phone: data.phone,
+                        email: data.email,
+                        job: data.job,
+                        salary: data.salary,
+                        address: data.address,
+                        student_id: student.id
+                    },
+                })
+            }
+        }
+
+
+        return await prismaClient.student.findFirst({
+            where: {
+                id: student.id,
+            },
+            include: {
+                student_parents: true,
+                student_user: {
+                    include: {
+                        user: true
+                    }
+                }
+            }
+        })
+    }
+
 
 
 

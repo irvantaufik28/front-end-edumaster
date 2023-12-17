@@ -11,12 +11,12 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
                 username: req.body.username
             },
             include: {
-                userRoles: {
+                user_roles: {
                     include: {
                         role: true
                     }
                 },
-                userPermision: {
+                user_permision: {
                     include: {
                         permission: true
                     }
@@ -35,12 +35,12 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
         }
 
         let roles: any = []
-        user?.userRoles.forEach(item => {
+        user?.user_roles.forEach(item => {
             roles.push(item.role.name)
         });
 
         let permissions: any = []
-        user?.userPermision.forEach(item => {
+        user?.user_permision.forEach(item => {
             permissions.push(item.permission)
         })
 

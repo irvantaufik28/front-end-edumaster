@@ -11,6 +11,8 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             middle_name: req.query.middle_name,
             last_name: req.query.last_name,
             gender: req.query.gender,
+            status: req.query.status,
+            register_year: req.query.register_year,
             nis: req.query.nis,
             page: req.query.page,
             size: req.query.size,
@@ -18,15 +20,52 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             sortBy: req.query.sortBy
         }
         const result = await req.studentUC.get(request)
-        return res.status(200).json(result );
+        return res.status(200).json(result);
     } catch (error) {
         next(error);
     }
 };
-const create = async (req: any, res: Response, next: NextFunction): Promise<any> => {
-    
+
+
+const getById = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+
     try {
-        const result = await  req.studentUC.create(req.body);
+        const result = await prismaClient.student.findUnique({
+            where: {
+                id: req.params.id
+            },
+            include: {
+                student_parents: true,
+                student_user: {
+                    include: {
+                        user: true
+                    }
+                },
+                student_classrooms: true
+            }
+        })
+
+        res.status(200).json(result);
+    } catch (error: any) {
+        next(error)
+    }
+};
+
+const create = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+
+    try {
+        const result = await req.studentUC.create(req.body);
+
+        res.status(200).json(result);
+    } catch (error: any) {
+        next(error)
+    }
+};
+
+const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+
+    try {
+        const result = await req.studentUC.update(req.body, req.params.id);
 
         res.status(200).json(result);
     } catch (error: any) {
@@ -37,5 +76,7 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
 
 export default {
     get,
-    create
+    create,
+    update,
+    getById
 };

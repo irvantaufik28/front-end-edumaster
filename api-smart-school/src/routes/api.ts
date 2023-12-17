@@ -36,7 +36,9 @@ userRouter.post('/api/v1/role', roleController.create)
 
 // student route
 userRouter.get('/api/v1/student', studentController.get)
+userRouter.get('/api/v1/student/:id', studentController.getById)
 userRouter.post('/api/v1/student', studentController.create)
+userRouter.put('/api/v1/student/:id', studentController.update)
 
 //media upload
 userRouter.post('/api/v1/upload', upload.single('file'),uploadMediaController.upload)

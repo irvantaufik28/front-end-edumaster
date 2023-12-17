@@ -48,10 +48,17 @@ CREATE TABLE "student" (
     "first_name" TEXT NOT NULL,
     "middle_name" TEXT,
     "last_name" TEXT NOT NULL,
-    "birth_day" TEXT NOT NULL,
-    "student_parent_id" UUID NOT NULL,
+    "birth_date" TEXT NOT NULL,
+    "birth_place" TEXT NOT NULL,
+    "birth_certificate_no" TEXT NOT NULL,
+    "family_identity_no" TEXT NOT NULL,
     "gender" TEXT NOT NULL,
     "foto_url" TEXT NOT NULL,
+    "current_classroom_id" INTEGER,
+    "register_year" TEXT NOT NULL,
+    "religion" TEXT NOT NULL,
+    "origin_academy" TEXT,
+    "status" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -69,12 +76,16 @@ CREATE TABLE "student_user" (
 -- CreateTable
 CREATE TABLE "student_parent" (
     "id" UUID NOT NULL,
+    "nik" TEXT NOT NULL,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
     "relationship" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "job" TEXT NOT NULL,
+    "salary" TEXT,
     "address" TEXT NOT NULL,
+    "student_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -94,8 +105,8 @@ CREATE TABLE "classroom" (
     "id" SERIAL NOT NULL,
     "code" TEXT NOT NULL,
     "level" TEXT NOT NULL,
-    "year_group" TEXT NOT NULL,
-    "is_active" BOOLEAN NOT NULL DEFAULT true,
+    "year_group" TEXT NOT NULL DEFAULT 'active',
+    "status" TEXT NOT NULL,
     "class_major_id" INTEGER NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
@@ -129,13 +140,13 @@ ALTER TABLE "user_permission" ADD CONSTRAINT "user_permission_user_id_fkey" FORE
 ALTER TABLE "user_permission" ADD CONSTRAINT "user_permission_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "student" ADD CONSTRAINT "student_student_parent_id_fkey" FOREIGN KEY ("student_parent_id") REFERENCES "student_parent"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "student_user" ADD CONSTRAINT "student_user_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "student_user" ADD CONSTRAINT "student_user_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "student_parent" ADD CONSTRAINT "student_parent_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "student_classroom" ADD CONSTRAINT "student_classroom_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

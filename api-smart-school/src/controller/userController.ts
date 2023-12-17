@@ -7,7 +7,7 @@ const get = async (req: Request, res: Response, next: NextFunction): Promise<any
 
         const result = await prismaClient.user.findMany({
             include: {
-                userRoles: {
+                user_roles: {
                     include: { role: true }
                 },
             },
@@ -25,14 +25,14 @@ const getById = async (req: Request, res: Response, next: NextFunction): Promise
 
         const user = await prismaClient.user.findFirst({
             include: {
-                userRoles: {
+                user_roles: {
                     include: { role: true }
                 }
             },
             where: { id: req.params.id }
         })
         let roles : any = []
-        const userRole = user?.userRoles.forEach(item => {
+        const userRole = user?.user_roles.forEach(item => {
            roles.push( item.role.name)
         });
 
