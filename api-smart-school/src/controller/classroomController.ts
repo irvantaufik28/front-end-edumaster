@@ -37,6 +37,14 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         const result = await prismaClient.classroom.findUnique({
             where: {
                 id: parseInt(req.params.id)
+            },
+            include: {
+                students_classroom: {
+                    include: {
+                        student: true,
+
+                    }
+                }
             }
         })
 
@@ -53,7 +61,7 @@ const update = async (req: any, res: Response, next: NextFunction): Promise<any>
     try {
         await transformAndValidate(CreateOrUpdateClassroomDto, req.body);
     } catch (e: any) {
-        return res.status(404).json({message: e.toString()});
+        return res.status(404).json({ message: e.toString() });
     }
     try {
         const result = await prismaClient.classroom.findUnique({
@@ -104,10 +112,24 @@ const deleted = async (req: any, res: Response, next: NextFunction): Promise<any
 }
 
 
+const moveStudent = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const id = parseInt(req.params.id)
+        await req.classroomUC.moveStudent(req.body, id);
+
+
+        return res.status(200).json({ message: "student succesfully moved" });
+    } catch (error) {
+        next(error)
+    }
+}
+
+
 export default {
     get,
     create,
     getById,
     update,
-    deleted
+    deleted,
+    moveStudent
 };

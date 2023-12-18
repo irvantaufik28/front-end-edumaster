@@ -146,9 +146,9 @@ export const Home = () => {
                                             {/* /.direct-chat-infos */}
                                             <img className="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image" />
                                             {/* /.direct-chat-img */}
-                                            <div className="direct-chat-text">
+                                            {/* <div className="direct-chat-text">
                                                 Is this template really for free? That's unbelievable!
-                                            </div>
+                                            </div> */}
                                             {/* /.direct-chat-text */}
                                         </div>
                                         {/* /.direct-chat-msg */}
@@ -161,9 +161,9 @@ export const Home = () => {
                                             {/* /.direct-chat-infos */}
                                             <img className="direct-chat-img" src="dist/img/user3-128x128.jpg" alt="message user image" />
                                             {/* /.direct-chat-img */}
-                                            <div className="direct-chat-text">
+                                            {/* <div className="direct-chat-text">
                                                 You better believe it!
-                                            </div>
+                                            </div> */}
                                             {/* /.direct-chat-text */}
                                         </div>
                                         {/* /.direct-chat-msg */}
@@ -238,7 +238,7 @@ export const Home = () => {
                                                             Nadia Jolie
                                                             <small className="contacts-list-date float-right">2/20/2015</small>
                                                         </span>
-                                                        <span className="contacts-list-msg">I'll call you back at...</span>
+                                                        {/* <span className="contacts-list-msg">I'll call you back at...</span> */}
                                                     </div>
                                                     {/* /.contacts-list-info */}
                                                 </a>

@@ -41,7 +41,15 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
                         user: true
                     }
                 },
-                student_classrooms: true
+                student_classrooms: {
+                    include: {
+                        classroom: {
+                            include: {
+                                classMajor: true
+                            }
+                        }
+                    }
+                }
             }
         })
 

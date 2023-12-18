@@ -6,6 +6,7 @@ import DashboardPage from "../client/admin/dashboard/DashboardPage";
 import { ClassroomPage } from "../client/classroom/ClassroomPage";
 import Test from "../client/test/Test";
 import StudentFormPage from "../client/student/StudentFormPage";
+import StudentDetailPage from "../client/student/StudentDetailPage";
 
 const IndexRoutes = () => {
     return (
@@ -14,7 +15,8 @@ const IndexRoutes = () => {
                 <Route path="/" element={<SigninPage />} />
                 <Route path="/admin/dashboard" element={<DashboardPage />} />
                 <Route path="/student" element={<StudentPage />} />
-                <Route path="/student/add" element={<StudentFormPage />} />
+                <Route path="/student/form" element={<StudentFormPage />} />
+                <Route path="/student/detail/:id" element={<StudentDetailPage />} />
                 <Route path="/classroom" element={<ClassroomPage />} />
                 <Route path="/test" element={<Test />} />
                 

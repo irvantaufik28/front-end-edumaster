@@ -1,13 +1,9 @@
 import { SideNav } from "../../components/layouts/SideNav";
 import Footer from "../../components/layouts/Footer";
-import FormStudent from "./components/FromStudent";
 import { Header } from "../../components/layouts/Header";
-import { useSelector } from "react-redux";
+import StudentDetail from "./components/StudentDetail";
 
-function StudentFormPage() {
-  let title = "Create";
-  const dataInitialValues = useSelector((state) => state.student.data);
-  if (dataInitialValues.type === "edit") title = "Update";
+function StudentDetailPage() {
  
   return (
     <>
@@ -20,18 +16,18 @@ function StudentFormPage() {
             <span
               style={{ opacity: "0.5", fontSize: "30px", color: "#17a4e0" }}
             >
-              Students
+              Student
             </span>
           </h5>
           <div className="title-student">
             <p>
               {" "}
-              <span style={{ opacity: "0.5" }}> Home / Student / {title}</span>
+              <span style={{ opacity: "0.5" }}> Home / Student / Detail</span>
             </p>
           </div>
         </div>
         <div className="main-content-alpha">
-          <FormStudent />
+          <StudentDetail />
         </div>
       </div>
 
@@ -40,4 +36,4 @@ function StudentFormPage() {
   );
 }
 
-export default StudentFormPage;
+export default StudentDetailPage;

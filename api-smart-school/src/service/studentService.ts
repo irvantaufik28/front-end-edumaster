@@ -133,7 +133,7 @@ class StudentService {
             }
         })
 
-        const student_parents = request.student_parent
+        const student_parents = request.student_parents
 
         for (const data of student_parents) {
             await prismaClient.studentParent.create({

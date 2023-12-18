@@ -45,3 +45,10 @@
   .student-parents-information{
     padding-top: 40px;
   }
+
+  .form-button-student {
+    justify-content: end;
+    display: flex;
+    padding: 15px;
+    column-gap: 20px;
+  }

@@ -1,26 +1,24 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useState } from "react";
-import _ from "lodash";
+import _, { values } from "lodash";
 import axios from "axios";
 import config from "../../../config";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/fromstudent.css";
-import {
-  Button,
-  Card,
-  Col,
-  Form,
-  Row,
-} from "react-bootstrap";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import default_person from "../../../assets/default/default_person.jpg";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
+import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 
-const FormStudent = (props) => {
+const FormStudent = () => {
+  const navigate = useNavigate();
   const dataInitialValues = useSelector((state) => state.student.data);
   const defaultValues = useMemo(
     () => ({
@@ -38,6 +36,7 @@ const FormStudent = (props) => {
       origin_academy: "",
       student_parents: [
         {
+          id: null,
           nik: "",
           first_name: "",
           last_name: "",
@@ -52,7 +51,6 @@ const FormStudent = (props) => {
     }),
     []
   );
-  console.log(dataInitialValues);
   const [initialValues, setInitialValues] = useState(defaultValues);
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/s;
@@ -70,27 +68,57 @@ const FormStudent = (props) => {
     gender: Yup.string().required("gender is required"),
     register_year: Yup.string().required("register year is required"),
     origin_academy: Yup.string().required("origin academy is required"),
-    student_parents: Yup.array().of(
-      Yup.object().shape({
-        nik: Yup.string().matches(/^\d{16}$/, "Nik number is not valid").required(" NIK is Required"),
-        first_name: Yup.string().required(" first name is Required"),
-        last_name: Yup.string().required("last name is required"),
-        relationship: Yup.string().required("relationship is required"),
-        email: Yup.string().matches(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/, "Email not valid"),
-        phone: Yup.string().matches(phoneRegExp, "Phone number is not valid").required("phone is required"),
-        job: Yup.string().required("Job is required"),
-        address: Yup.string().required("address is required"),
-      })
-    ).min(1, "min 1"),
+    student_parents: Yup.array()
+      .of(
+        Yup.object().shape({
+          nik: Yup.string()
+            .matches(/^\d{16}$/, "Nik number is not valid")
+            .required(" NIK is Required"),
+          first_name: Yup.string().required(" first name is Required"),
+          last_name: Yup.string().required("last name is required"),
+          relationship: Yup.string().required("relationship is required"),
+          email: Yup.string().matches(
+            /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+            "Email not valid"
+          ),
+          phone: Yup.string()
+            .matches(phoneRegExp, "Phone number is not valid")
+            .required("phone is required"),
+          job: Yup.string().required("Job is required"),
+          address: Yup.string().required("address is required"),
+        })
+      )
+      .min(1, "min 1"),
   });
-  let title = "Add Classroom";
-  if (dataInitialValues.type === "edit") title = "student";
+
+  const [previewSource, setPreviewSource] = useState(null);
+  const [image, setImage] = useState(null);
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    setImage(e.target.files[0]);
+    previewFile(file);
+  };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
 
   useEffect(() => {
-    const newValues = { ...defaultValues, ...dataInitialValues };
+    const newValues = { ...defaultValues, ...dataInitialValues.initialValues };
+    if (dataInitialValues.initialValues?.foto_url) {
+      setPreviewSource(dataInitialValues.initialValues.foto_url);
+    }
+    if (newValues.birth_date)
+      newValues.birth_date = new Date(newValues.birth_date);
+    if (newValues.salary) newValues.salary = newValues.salary.toLocaleString();
     setInitialValues(newValues);
   }, [dataInitialValues, defaultValues]);
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values) => {
     try {
       const payload = _.pick(values, [
         "birth_certificate_no",
@@ -111,38 +139,59 @@ const FormStudent = (props) => {
       if (payload.birth_date)
         payload.birth_date = moment(payload.birth_date).format("YYYY-MM-DD");
 
-      console.log(payload);
-
       if (dataInitialValues.type === "add") {
-        // await axios.post(config.apiUrl + `/classroom`, payload);
-        console.log(payload);
-      } else {
-        // const url = config.apiUrl + `/classroom/` + props.editId;
-        // await ConfirmationEdit(url, payload);
-        // await axios.put(config.apiUrl + `/classroom/` + props.editId, payload);
-      }
+        if (image) {
+          const formData = new FormData();
+          formData.append("file", image);
+          formData.append("type", "image");
+          formData.append("folder", "student_foto");
+          const response = await axios.post(
+            config.apiUrl + `/upload`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          payload.foto_url = response.data.url;
+        }
 
-      props.onSuccess(dataInitialValues.type);
+        await axios.post(config.apiUrl + `/student`, payload);
+        navigate("/student");
+      } else {
+        if (image) {
+          const formData = new FormData();
+          formData.append("file", image);
+          formData.append("type", "image");
+          formData.append("folder", "student_foto");
+
+          const response = await axios.post(
+            config.apiUrl + `/upload`,
+            formData,
+            {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            }
+          );
+          payload.foto_url = response.data.url;
+        }
+        await axios.put(
+          config.apiUrl + `/student/` + dataInitialValues.editId,
+          payload
+        );
+        navigate("/student");
+      }
     } catch (error) {
       console.log(error);
     }
-    setSubmitting(false);
   };
 
-  const [previewSource, setPreviewSource] = useState(null);
-
-  const handleFileInputChange = (e) => {
-    const file = e.target.files[0];
-    previewFile(file);
+  const handleCancel = () => {
+    navigate("/student");
   };
 
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(reader.result);
-    };
-  };
   return (
     <Formik
       initialValues={initialValues}
@@ -266,8 +315,8 @@ const FormStudent = (props) => {
                         <Form.Label>Middle Name</Form.Label>
                         <Form.Control
                           type="text"
-                          name="midde_name"
-                          placeholder="Enter middle name"
+                          name="middle_name"
+                          placeholder="Enter First Name"
                           isInvalid={touched.middle_name && errors.middle_name}
                           value={values.middle_name}
                           onBlur={handleBlur}
@@ -763,7 +812,7 @@ const FormStudent = (props) => {
                             {index + 1 < values.student_parents.length ? (
                               <Button
                                 variant="outline-secondary"
-                                onClick={() => remove(index)}
+                                onClick={() => remove(index + 1)}
                               >
                                 x
                               </Button>
@@ -796,18 +845,9 @@ const FormStudent = (props) => {
             </Card.Body>
           </Card>
 
-          <div>
-            <Button variant="secondary" onClick={props.onHide}>
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              type="button"
-              disabled={isSubmitting}
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
+          <div className="form-button-student">
+            <ButtonDanger title="cancel" onClick={handleCancel} />
+            <ButtonSuccess title="save" onClick={handleSubmit} />
           </div>
         </>
       )}
@@ -816,12 +856,9 @@ const FormStudent = (props) => {
 };
 
 FormStudent.defaultProps = {
-  onHide: () => {},
-  show: false,
   type: "add",
   initialValues: null,
   editId: null,
-  onSuccess: () => {},
 };
 
 export default FormStudent;

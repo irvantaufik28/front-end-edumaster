@@ -11,21 +11,21 @@ datasource db {
 }
 
 model User {
-  id            String           @id @default(uuid()) @db.Uuid
-  username      String           @db.VarChar(100)
-  password      String           @db.VarChar(100)
+  id             String           @id @default(uuid()) @db.Uuid
+  username       String           @db.VarChar(100)
+  password       String           @db.VarChar(100)
   user_roles     UserRoles[]
   user_permision UserPermission[]
-  created_at    DateTime         @default(now())
-  updated_at    DateTime         @updatedAt
-  StudentUser   StudentUser[]
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  StudentUser    StudentUser[]
 
   @@map("user")
 }
 
 model Role {
-  id        Int         @id @default(autoincrement())
-  name      String      @db.VarChar(100)
+  id         Int         @id @default(autoincrement())
+  name       String      @db.VarChar(100)
   user_roles UserRoles[]
 
   @@map("role")
@@ -78,7 +78,7 @@ model Student {
   status               String
   created_at           DateTime           @default(now())
   updated_at           DateTime           @updatedAt
-  student_classrooms    StudentClassroom[]
+  student_classrooms   StudentClassroom[]
   student_user         StudentUser[]
   student_parents      StudentParent[]
 
@@ -125,15 +125,15 @@ model StudentClassroom {
 }
 
 model Classroom {
-  id               Int                @id @default(autoincrement())
-  code             String
-  level            String
-  year_group       String             @default("active")
-  status           String
-  classMajor       ClassMajor         @relation(fields: [class_major_id], references: [id])
-  class_major_id   Int
-  created_at       DateTime           @default(now())
-  updated_at       DateTime           @updatedAt
+  id                 Int                @id @default(autoincrement())
+  code               String
+  level              String
+  year_group         String             @default("active")
+  status             String
+  classMajor         ClassMajor         @relation(fields: [class_major_id], references: [id])
+  class_major_id     Int
+  created_at         DateTime           @default(now())
+  updated_at         DateTime           @updatedAt
   students_classroom StudentClassroom[]
 
   @@map("classroom")

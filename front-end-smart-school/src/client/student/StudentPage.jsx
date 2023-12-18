@@ -16,13 +16,13 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import config from "../../config";
 import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
-import FormModal from "../classroom/components/FormModal";
+
 import { useDispatch } from "react-redux";
 import { setData } from "../../features/studentSlice";
 
 export const StudentPage = () => {
-  const navigate = useNavigate()
-  const dispacth = useDispatch()
+  const navigate = useNavigate();
+  const dispacth = useDispatch();
   const defaultForm = {
     initialValues: null,
     type: "add",
@@ -30,18 +30,10 @@ export const StudentPage = () => {
   };
 
   const tableRef = useRef(null);
-  const [form, setForm] = useState(defaultForm);
 
   const handleAdd = () => {
-    // setFormModal({
-    //   ...defaultFormModal,
-    //   show: true,
-    //   initialValues: null,
-    // });
-    dispacth(setData({...defaultForm}))
-    
-    navigate('/student/add')
-    
+    dispacth(setData({ ...defaultForm }));
+    navigate("/student/form");
   };
 
   const handleEdit = async (data) => {
@@ -51,19 +43,27 @@ export const StudentPage = () => {
       const { data: resData } = await axios.get(
         config.apiUrl + `/student/` + id
       );
-      // setFormModal({
-      //   ...defaultFormModal,
-      //   show: true,
-      //   initialValues: resData.data,
-      //   type: "edit",
-      //   editId: id,
-      // });
-      console.log(data)
+
+      dispacth(
+        setData({
+          ...defaultForm,
+          initialValues: resData,
+          type: "edit",
+          editId: id,
+        })
+      );
+      navigate("/student/form");
     } catch (error) {
       console.log(error);
       alert(error.message);
     }
   };
+
+  
+
+  const handleDetail = async (data) => {
+    navigate('/student/detail/' + data.id)
+  }
 
   const handleDelete = async (data) => {
     const id = data.id;
@@ -71,24 +71,6 @@ export const StudentPage = () => {
     await ConfirmationDelete(url);
     tableRef.current.refreshData();
   };
-
-  const handleCloseForm = () => {
-    // setFormModal({
-    //   ...formModal,
-    //   show: false,
-    // });
-  };
-
-  const onSubmitSuccess = (type) => {
-    handleCloseForm();
-    tableRef.current.refreshData();
-    // if (["edit", "delete"].includes(type)) {
-    //   tableRef.current.reloadData();
-    // } else {
-    //   tableRef.current.refreshData();
-    // }
-  };
-
 
   const [search, setSearch] = useState({
     nis: "",
@@ -189,7 +171,7 @@ export const StudentPage = () => {
                     }
                   />
                 </div>
-                
+
                 <div className="col-md-4">
                   <label htmlFor="status" className="form-label">
                     Status
@@ -234,7 +216,7 @@ export const StudentPage = () => {
                 </div>
               </div>
               <div className="row">
-              <div className="col-md-4">
+                <div className="col-md-4">
                   <label htmlFor="class" className="form-label">
                     First Name
                   </label>
@@ -282,7 +264,6 @@ export const StudentPage = () => {
                     }
                   />
                 </div>
-               
               </div>
 
               <div className="col-md-6 button-search-student">
@@ -296,15 +277,11 @@ export const StudentPage = () => {
             ref={tableRef}
             onEdit={(data) => handleEdit(data)}
             onDelete={(data) => handleDelete(data)}
+            onDetail={(data) => handleDetail(data)}
           />
         </div>
       </div>
       <Footer />
-      <FormModal
-        // {...formModal}
-        // onHide={handleCloseForm}
-        // onSuccess={onSubmitSuccess}
-      />
     </>
   );
 };

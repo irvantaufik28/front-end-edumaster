@@ -14,6 +14,7 @@ const BasicTable = ({
   loading,
   totalPage,
   totalData,
+  
 }) => {
   const [pageNumbers, setPageNumbers] = useState([]);
   const [currentPerPage, setCurrentPerPage] = useState(11);
@@ -40,7 +41,10 @@ const BasicTable = ({
     {
       columns,
       data,
-      initialState: { pageIndex: 0 },
+      initialState: { 
+        pageIndex: 0,
+        hiddenColumns: ['id']
+       },
       manualPagination: true,
       manualSortBy: true,
       pageCount: totalPage,
@@ -199,7 +203,8 @@ const BasicTable = ({
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <th className="th-react-table"
+                {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {/* <th {...column.getHeaderProps()}> */}
                   {column.render("Header")}
                   <span style={{ marginLeft: "10px", position: "relative" }}>

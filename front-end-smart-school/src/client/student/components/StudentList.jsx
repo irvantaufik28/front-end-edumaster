@@ -23,6 +23,10 @@ const ListOrderTable = forwardRef((props, ref) => {
   const columns = useMemo(
     () => [
       {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
         Header: "NIS",
         accessor: "nis",
       },
@@ -43,8 +47,8 @@ const ListOrderTable = forwardRef((props, ref) => {
         accessor: "last_name",
       },
       {
-        Header: "Birth Day",
-        accessor: "birth_day",
+        Header: "Birth Date",
+        accessor: "birth_date",
       },
 
       {

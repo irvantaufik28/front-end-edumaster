@@ -82,8 +82,8 @@ class ClassroomService {
       });
     }
     let orders = {
-        [request.orderBy || 'created_at']: request.sortBy || 'desc',
-      };
+      [request.orderBy || 'created_at']: request.sortBy || 'desc',
+    };
 
     const classrooms = await prismaClient.classroom.findMany({
       orderBy: orders,
@@ -112,6 +112,44 @@ class ClassroomService {
       },
     };
   }
+
+  async moveStudent(request: any, classroom_id: any) {
+    const classroom = await prismaClient.classroom.findUnique({
+      where: {
+        id: classroom_id
+      }
+    })
+
+    if (!classroom) {
+      throw new ResponseError(404, "classroom not found!")
+    }
+    const students = request.students
+
+    for (const data of students) {
+      if (data.id) {
+
+        await prismaClient.studentClassroom.create({
+          data: {
+            student_id: data.id,
+            classroom_id: classroom_id
+          }
+        })
+      }
+
+      await prismaClient.student.update({
+        where: {
+          id: data.id,
+        },
+        data: {
+          current_classroom_id: classroom_id
+        }
+      })
+    }
+   
+  }
+
+
+
 }
 
 export default ClassroomService;

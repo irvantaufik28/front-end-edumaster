@@ -1,0 +1,13 @@
+.transparent-table {
+    background: transparent;
+    border-collapse: collapse;
+  }
+  
+  .no-border {
+    border: none;
+  }
+
+  .table-th {
+    background-color: none !important;
+  }
+  
