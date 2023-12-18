@@ -6,6 +6,7 @@ import classMajorController from "../controller/classMajorController";
 import classroomController from "../controller/classroomController";
 import roleController from "../controller/roleController";
 import studentController from "../controller/studentController";
+import studentParentController from "../controller/studentParentController"
 import authController from "../controller/authController";
 import uploadMediaController from "../controller/uploadMediaController";
 import {upload} from '../middleware/handle-upload'
@@ -40,6 +41,13 @@ userRouter.get('/api/v1/student', studentController.get)
 userRouter.get('/api/v1/student/:id', studentController.getById)
 userRouter.post('/api/v1/student', studentController.create)
 userRouter.put('/api/v1/student/:id', studentController.update)
+
+// student Parent Route
+userRouter.get('/api/v1/student-parent', studentParentController.get)
+userRouter.get('/api/v1/student-parent/:id', studentParentController.getById)
+userRouter.post('/api/v1/student-parent', studentParentController.create)
+userRouter.put('/api/v1/student-parent/:id', studentParentController.update)
+userRouter.delete('/api/v1/student-parent/:id', studentParentController.deleted)
 
 //media upload
 userRouter.post('/api/v1/upload', upload.single('file'),uploadMediaController.upload)
