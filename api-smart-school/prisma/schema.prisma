@@ -19,6 +19,7 @@ model User {
   created_at     DateTime         @default(now())
   updated_at     DateTime         @updatedAt
   StudentUser    StudentUser[]
+  StaffUser      StaffUser[]
 
   @@map("user")
 }
@@ -83,6 +84,35 @@ model Student {
   student_parents      StudentParent[]
 
   @@map("student")
+}
+
+model Staff {
+  id          String      @id @default(uuid()) @db.Uuid
+  nik         String      @unique
+  first_name  String
+  middle_name String?
+  last_name   String
+  birth_date  String
+  birth_place String
+  gender      String
+  foto_url    String
+  religion    String
+  status      String
+  created_at  DateTime    @default(now())
+  updated_at  DateTime    @updatedAt
+  StaffUser   StaffUser[]
+
+  @@map("staff")
+}
+
+model StaffUser {
+  staff    Staff  @relation(fields: [staff_id], references: [id])
+  staff_id String @db.Uuid
+  user     User   @relation(fields: [user_id], references: [id])
+  user_id  String @db.Uuid
+
+  @@id([staff_id, user_id])
+  @@map("staff_user")
 }
 
 model StudentUser {

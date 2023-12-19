@@ -10,6 +10,9 @@ import {
   useRef,
   useState,
 } from "react";
+import { BiSolidDetail } from "react-icons/bi";
+import { MdModeEdit, MdDelete  } from "react-icons/md";
+
 import config from "../../../config";
 import BasicTable from "../../../components/table/BasicTable";
 import { Button } from "react-bootstrap";
@@ -73,7 +76,7 @@ const ListOrderTable = forwardRef((props, ref) => {
               className="me-2"
               onClick={() => props.onDetail(row.values)}
             >
-              Detail
+            <BiSolidDetail />  Detail
             </Button>
             <Button
               variant="info"
@@ -81,14 +84,14 @@ const ListOrderTable = forwardRef((props, ref) => {
               className="me-2"
               onClick={() => props.onEdit(row.values)}
             >
-              Edit
+           <MdModeEdit />   Edit
             </Button>
             <Button
               variant="danger"
               size="sm"
               onClick={() => props.onDelete(row.values)}
             >
-              Delete
+            <MdDelete />  Delete
             </Button>
           </>
         ),

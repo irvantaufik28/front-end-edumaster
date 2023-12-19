@@ -18,7 +18,7 @@ const studentSlice = createSlice({
   name: 'student',
   initialState,
   reducers: {
-    setData: (state, action) => {
+    setDataStudent: (state, action) => {
       state.data = action.payload;
     },
    
@@ -35,7 +35,7 @@ const studentSlice = createSlice({
   }
 });
 
-export const { setData } = studentSlice.actions;
+export const { setDataStudent } = studentSlice.actions;
 export const studentSelector = {
   getById: (state) => state.student.data
 }

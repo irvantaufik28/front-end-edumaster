@@ -20,3 +20,24 @@
     column-gap: 11px;
     padding: 10px;
   }
+  .button-edit-current-classroom {
+    display: flex;
+    justify-content: end;
+  }
+  .button-edit-parent {
+    display: flex;
+    column-gap: 10px;
+    justify-content: end;
+  }
+
+  .add-button-parent {
+    display: flex;
+    justify-content: end;
+    height: 80%;
+  }
+
+  .button-edit-student {
+    display: flex;
+    justify-content: end;
+    padding-bottom: 10px;
+  }

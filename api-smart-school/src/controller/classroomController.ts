@@ -124,6 +124,39 @@ const moveStudent = async (req: any, res: Response, next: NextFunction): Promise
     }
 }
 
+const deleteStudent = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        console.log(req.body)
+        const classroom = await prismaClient.classroom.findUnique({
+            where: {
+                id: parseInt(req.query.classroom_id)
+            }
+        })
+
+        if (!classroom) {
+            throw new ResponseError(404, "classroom not found!")
+        }
+
+        const student = await prismaClient.student.findUnique({
+            where: { id: req.query.student_id }
+        })
+
+        if (!student) {
+            throw new ResponseError(404, "student not found!")
+        }
+
+        await prismaClient.studentClassroom.delete({
+            where: { student_id_classroom_id: { student_id: req.query.student_id, classroom_id: parseInt(req.query.classroom_id) } }
+        })
+
+
+        return res.status(200).json({ message: "data successfully deleted" });
+    } catch (error) {
+        next(error)
+    }
+}
+
+
 
 export default {
     get,
@@ -131,5 +164,6 @@ export default {
     getById,
     update,
     deleted,
-    moveStudent
+    moveStudent,
+    deleteStudent
 };

@@ -14,6 +14,8 @@ import config from "../../../config";
 import BasicTable from "../../../components/table/BasicTable";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import { MdDelete, MdModeEdit } from "react-icons/md";
+import { BiSolidDetail } from "react-icons/bi";
 
 const ListOrderTable = forwardRef((props, ref) => {
 
@@ -56,30 +58,30 @@ const ListOrderTable = forwardRef((props, ref) => {
         // accessor: "birthDate",  
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onDetail(row.values)}
-            >
-              Detail
-            </Button>
-            <Button
-              variant="info"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-              Edit
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => props.onDelete(row.values)}
-            >
-              Delete
-            </Button>
-          </>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="me-2"
+            onClick={() => props.onDetail(row.values)}
+          >
+          <BiSolidDetail />  Detail
+          </Button>
+          <Button
+            variant="info"
+            size="sm"
+            className="me-2"
+            onClick={() => props.onEdit(row.values)}
+          >
+         <MdModeEdit />   Edit
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            onClick={() => props.onDelete(row.values)}
+          >
+          <MdDelete />  Delete
+          </Button>
+        </>
         ),
       },
     ],

@@ -19,7 +19,8 @@ const generateAccessToken = (data: any) => {
     id: data.id,
     username: data.username,
     roles: data.roles,
-    permissions: data.permissions
+    permissions: data.permissions,
+    user_detail : data.user_detail
   }
   const secretKey = process.env.JWT_SECRET_KEY || "defaultSecretKey";
 

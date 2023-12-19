@@ -40,7 +40,7 @@ const authSlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(signin.rejected, (state, action) => {
-        state.loading = false; // Corrected the loading state
+        state.loading = false; 
         state.errorMessage = action.payload;
         state.token = null;
       });

@@ -65,7 +65,7 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
             throw new ResponseError(404, "student parent not found!")
         }
 
-        return res.status(200).json({ data: result });
+        return res.status(200).json(result);
     } catch (error) {
         next(error)
     }

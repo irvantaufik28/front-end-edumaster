@@ -1,10 +1,11 @@
 import { Header } from "../../components/layouts/Header";
 import { SideNav } from "../../components/layouts/SideNav";
 import Footer from "../../components/layouts/Footer";
-
+import { FaSearch } from "react-icons/fa";
 import { SiAddthis } from "react-icons/si";
 import { CgImport } from "react-icons/cg";
 import { BiExport } from "react-icons/bi";
+import { RxReset } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import StudentList from "./components/StudentList";
 import "./styles/studentPage.css";
@@ -18,7 +19,7 @@ import config from "../../config";
 import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 
 import { useDispatch } from "react-redux";
-import { setData } from "../../features/studentSlice";
+import { setDataStudent } from "../../features/studentSlice";
 
 export const StudentPage = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const StudentPage = () => {
   const tableRef = useRef(null);
 
   const handleAdd = () => {
-    dispacth(setData({ ...defaultForm }));
+    dispacth(setDataStudent({ ...defaultForm }));
     navigate("/student/form");
   };
 
@@ -45,7 +46,7 @@ export const StudentPage = () => {
       );
 
       dispacth(
-        setData({
+        setDataStudent({
           ...defaultForm,
           initialValues: resData,
           type: "edit",
@@ -267,8 +268,8 @@ export const StudentPage = () => {
               </div>
 
               <div className="col-md-6 button-search-student">
-                <ButtonSuccess title="search" onClick={handleSearch} />
-                <ButtonDanger title="reset" onClick={handleReset} />
+                <ButtonSuccess title="search" icon={<FaSearch/>}onClick={handleSearch} />
+                <ButtonDanger title="reset" icon={<RxReset />} onClick={handleReset} />
               </div>
             </div>
           </div>

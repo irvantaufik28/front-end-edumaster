@@ -19,7 +19,6 @@ import config from "../../config";
 import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 
 export const ClassroomPage = () => {
-
   const defaultFormModal = {
     show: false,
     initialValues: null,
@@ -60,9 +59,9 @@ export const ClassroomPage = () => {
 
   const handleDelete = async (data) => {
     const id = data.id;
-    const url = config.apiUrl + `/classroom/` + id
-   await ConfirmationDelete(url)
-    tableRef.current.refreshData()
+    const url = config.apiUrl + `/classroom/` + id;
+    await ConfirmationDelete(url);
+    tableRef.current.refreshData();
   };
 
   const handleCloseForm = () => {
@@ -74,7 +73,7 @@ export const ClassroomPage = () => {
 
   const onSubmitSuccess = (type) => {
     handleCloseForm();
-    tableRef.current.refreshData()
+    tableRef.current.refreshData();
     // if (["edit", "delete"].includes(type)) {
     //   tableRef.current.reloadData();
     // } else {

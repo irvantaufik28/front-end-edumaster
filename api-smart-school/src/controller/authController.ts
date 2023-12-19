@@ -20,7 +20,18 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
                     include: {
                         permission: true
                     }
+                },
+                StaffUser: {
+                    include: {
+                        staff: true
+                    }
+                },
+                StudentUser: {
+                    include: {
+                        student: true
+                    }
                 }
+                
             }
         })
 
@@ -33,6 +44,8 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
             throw new ResponseError(404, "username or passwod wrong!")
 
         }
+
+        let user_detail = user.StaffUser?.[0] ?? user.StudentUser?.[0] ?? {};
 
         let roles: any = []
         user?.user_roles.forEach(item => {
@@ -49,6 +62,7 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
             username: user.username,
             roles : roles,
             permissions: permissions.length > 0 ? permissions : null ,
+            user_detail : user_detail
         }
 
         const token = generateAccessToken(user_data_token)
@@ -58,11 +72,13 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
             username : user.username,
             roles: roles,
             permissions: permissions.length > 0 ? permissions : null ,
+            user_detail,
             token: token
         }
 
         return res.status(200).json({
             data: user_data
+           
         });
     } catch (error) {
         next(error);

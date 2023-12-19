@@ -26,6 +26,7 @@ userRouter.post('/api/v1/classroom', classroomController.create);
 userRouter.put('/api/v1/classroom/:id', classroomController.update);
 userRouter.delete('/api/v1/classroom/:id', classroomController.deleted);
 userRouter.post('/api/v1/classroom/move-student/:id', classroomController.moveStudent);
+userRouter.delete('/api/v1/classroom/delete/student', classroomController.deleteStudent);
 
 // class major route
 userRouter.get('/api/v1/class/major', classMajorController.get);
