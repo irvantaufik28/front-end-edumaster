@@ -14,6 +14,8 @@ import FormModal from "./components/FormModal";
 import axios from "axios";
 import config from "../../config";
 import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
+import Topbar from "../../components/layouts/TopBar";
+import SideBar from "../../components/layouts/SideBar";
 
 export const ClassroomPage = () => {
   const defaultFormModal = {
@@ -125,8 +127,10 @@ export const ClassroomPage = () => {
 
   return (
     <>
-     
-      <div className="main-content">
+      <Topbar />
+      <div className="content">
+        <SideBar />
+        <div className="main-content">
         <div className="header-content">
           <h5>
             {" "}
@@ -276,6 +280,11 @@ export const ClassroomPage = () => {
           />
         </div>
       </div>
+      </div>
+
+
+
+     
 
       <FormModal
         {...formModal}

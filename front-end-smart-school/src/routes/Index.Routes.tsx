@@ -15,11 +15,11 @@ const IndexRoutes = () => {
     <Router>
       <Routes>
         <Route path="/" element={<SigninPage />} />
-      </Routes>
-      <Topbar />
-      <div className="content">
-        <SideBar />
-        <Routes>
+      {/* </Routes> */}
+      {/* <Topbar /> */}
+      {/* <div className="content"> */}
+        {/* <SideBar /> */}
+        {/* <Routes> */}
           <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
             <Route path="/admin/dashboard" element={<DashboardPage />} />
             <Route path="/student" element={<StudentPage />} />
@@ -28,7 +28,7 @@ const IndexRoutes = () => {
             <Route path="/classroom" element={<ClassroomPage />} />
           </Route>
         </Routes>
-      </div>
+      {/* </div> */}
     </Router>
   );
 };
