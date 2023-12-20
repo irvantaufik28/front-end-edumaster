@@ -1,7 +1,4 @@
-import { SideNav } from "../../components/layouts/SideNav";
-import Footer from "../../components/layouts/Footer";
 import FormStudent from "./components/FromStudent";
-import { Header } from "../../components/layouts/Header";
 import { useSelector } from "react-redux";
 
 function StudentFormPage() {
@@ -11,9 +8,8 @@ function StudentFormPage() {
  
   return (
     <>
-      <Header />
-      <SideNav />
-      <div className="content-wrapper">
+   
+      <div className="main-content">
         <div className="header-content">
           <h5>
             {" "}
@@ -35,7 +31,6 @@ function StudentFormPage() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

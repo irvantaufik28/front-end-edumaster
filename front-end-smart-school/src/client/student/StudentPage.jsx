@@ -1,6 +1,3 @@
-import { Header } from "../../components/layouts/Header";
-import { SideNav } from "../../components/layouts/SideNav";
-import Footer from "../../components/layouts/Footer";
 import { FaSearch } from "react-icons/fa";
 import { SiAddthis } from "react-icons/si";
 import { CgImport } from "react-icons/cg";
@@ -60,11 +57,9 @@ export const StudentPage = () => {
     }
   };
 
-  
-
   const handleDetail = async (data) => {
-    navigate('/student/detail/' + data.id)
-  }
+    navigate("/student/detail/" + data.id);
+  };
 
   const handleDelete = async (data) => {
     const id = data.id;
@@ -119,9 +114,7 @@ export const StudentPage = () => {
   };
   return (
     <>
-      <Header />
-      <SideNav />
-      <div className="content-wrapper">
+      <div className="main-content">
         <div className="header-content">
           <h5>
             {" "}
@@ -268,8 +261,16 @@ export const StudentPage = () => {
               </div>
 
               <div className="col-md-6 button-search-student">
-                <ButtonSuccess title="search" icon={<FaSearch/>}onClick={handleSearch} />
-                <ButtonDanger title="reset" icon={<RxReset />} onClick={handleReset} />
+                <ButtonSuccess
+                  title="search"
+                  icon={<FaSearch />}
+                  onClick={handleSearch}
+                />
+                <ButtonDanger
+                  title="reset"
+                  icon={<RxReset />}
+                  onClick={handleReset}
+                />
               </div>
             </div>
           </div>
@@ -282,7 +283,6 @@ export const StudentPage = () => {
           />
         </div>
       </div>
-      <Footer />
     </>
   );
 };
