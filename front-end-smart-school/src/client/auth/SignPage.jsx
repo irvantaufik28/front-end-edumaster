@@ -56,9 +56,13 @@ const SigninPage = () => {
         if (role === "administrator") {
           navigate("/admin/dashboard");
         }
+
+        if (role === "student") {
+          navigate('/student/profile')
+        }
       });
     }
-  }, [token, cookies, setCookie]);
+  }, [token, cookies, setCookie, navigate]);
 
   return (
     <Formik

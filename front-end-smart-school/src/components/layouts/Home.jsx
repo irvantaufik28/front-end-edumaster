@@ -1,4 +1,4 @@
-export const Home = () => {
+const Dashboard = () => {
     return (
         <div className="content-wrapper">
             {/* Content Header (Page header) */}
@@ -574,3 +574,5 @@ export const Home = () => {
 
     )
 }
+
+export default Dashboard;

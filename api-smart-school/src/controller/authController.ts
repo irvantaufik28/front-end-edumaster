@@ -45,8 +45,8 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
 
         }
 
-        let user_detail = user.StaffUser?.[0] ?? user.StudentUser?.[0] ?? {};
-
+        let user_detail = user.StaffUser?.[0].staff ?? user.StudentUser?.[0].student ?? {};
+        console.log(user_detail)
         let roles: any = []
         user?.user_roles.forEach(item => {
             roles.push(item.role.name)

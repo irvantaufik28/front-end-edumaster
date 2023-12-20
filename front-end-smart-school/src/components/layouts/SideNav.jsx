@@ -1,10 +1,22 @@
+import jwtDecode from "jwt-decode";
+import { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 import {  useNavigate } from "react-router-dom";
 
 export const SideNav = () => {
+  const [cookies] = useCookies(['token']);
+  const token = cookies.token?? null;
+  const [user, setUser] = useState('')
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
   };
+  useEffect(() => {
+    if (token) {
+      const tokenDecode = jwtDecode(token);
+      setUser(tokenDecode)
+    }
+  }, [token]);
 
   return (
     <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -24,19 +36,17 @@ export const SideNav = () => {
         <div className="user-panel mt-3 pb-3 mb-3 d-flex">
           <div className="image">
             <img
-              src="dist/img/user2-160x160.jpg"
+              src={user?.user_detail?.foto_url}
               className="img-circle elevation-2"
               alt="User Image"
             />
           </div>
           <div className="info">
             <a href="#" className="d-block">
-              Alexander Pierce
+              {`${user?.user_detail?.first_name} ${user?.user_detail?.last_name}`} 
             </a>
           </div>
         </div>
-        {/* SidebarSearch Form */}
-        {/* Sidebar Menu */}
         <nav className="mt-2">
           <ul
             className="nav nav-pills nav-sidebar flex-column"
@@ -44,8 +54,6 @@ export const SideNav = () => {
             role="menu"
             data-accordion="false"
           >
-            {/* Add icons to the links using the .nav-icon class
-         with font-awesome or any other icon font library */}
             <li className="nav-item menu-open">
               <a href="#" className="nav-link active">
                 <i className="nav-icon fas fa-folder" />
