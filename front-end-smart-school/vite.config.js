@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/src',
   build: {
     outDir: 'dist', // Output directory for production build
     assetsDir: 'public', // Relative path to public assets directory
