@@ -13,13 +13,15 @@ import {
   Report,
 } from "@material-ui/icons";
 import { FaDatabase, FaCircle } from "react-icons/fa";
+import { PiStudentFill } from "react-icons/pi";
 import "./styles/sidebar.css";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 export default function SideBar() {
   const [isMasterClicked, setIsMasterClicked] = useState(false);
   const [isStudentClicked, setIsStudentClicked] = useState(false);
+  const navigate = useNavigate();
 
   const handleMasterClick = () => {
     setIsMasterClicked(!isMasterClicked);
@@ -28,6 +30,12 @@ export default function SideBar() {
   const handleStudentClick = () => {
     setIsStudentClicked(!isStudentClicked);
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+
   return (
     <div className="sidebar">
       <div className="sidebarWrapper">
@@ -45,25 +53,35 @@ export default function SideBar() {
               Master
             </li>
             {isMasterClicked && (
-              <ul>
-                <li className="sidebarListItem">
+              <ul className="sublink">
+                
+                <li className="sidebarListItem" onClick={() => handleNavigation('/classmajor')}>
                   <FaCircle className="subSideBarIcon" />
-                  User
+                  class major
                 </li>
+                <li className="sidebarListItem" onClick={() => handleNavigation('/classroom')}>
+                  <FaCircle className="subSideBarIcon" />
+                  classroom
+                </li>
+                 <li className="sidebarListItem" onClick={() => handleNavigation('/relationship')}>
+                  <FaCircle className="subSideBarIcon" />
+                  relationship
+                </li>
+                
               </ul>
             )}   
             <li className={`sidebarListItem ${isStudentClicked ? 'active' : ''}`} onClick={() => handleStudentClick()}>
-              <Timeline className="sidebarIcon" />
+              <PiStudentFill className="sidebarIcon" />
               Student
             </li>
             {isStudentClicked && (
               <ul>
-            <Link to="/student" className="link">
-                <li className="sidebarListItem">
-                  <Timeline className="sidebarIcon" />
+          
+                <li className="sidebarListItem" >
+                  <FaCircle className="subSidebarIcon" />
                   Student List
                 </li>
-            </Link>
+            
               </ul>
             )}
             <li className="sidebarListItem">

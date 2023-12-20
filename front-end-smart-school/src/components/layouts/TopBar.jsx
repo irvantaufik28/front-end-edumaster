@@ -3,16 +3,12 @@ import { NotificationsNone, Language, Settings } from "@material-ui/icons";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import {  useNavigate } from "react-router-dom";
 export default function Topbar() {
 
   const [cookies] = useCookies(['token']);
   const token = cookies.token?? null;
   const [user, setUser] = useState('')
-  const navigate = useNavigate();
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
+
   useEffect(() => {
     if (token) {
       const tokenDecode = jwtDecode(token);
