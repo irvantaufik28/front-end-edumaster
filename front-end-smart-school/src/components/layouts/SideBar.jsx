@@ -58,10 +58,12 @@ export default function SideBar() {
             </li>
             {isStudentClicked && (
               <ul>
+            <Link to="/student" className="link">
                 <li className="sidebarListItem">
                   <Timeline className="sidebarIcon" />
                   Student List
                 </li>
+            </Link>
               </ul>
             )}
             <li className="sidebarListItem">
