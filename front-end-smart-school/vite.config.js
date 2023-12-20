@@ -1,11 +1,8 @@
 import react from '@vitejs/plugin-react';
-
+import { defineConfig } from 'vite';
 // https://vitejs.dev/config/
-export default {
-  base: '/',
+export default defineConfig ({
   build: {
-    outDir: 'dist', // Output directory for production build
-    assetsDir: 'public', // Relative path to public assets directory
     manifest: true, // Generate manifest.json
     rollupOptions: {
       external: [
@@ -29,4 +26,4 @@ export default {
     },
   },
   plugins: [react()],
-};
+});
