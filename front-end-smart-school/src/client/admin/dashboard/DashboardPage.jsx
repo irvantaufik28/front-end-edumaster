@@ -1,17 +1,9 @@
-import Footer from "../../../components/layouts/Footer";
-import { Header } from "../../../components/layouts/Header";
-import { SideNav } from "../../../components/layouts/SideNav";
-import Dashboard from "../../../components/layouts/Home";
-
 const DashboardPage = () => {
   return (
-    <>
-    <Header />
-    <SideNav />
-    <Dashboard />
-    <Footer/>
-    </>
-  )
+    <div className="main-content">
+      <h1>DashBoardPage</h1>
+    </div>
+  );
 };
 
 export default DashboardPage;

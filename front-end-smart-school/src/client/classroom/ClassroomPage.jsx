@@ -1,6 +1,3 @@
-import { Header } from "../../components/layouts/Header";
-import { SideNav } from "../../components/layouts/SideNav";
-import Footer from "../../components/layouts/Footer";
 import { SiAddthis } from "react-icons/si";
 import { CgImport } from "react-icons/cg";
 import { BiExport } from "react-icons/bi";
@@ -71,14 +68,9 @@ export const ClassroomPage = () => {
     });
   };
 
-  const onSubmitSuccess = (type) => {
+  const onSubmitSuccess = () => {
     handleCloseForm();
     tableRef.current.refreshData();
-    // if (["edit", "delete"].includes(type)) {
-    //   tableRef.current.reloadData();
-    // } else {
-    //   tableRef.current.refreshData();
-    // }
   };
 
   const classMajor = useSelector(classMajorSelector.selectAll);
@@ -133,9 +125,8 @@ export const ClassroomPage = () => {
 
   return (
     <>
-      <Header />
-      <SideNav />
-      <div className="content-wrapper">
+     
+      <div className="main-content">
         <div className="header-content">
           <h5>
             {" "}
@@ -285,7 +276,7 @@ export const ClassroomPage = () => {
           />
         </div>
       </div>
-      <Footer />
+
       <FormModal
         {...formModal}
         onHide={handleCloseForm}
