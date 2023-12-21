@@ -40,7 +40,6 @@ const FormModalHistoryClassroom = (props) => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const payload = _.pick(values, ["id", "students"]);
-      console.log(payload);
       const confirmation = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",

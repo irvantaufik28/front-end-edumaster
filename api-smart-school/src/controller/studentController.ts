@@ -12,6 +12,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             last_name: req.query.last_name,
             gender: req.query.gender,
             status: req.query.status,
+            current_classroom_id :req.query.current_classroom_id,
             register_year: req.query.register_year,
             nis: req.query.nis,
             page: req.query.page,

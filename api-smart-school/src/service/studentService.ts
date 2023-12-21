@@ -62,6 +62,16 @@ class StudentService {
             })
         }
 
+        if (request.current_classroom_id) {
+            filters.push({
+                current_classroom_id: {
+                    equals: parseInt(request.current_classroom_id
+                    )
+                }
+            })
+        }
+
+
 
         let orders = {
             [request.orderBy || 'created_at']: request.sortBy || 'desc',

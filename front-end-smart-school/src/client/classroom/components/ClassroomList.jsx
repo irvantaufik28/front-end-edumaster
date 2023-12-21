@@ -29,10 +29,6 @@ const ListOrderTable = forwardRef((props, ref) => {
         Header: "Id",
         accessor: "id",
       },
-      //   {
-      //     Header: 'Name',
-      //     accessor: row => `${row.first_name} ${row.last_name}`,
-      //   },
       {
         Header: "Code",
         accessor: "code",
@@ -55,16 +51,15 @@ const ListOrderTable = forwardRef((props, ref) => {
       },
       {
         Header: "Action",
-        // accessor: "birthDate",  
         Cell: ({ row }) => (
           <>
           <Button
             variant="secondary"
             size="sm"
             className="me-2"
-            onClick={() => props.onDetail(row.values)}
+            onClick={() => props.onManage(row.values)}
           >
-          <BiSolidDetail />  Detail
+          <BiSolidDetail />  Manage
           </Button>
           <Button
             variant="info"
@@ -186,7 +181,7 @@ const ListOrderTable = forwardRef((props, ref) => {
 export default ListOrderTable;
 
 ListOrderTable.defaultProps = {
-  onDetail: (data) => {},
+  onManage: (data) => {},
   onEdit: (data) => {},
   onDelete: (data) => {},
 };

@@ -126,7 +126,6 @@ const moveStudent = async (req: any, res: Response, next: NextFunction): Promise
 
 const deleteStudent = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
-        console.log(req.body)
         const classroom = await prismaClient.classroom.findUnique({
             where: {
                 id: parseInt(req.query.classroom_id)
@@ -148,6 +147,26 @@ const deleteStudent = async (req: any, res: Response, next: NextFunction): Promi
         await prismaClient.studentClassroom.delete({
             where: { student_id_classroom_id: { student_id: req.query.student_id, classroom_id: parseInt(req.query.classroom_id) } }
         })
+
+
+        const studentClassrooms = await prismaClient.student.findUnique({
+            where: { id: req.query.student_id },
+            include: {
+                student_classrooms: true
+            }
+        })
+        if (!studentClassrooms?.student_classrooms.length) {
+            await prismaClient.student.update({
+                where: {
+                    id: req.query.student_id
+                },
+                data: {
+                    current_classroom_id: null
+                }
+            })
+        }
+
+
 
 
         return res.status(200).json({ message: "data successfully deleted" });

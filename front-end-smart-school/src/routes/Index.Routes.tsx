@@ -9,6 +9,7 @@ import StudentDetailPage from "../client/student/StudentDetailPage";
 import PrivateRoute from "../utils/PrivateRoute";
 import Topbar from "../components/layouts/TopBar";
 import SideBar from "../components/layouts/SideBar";
+import ManageClassroomPage from "../client/classroom/ManageClassroomPage";
 
 const IndexRoutes = () => {
   return (
@@ -22,10 +23,14 @@ const IndexRoutes = () => {
         {/* <Routes> */}
           <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
             <Route path="/admin/dashboard" element={<DashboardPage />} />
+            
             <Route path="/student" element={<StudentPage />} />
             <Route path="/student/form" element={<StudentFormPage />} />
             <Route path="/student/detail/:id" element={<StudentDetailPage />} />
+            
+             
             <Route path="/classroom" element={<ClassroomPage />} />
+            <Route path="/classroom/manage/:id" element={<ManageClassroomPage />} />
           </Route>
         </Routes>
       {/* </div> */}

@@ -17,8 +17,10 @@ import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
 import HeaderContent from "./components/HeaderContent";
+import { useNavigate } from "react-router-dom";
 
 export const ClassroomPage = () => {
+  const navigate = useNavigate()
   const defaultFormModal = {
     show: false,
     initialValues: null,
@@ -70,6 +72,10 @@ export const ClassroomPage = () => {
       show: false,
     });
   };
+
+  const handleManage = (data) => {
+    navigate('/classroom/manage/' + data.id)
+  }
 
   const onSubmitSuccess = () => {
     handleCloseForm();
@@ -132,7 +138,7 @@ export const ClassroomPage = () => {
       <div className="content">
         <SideBar />
         <div className="main-content">
-       <HeaderContent title= {"Classroom"} type={"List"} />
+          <HeaderContent title={"Classroom"} type={"List"} />
           <div className="main-content-alpha">
             <div className="student-head">
               <div className="row sub-header-content">
@@ -263,14 +269,11 @@ export const ClassroomPage = () => {
               ref={tableRef}
               onEdit={(data) => handleEdit(data)}
               onDelete={(data) => handleDelete(data)}
+              onManage={(data) => handleManage(data)}
             />
           </div>
         </div>
       </div>
-
-
-
-
 
       <FormModal
         {...formModal}

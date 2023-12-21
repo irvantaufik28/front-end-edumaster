@@ -5,7 +5,9 @@ import axios from "axios";
 
 const initialState = {
   data: {},
-  errorMessage: null
+  dataCheckBox: [],
+  errorMessage: null,
+  loading: false
 };
 
 export const getAll = createAsyncThunk(
@@ -24,10 +26,30 @@ export const getAll = createAsyncThunk(
   }
 );
 
+export const getById = createAsyncThunk(
+  "classroom/getById",
+  async (id, { rejectWithValue }) => {
+    const apiUrl = config.apiUrl;
+    try {
+      const response = await axios.get(`${apiUrl}/classroom/${id}`);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 const classroomSlice = createSlice({
   name: "classroom",
   initialState,
-  reducers: {},
+  reducers: {
+    setDataCheckBox: (state, action) => {
+      state.dataCheckBox = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getAll.pending, (state) => {
@@ -43,9 +65,25 @@ const classroomSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;
+      })      
+      .addCase(getById.pending, (state) => {
+        state.loading = true;
+        state.data = null;
+      })
+      .addCase(getById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(getById.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = null;
       });
   },
 });
+
+export const { setDataCheckBox } = classroomSlice.actions;
 export const classroomSelector = {
   selectAll: (state) => state.classroom.data,
   loading: (state) => state.classroom.loading,
