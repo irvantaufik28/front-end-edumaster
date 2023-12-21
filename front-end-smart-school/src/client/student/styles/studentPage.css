@@ -23,6 +23,8 @@
   .button-edit-current-classroom {
     display: flex;
     justify-content: end;
+    padding-bottom: 20px;
+    padding-top: 10px;
   }
   .button-edit-parent {
     display: flex;
@@ -40,4 +42,11 @@
     display: flex;
     justify-content: end;
     padding-bottom: 10px;
+  }
+
+
+
+  .button-change-foto{
+    padding-top: 10px;
+    width: 100px;
   }

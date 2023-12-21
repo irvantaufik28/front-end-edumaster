@@ -174,7 +174,10 @@ const TabClassroomHistory = () => {
         <hr></hr>
 
         {student?.student_classrooms?.length ? (
-          <table className="table table-striped">
+          <table
+            className="table table-striped"
+            style={{ marginBottom: "100px" }}
+          >
             <thead>
               <tr>
                 <th className="th-react-table">Code</th>

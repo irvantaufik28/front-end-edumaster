@@ -16,6 +16,7 @@ import config from "../../config";
 import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
+import HeaderContent from "./components/HeaderContent";
 
 export const ClassroomPage = () => {
   const defaultFormModal = {
@@ -131,160 +132,145 @@ export const ClassroomPage = () => {
       <div className="content">
         <SideBar />
         <div className="main-content">
-        <div className="header-content">
-          <h5>
-            {" "}
-            <span
-              style={{ opacity: "0.5", fontSize: "30px", color: "#17a4e0" }}
-            >
-              Classroom
-            </span>
-          </h5>
-          <div className="title-classroom">
-            <p>
-              {" "}
-              <span style={{ opacity: "0.5" }}> Home/ Student / List</span>
-            </p>
-          </div>
-        </div>
-        <div className="main-content-alpha">
-          <div className="student-head">
-            <div className="row sub-header-content">
-              <div className="col-md-6 add-student">
-                <ButtonPrimary
-                  title="add"
-                  onClick={handleAdd}
-                  icon={<SiAddthis />}
-                />
-              </div>
-              <div className="col-md-6 right-button-classroom-list">
-                <div>
-                  <ButtonSecondary title="Import" icon={<CgImport />} />
-                </div>
-                <div>
-                  <ButtonSecondary title="Export" icon={<BiExport />} />
-                </div>
-              </div>
-            </div>
-            <div className="search-box-global">
-              <div className="row">
-                <div className="col-md-4">
-                  <label htmlFor="nama-classroom" className="form-label">
-                    code
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="code"
-                    onChange={(e) =>
-                      setSearch({ ...search, ...{ code: e.target.value } })
-                    }
+       <HeaderContent title= {"Classroom"} type={"List"} />
+          <div className="main-content-alpha">
+            <div className="student-head">
+              <div className="row sub-header-content">
+                <div className="col-md-6 add-student">
+                  <ButtonPrimary
+                    title="add"
+                    onClick={handleAdd}
+                    icon={<SiAddthis />}
                   />
                 </div>
-                <div className="col-md-4">
-                  <label htmlFor="class" className="form-label">
-                    Class
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="level"
-                    onChange={(e) =>
-                      setSearch({ ...search, ...{ level: e.target.value } })
-                    }
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="classMajor" className="form-label">
-                    Class Major
-                  </label>
+                <div className="col-md-6 right-button-classroom-list">
                   <div>
-                    <select
+                    <ButtonSecondary title="Import" icon={<CgImport />} />
+                  </div>
+                  <div>
+                    <ButtonSecondary title="Export" icon={<BiExport />} />
+                  </div>
+                </div>
+              </div>
+              <div className="search-box-global">
+                <div className="row">
+                  <div className="col-md-4 mb-4">
+                    <label htmlFor="nama-classroom" className="form-label">
+                      code
+                    </label>
+                    <input
+                      type="text"
                       className="form-control"
-                      aria-label="Default select example"
-                      id="class_major_id"
+                      id="code"
                       onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ class_major_id: e.target.value },
-                        })
+                        setSearch({ ...search, ...{ code: e.target.value } })
                       }
-                    >
-                      <option selected value={""}>
-                        select class major
-                      </option>
-                      {classMajor?.map((option) => (
-                        <option key={option.id} value={option.id}>
-                          {option.name}
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="class" className="form-label">
+                      Class
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="level"
+                      onChange={(e) =>
+                        setSearch({ ...search, ...{ level: e.target.value } })
+                      }
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="classMajor" className="form-label">
+                      Class Major
+                    </label>
+                    <div>
+                      <select
+                        className="form-control"
+                        aria-label="Default select example"
+                        id="class_major_id"
+                        onChange={(e) =>
+                          setSearch({
+                            ...search,
+                            ...{ class_major_id: e.target.value },
+                          })
+                        }
+                      >
+                        <option selected value={""}>
+                          select class major
                         </option>
-                      ))}
-                    </select>
+                        {classMajor?.map((option) => (
+                          <option key={option.id} value={option.id}>
+                            {option.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="row">
-                <div className="col-md-4">
-                  <label htmlFor="year" className="form-label">
-                    Year
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="year_group"
-                    onChange={(e) =>
-                      setSearch({
-                        ...search,
-                        ...{ year_group: e.target.value },
-                      })
-                    }
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="status" className="form-label">
-                    Status
-                  </label>
-                  <div>
-                    <select
+                <div className="row">
+                  <div className="col-md-4">
+                    <label htmlFor="year" className="form-label">
+                      Year
+                    </label>
+                    <input
+                      type="text"
                       className="form-control"
-                      aria-label="Default select example"
-                      id="status"
+                      id="year_group"
                       onChange={(e) =>
                         setSearch({
                           ...search,
-                          ...{ status: e.target.value },
+                          ...{ year_group: e.target.value },
                         })
                       }
-                    >
-                      <option selected value={""}>
-                        select status
-                      </option>
-                      <option value="active">Active</option>
-                      <option value="not_active">Not Active</option>
-                      <option value="preparation">Preparation</option>
-                    </select>
+                    />
+                  </div>
+                  <div className="col-md-4">
+                    <label htmlFor="status" className="form-label">
+                      Status
+                    </label>
+                    <div>
+                      <select
+                        className="form-control"
+                        aria-label="Default select example"
+                        id="status"
+                        onChange={(e) =>
+                          setSearch({
+                            ...search,
+                            ...{ status: e.target.value },
+                          })
+                        }
+                      >
+                        <option selected value={""}>
+                          select status
+                        </option>
+                        <option value="active">Active</option>
+                        <option value="not_active">Not Active</option>
+                        <option value="preparation">Preparation</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="col-md-6 button-search-classroom">
-                <ButtonSuccess title="search" onClick={handleSearch} />
-                <ButtonDanger title="reset" onClick={handleReset} />
+                <div className="col-md-6 button-search-classroom">
+                  <ButtonSuccess title="search" onClick={handleSearch} />
+                  <ButtonDanger title="reset" onClick={handleReset} />
+                </div>
               </div>
             </div>
-          </div>
 
-          <ClassroomList
-            ref={tableRef}
-            onEdit={(data) => handleEdit(data)}
-            onDelete={(data) => handleDelete(data)}
-          />
+            <ClassroomList
+              ref={tableRef}
+              onEdit={(data) => handleEdit(data)}
+              onDelete={(data) => handleDelete(data)}
+            />
+          </div>
         </div>
       </div>
-      </div>
 
 
 
-     
+
 
       <FormModal
         {...formModal}

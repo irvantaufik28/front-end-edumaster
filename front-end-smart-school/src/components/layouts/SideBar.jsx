@@ -15,18 +15,23 @@ import {
 import { FaDatabase, FaCircle } from "react-icons/fa";
 import { PiStudentFill } from "react-icons/pi";
 import "./styles/sidebar.css";
-
+import { ImUsers } from "react-icons/im";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 export default function SideBar() {
   const [isMasterClicked, setIsMasterClicked] = useState(false);
   const [isStudentClicked, setIsStudentClicked] = useState(false);
+  const [isStaffClicked, setIsStaffClicked] = useState(false);
   const navigate = useNavigate();
+
+  const handleStaffClick = () => {
+    setIsStaffClicked(!isStaffClicked);
+  };
 
   const handleMasterClick = () => {
     setIsMasterClicked(!isMasterClicked);
   };
-  
+
   const handleStudentClick = () => {
     setIsStudentClicked(!isStudentClicked);
   };
@@ -34,7 +39,6 @@ export default function SideBar() {
   const handleNavigation = (path) => {
     navigate(path);
   };
-
 
   return (
     <div className="sidebar">
@@ -48,63 +52,108 @@ export default function SideBar() {
                 Home
               </li>
             </Link>
-            <li className={`sidebarListItem ${isMasterClicked ? 'active' : ''}`} onClick={() => handleMasterClick()}>
-            <FaDatabase className="sidebarIcon" />
+            <li
+              className={`sidebarListItem ${isMasterClicked ? "active" : ""}`}
+              onClick={() => handleMasterClick()}
+            >
+              <FaDatabase className="sidebarIcon" />
               Master
             </li>
             {isMasterClicked && (
               <ul className="sublink">
-                
-                <li className="sidebarListItem" onClick={() => handleNavigation('/classmajor')}>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/classmajor")}
+                >
                   <FaCircle className="subSideBarIcon" />
                   class major
                 </li>
-                <li className="sidebarListItem" onClick={() => handleNavigation('/classroom')}>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/classroom")}
+                >
                   <FaCircle className="subSideBarIcon" />
                   classroom
                 </li>
-                 <li className="sidebarListItem" onClick={() => handleNavigation('/relationship')}>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/relationship")}
+                >
                   <FaCircle className="subSideBarIcon" />
                   relationship
                 </li>
-                
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/role")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  role
+                </li>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/role")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  permission
+                </li>
               </ul>
-            )}   
-            <li className={`sidebarListItem ${isStudentClicked ? 'active' : ''}`} onClick={() => handleStudentClick()}>
+            )}
+            <li
+              className={`sidebarListItem ${isStudentClicked ? "active" : ""}`}
+              onClick={() => handleStudentClick()}
+            >
               <PiStudentFill className="sidebarIcon" />
               Student
             </li>
             {isStudentClicked && (
               <ul>
-          
-                <li className="sidebarListItem" >
-                  <FaCircle className="subSidebarIcon" />
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/student")}
+                >
+                  <FaCircle className="subSideBarIcon" />
                   Student List
                 </li>
-            
               </ul>
             )}
-            <li className="sidebarListItem">
-              <TrendingUp className="sidebarIcon" />
-              Sales
+            <li
+              className={`sidebarListItem ${isStaffClicked ? "active" : ""}`}
+              onClick={() => handleStaffClick()}
+            >
+              <ImUsers className="sidebarIcon" />
+              Staff
             </li>
+            {isStaffClicked && (
+              <ul>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/staff/office")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  Staff Office
+                </li>
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/staff/office")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  Staff Teacher
+                </li>
+              </ul>
+            )}
           </ul>
         </div>
         <div className="sidebarMenu">
           <h3 className="sidebarTitle">Quick Menu</h3>
           <ul className="sidebarList">
-            <Link to="/users" className="link">
-              <li className="sidebarListItem">
-                <PermIdentity className="sidebarIcon" />
-                Users
-              </li>
-            </Link>
-            <Link to="/products" className="link">
-              <li className="sidebarListItem">
-                <Storefront className="sidebarIcon" />
-                Products
-              </li>
-            </Link>
+            <li className="sidebarListItem">
+              <PermIdentity className="sidebarIcon" />
+              Users
+            </li>
+            <li className="sidebarListItem">
+              <Storefront className="sidebarIcon" />
+              Products
+            </li>
             <li className="sidebarListItem">
               <AttachMoney className="sidebarIcon" />
               Transactions

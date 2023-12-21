@@ -52,17 +52,16 @@ const TabPersonalInfo = () => {
   return (
     <>
       <Row>
-        <Card style={{ width: "100%", height: "auto" }}>
+        <Card style={{ width: "100%", height: "auto", marginBottom: "100px" }}>
           <Card.Body>
             <div className="title-form-student">Personal Info</div>
             <hr></hr>
             <div className="button-edit-student">
-            <ButtonPrimary 
-              title="Edit"
-              icon={<MdModeEdit />}
-              onClick={() => handleEdit(student?.id)}
-            />
-
+              <ButtonPrimary
+                title="Edit"
+                icon={<MdModeEdit />}
+                onClick={() => handleEdit(student?.id)}
+              />
             </div>
             <Row>
               <Col md={6}>

@@ -10,6 +10,7 @@ import FormModalParent from "../modals/FormModalParent";
 import axios from "axios";
 import config from "../../../../config";
 import Swal from "sweetalert2";
+import ButtonSecondary from "../../../../components/ui/button/ButtonSecondary";
 
 const TabParentsInfo = () => {
   const dispacth = useDispatch()
@@ -113,7 +114,7 @@ const TabParentsInfo = () => {
         <hr></hr>
         {student?.student_parents?.map((item, index) => (
           <>
-            <Card style={{ width: "100%", height: "auto" }}>
+            <Card style={{ width: "100%", height: "auto", marginBottom : "50px" }}>
               <Card.Body key={index}>
                 <Row>
                   <Table>
@@ -204,7 +205,7 @@ const TabParentsInfo = () => {
                     icon={<MdDelete />}
                     onClick={() => handleDelete(item?.id)}
                   />
-                  <ButtonPrimary
+                  <ButtonSecondary
                     title="Edit"
                     icon={<MdModeEdit />}
                     onClick={() => handleEdit(item?.id)}

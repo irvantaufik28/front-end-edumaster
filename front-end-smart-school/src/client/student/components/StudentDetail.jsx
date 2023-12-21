@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getById, studentSelector } from "../../../features/studentSlice";
-import { Button, Card, Col, Row, Tab, Tabs } from "react-bootstrap";
+import {  Button, Card, Col, Row, Tab, Tabs } from "react-bootstrap";
 import TabPersonalInfo from "./partials/TabPersonalInfo";
-import ButtonSecondary from "../../../components/ui/button/ButtonSecondary";
 import { CgImport } from "react-icons/cg";
 import TabParentsInfo from "./partials/TabParentsInfo";
 import TabClassroomHistory from "./partials/TabClassroomHistory";
-
+import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
+import { MdPhotoCamera } from "react-icons/md";
 const StudentDetail = () => {
   const student = useSelector(studentSelector.getById);
   const { id } = useParams();
@@ -20,7 +20,7 @@ const StudentDetail = () => {
 
   return (
     <Row>
-      <Card style={{ width: "100%", height: "auto" }}>
+      <Card style={{ width: "100%", height: "auto", marginBottom: "20px" }}>
         <Card.Body>
           <Row>
             <Col md={1} className="student-personal-foto">
@@ -41,7 +41,9 @@ const StudentDetail = () => {
                 } ${student?.last_name ?? ""}`}</span>
               </Row>
               <Row>
-                <Button variant="light">change foto</Button>
+                <div className="button-change-foto">
+                  <Button variant="light"><MdPhotoCamera/> change Photo </Button>
+                </div>
               </Row>
             </Col>
             <Col
@@ -49,7 +51,7 @@ const StudentDetail = () => {
               className="student-personal-button"
               style={{ justifyContent: "end", display: "flex", height: "50%" }}
             >
-              <ButtonSecondary title="download CV" icon={<CgImport />} />
+              <ButtonPrimary title="download CV" icon={<CgImport />} />
             </Col>
           </Row>
         </Card.Body>
@@ -61,15 +63,27 @@ const StudentDetail = () => {
             id="controlled-tab-example"
             activeKey={key}
             onSelect={(k) => setKey(k)}
-            className="mb-3"
+            className="mb-3 tab-student"
           >
-            <Tab eventKey="personal_detail" title="Personal Detail">
+            <Tab
+              eventKey="personal_detail"
+              title="Personal Detail"
+              className="tab-student-detail"
+            >
               <TabPersonalInfo />
             </Tab>
-            <Tab eventKey="parents" title="Parents Info">
+            <Tab
+              eventKey="parents"
+              title="Parents Info"
+              className="tab-student-detail"
+            >
               <TabParentsInfo />
             </Tab>
-            <Tab eventKey="classroom_history" title="Classroom History">
+            <Tab
+              eventKey="classroom_history"
+              title="Classroom History"
+              className="tab-student-detail"
+            >
               <TabClassroomHistory />
             </Tab>
           </Tabs>

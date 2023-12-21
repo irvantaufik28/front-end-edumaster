@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import StudentList from "./components/StudentList";
 import "./styles/studentPage.css";
 import ButtonPrimary from "../../components/ui/button/ButtonPrimary";
-import ButtonSecondary from "../../components/ui/button/ButtonSecondary";
 import ButtonSuccess from "../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useRef, useState } from "react";
@@ -19,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { setDataStudent } from "../../features/studentSlice";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
-
+import HeaderContent from "./components/HeaderContent";
 export const StudentPage = () => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
@@ -120,26 +119,14 @@ export const StudentPage = () => {
       <div className="content">
         <SideBar />
         <div className="main-content">
-          <div className="header-content">
-            <h5>
-              {" "}
-              <span
-                style={{ opacity: "0.5", fontSize: "30px", color: "#17a4e0" }}
-              >
-                Students
-              </span>
-            </h5>
-            <div className="title-student">
-              <p>
-                {" "}
-                <span style={{ opacity: "0.5" }}> Home/ Student / List</span>
-              </p>
-            </div>
-          </div>
+          <HeaderContent 
+          title={'Student'}
+          type={'List'}
+          />
           <div className="main-content-alpha">
-            <div className="karyawan-head">
+            <div className="student-head">
               <div className="row sub-header-content">
-                <div className="col-md-6 add-karyawan">
+                <div className="col-md-6 add-student">
                   <ButtonPrimary
                     title="add"
                     onClick={handleAdd}
@@ -148,16 +135,16 @@ export const StudentPage = () => {
                 </div>
                 <div className="col-md-6 right-button-student-list">
                   <div>
-                    <ButtonSecondary title="Import" icon={<CgImport />} />
+                    <ButtonPrimary title="Import" icon={<CgImport />} />
                   </div>
                   <div>
-                    <ButtonSecondary title="Export" icon={<BiExport />} />
+                    <ButtonPrimary title="Export" icon={<BiExport />} />
                   </div>
                 </div>
               </div>
               <div className="search-box-global">
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-md-4 mb-4">
                     <label htmlFor="nama-classroom" className="form-label">
                       NIS
                     </label>

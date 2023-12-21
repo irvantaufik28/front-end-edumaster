@@ -9,3 +9,12 @@
     padding-top: 30px;
 }
 
+.back-arrow {
+    font-size:35px;
+    color: darkblue;
+    cursor: pointer;
+}
+.title-content {
+    display: flex;
+    column-gap: 10px;
+}
