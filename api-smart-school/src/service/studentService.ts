@@ -3,7 +3,8 @@ import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 import { CreateOrUpdateClassroomDto } from "../dto/create-or-update-classroom.dto";
 import bcrypt from "bcrypt";
-import { generateNIS } from "../application/common/common";
+import { generateDefaultPassword, generateNIS } from "../application/common/common";
+import { createOrUpdateStudentDto } from "../dto/create-or-update-student.dto";
 class StudentService {
     constructor() { }
 
@@ -114,11 +115,11 @@ class StudentService {
 
 
     async create(request: any) {
-        // try {
-        //     await transformAndValidate(CreateOrUpdateClassroomDto, request);
-        // } catch (e: any) {
-        //     throw new ResponseError(400, e.toString())
-        // }
+        try {
+            await transformAndValidate(createOrUpdateStudentDto, request);
+        } catch (e: any) {
+            throw new ResponseError(400, e.toString())
+        }
 
         const student = await prismaClient.student.create({
             data: {
@@ -165,10 +166,11 @@ class StudentService {
             })
         }
 
+        const defaultPassword = generateDefaultPassword(request.birth_date)
 
         const user_data = {
             username: student.nis,
-            password: await bcrypt.hash('password', 10)
+            password: await bcrypt.hash(defaultPassword, 10)
         }
 
         const user = await prismaClient.user.create({
@@ -218,11 +220,15 @@ class StudentService {
 
 
     async update(request: any, id: string) {
-        // try {
-        //     await transformAndValidate(CreateOrUpdateClassroomDto, request);
-        // } catch (e: any) {
-        //     throw new ResponseError(400, e.toString())
-        // }
+        try {
+            await transformAndValidate(createOrUpdateStudentDto, request, {
+                validator: {
+                    skipMissingProperties: true
+                }
+            });
+        } catch (e: any) {
+            throw new ResponseError(400, e.toString())
+        }
 
         const student = await prismaClient.student.update({
             where: {

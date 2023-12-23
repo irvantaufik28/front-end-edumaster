@@ -5,37 +5,52 @@ import { CreateOrUpdateClassMajorDto } from "../dto/create-or-update-classmajor.
 
 class ClassMajorService {
 
-    async create(request: any) {
-        try {
-            await transformAndValidate(CreateOrUpdateClassMajorDto, request);
-        } catch (e: any) {
-            throw new ResponseError(400, e.toString())
-        }
-        return await prismaClient.classMajor.create({
-            data: request,
-            select: {
-                id: true,
-                name: true
-            }
-        })
-    }
+    async get(request: any) {
 
-    async get() {
-        return prismaClient.classMajor.findMany({
+        const page = request.page ?? 1;
+        const size = request.size ?? 10;
+        const skip = (parseInt(page) - 1) * parseInt(size);
+        const filters: any = [];
+
+        if (request.name) {
+            filters.push({
+                name: {
+                    contains: request.name
+                }
+            })
+        }
+
+        let orders = {
+            [request.orderBy || 'created_at']: request.sortBy || 'desc',
+        };
+
+
+        const classmajor = await prismaClient.classMajor.findMany({
+            orderBy: orders,
+            where: {
+                AND: filters
+            },
             include: {
                 classrooms: true
+            },
+            take: parseInt(size),
+            skip: skip,
+        })
+
+        const totalItems = await prismaClient.classMajor.count({
+            where: {
+                AND: filters
             }
         })
-    }
 
-    async getById(id: any) {
-        const result = await prismaClient.classMajor.findFirst({
-            where: { id: id }
-        })
-        if (!result) {
-            throw new ResponseError(404, 'class major not found')
+        return {
+            data: classmajor,
+            paging: {
+                page: page,
+                total_item: totalItems,
+                total_page: Math.ceil(totalItems / parseInt(size))
+            }
         }
-        return result
     }
 }
 

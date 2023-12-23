@@ -59,7 +59,9 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
 }
 const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
-        await transformAndValidate(CreateOrUpdateClassroomDto, req.body);
+        await transformAndValidate(CreateOrUpdateClassroomDto, req.body, {
+            validator: {skipMissingProperties: true}
+        });
     } catch (e: any) {
         return res.status(404).json({ message: e.toString() });
     }

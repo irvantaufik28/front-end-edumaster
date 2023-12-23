@@ -10,6 +10,7 @@ import PrivateRoute from "../utils/PrivateRoute";
 import Topbar from "../components/layouts/TopBar";
 import SideBar from "../components/layouts/SideBar";
 import ManageClassroomPage from "../client/classroom/ManageClassroomPage";
+import ClassMajorPage from "../client/admin/classmajor/ClassMajorPage";
 
 const IndexRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const IndexRoutes = () => {
             
              
             <Route path="/classroom" element={<ClassroomPage />} />
+            <Route path="/classmajor" element={<ClassMajorPage />} />
             <Route path="/classroom/manage/:id" element={<ManageClassroomPage />} />
           </Route>
         </Routes>

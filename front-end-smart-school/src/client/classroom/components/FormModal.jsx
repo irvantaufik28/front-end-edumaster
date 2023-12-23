@@ -9,7 +9,7 @@ import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
 import ConfirmationEdit from "../../../components/modals/ConfirmationEdit";
 import { useDispatch, useSelector } from "react-redux";
-import { classMajorSelector, getAll } from "../../../features/classMajorSlice";
+import { classMajorSelector, list } from "../../../features/classMajorSlice";
 
 const FormModal = (props) => {
   const classMajor = useSelector(classMajorSelector.selectAll);
@@ -17,7 +17,7 @@ const FormModal = (props) => {
   const dispacth = useDispatch();
 
   useEffect(() => {
-    dispacth(getAll());
+    dispacth(list());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

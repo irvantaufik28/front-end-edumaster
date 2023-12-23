@@ -66,6 +66,36 @@ CREATE TABLE "student" (
 );
 
 -- CreateTable
+CREATE TABLE "staff" (
+    "id" UUID NOT NULL,
+    "nik" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
+    "middle_name" TEXT,
+    "last_name" TEXT NOT NULL,
+    "phone" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "birth_date" TEXT NOT NULL,
+    "birth_place" TEXT NOT NULL,
+    "gender" TEXT NOT NULL,
+    "foto_url" TEXT NOT NULL,
+    "religion" TEXT NOT NULL,
+    "status" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "staff_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "staff_user" (
+    "staff_id" UUID NOT NULL,
+    "user_id" UUID NOT NULL,
+
+    CONSTRAINT "staff_user_pkey" PRIMARY KEY ("staff_id","user_id")
+);
+
+-- CreateTable
 CREATE TABLE "student_user" (
     "student_id" UUID NOT NULL,
     "user_id" UUID NOT NULL,
@@ -127,6 +157,9 @@ CREATE TABLE "class_major" (
 -- CreateIndex
 CREATE UNIQUE INDEX "student_nis_key" ON "student"("nis");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "staff_nik_key" ON "staff"("nik");
+
 -- AddForeignKey
 ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -138,6 +171,12 @@ ALTER TABLE "user_permission" ADD CONSTRAINT "user_permission_user_id_fkey" FORE
 
 -- AddForeignKey
 ALTER TABLE "user_permission" ADD CONSTRAINT "user_permission_permission_id_fkey" FOREIGN KEY ("permission_id") REFERENCES "permission"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "staff_user" ADD CONSTRAINT "staff_user_staff_id_fkey" FOREIGN KEY ("staff_id") REFERENCES "staff"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "staff_user" ADD CONSTRAINT "staff_user_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "student_user" ADD CONSTRAINT "student_user_student_id_fkey" FOREIGN KEY ("student_id") REFERENCES "student"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -31,6 +31,9 @@ async function main() {
       birth_date: "1994-08-09",
       birth_place: "Garut",
       gender: "female",
+      phone: "082315156666",
+      email: "cindy@gmail.com",
+      address: "Jl. Cimanuk no 110 Garut",
       foto_url: "http://res.cloudinary.com/dnvltueqb/image/upload/v1702991363/staff_foto/1702991361966_download_dzrfrw.png",
       religion: "islam",
       status: "active"

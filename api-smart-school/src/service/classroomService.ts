@@ -3,6 +3,7 @@ import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
 import UserRepository from "../repository/userRepository";
 import { CreateOrUpdateClassroomDto } from "../dto/create-or-update-classroom.dto";
+import { MoveStudentClassroomDto } from "../dto/move-student-classroom.dto";
 
 class ClassroomService {
   private userRepository: UserRepository;
@@ -114,6 +115,12 @@ class ClassroomService {
   }
 
   async moveStudent(request: any, classroom_id: any) {
+    try {
+      await transformAndValidate(MoveStudentClassroomDto, request);
+    } catch (e: any) {
+      throw new ResponseError(400, e.toString());
+    }
+    
     const classroom = await prismaClient.classroom.findUnique({
       where: {
         id: classroom_id

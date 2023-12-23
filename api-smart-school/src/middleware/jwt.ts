@@ -12,6 +12,7 @@ const getToken = (authHeader: string) => {
 
 const authorized = async (authorization: string | undefined) => {
     try {
+
         if (!authorization || typeof authorization !== 'string') {
             return null;
         }
@@ -25,8 +26,6 @@ const authorized = async (authorization: string | undefined) => {
                 id: payload.id
             },
         })
-
-       
         if (!user) {
             return null
         }
@@ -42,22 +41,23 @@ const authorized = async (authorization: string | undefined) => {
     }
 };
 
-const user = (req: any, res: any, next: any) => {
+const allowedRoles = (allowedRoles: string[]) => async (req: any, res: any, next: any) => {
     const { authorization } = req.headers;
-    const user = authorized(authorization);
-
-    if (!user) {
-        throw new ResponseError(400, "Unauthorized");
+    try {
+        const user = await authorized(authorization);
+        if (!user || !allowedRoles.some(role => user.roles.includes(role))) {
+            throw new ResponseError(400, "Unauthorized");
+        }
+        req.user = user;
+        next()
+    } catch (error) {
+        next(error);
     }
 
-    req.user = user;
-    next();
 
 }
-const test = (req: any, res: any, next: any) => {
-    console.log(req.headers)
 
-    next();
-}
 
-export default { user, test };
+
+
+export default { allowedRoles };

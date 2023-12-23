@@ -28,7 +28,26 @@ const generateAccessToken = (data: any) => {
   return accessToken;
 }
 
+
+const  generateStaffUsername = (birth_date : string, first_name: string) => {
+  const parts = birth_date.split('-');
+  const twoLastDigits = parts[0].slice(-2);
+  const result = first_name + twoLastDigits + parts[1] + parts[2];
+
+  return result;
+}
+
+const  generateDefaultPassword = (birth_date : string) => {
+  const parts = birth_date.split('-');
+  const twoLastDigits = parts[0].slice(-2);
+  const result = twoLastDigits + parts[1] + parts[2];
+
+  return result;
+}
+
 export {
   generateNIS,
+  generateStaffUsername,
+  generateDefaultPassword,
   generateAccessToken
 }

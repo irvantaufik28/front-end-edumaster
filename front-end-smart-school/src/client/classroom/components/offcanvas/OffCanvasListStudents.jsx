@@ -20,7 +20,7 @@ import { setDataCheckBox } from "../../../../features/classroomSlice";
 import { useParams } from "react-router-dom";
 
 const OffCanvasListStudent = forwardRef((props, ref) => {
-  const classroom_id = useParams()
+  const { id } = useParams();
   const dispacth = useDispatch();
   const apiUrl = config.apiUrl + "/student";
   const [ids, setIds] = useState([]);
@@ -176,7 +176,6 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
 
-
         const response = await axios.get(apiUrl, {
           params,
           // headers: {
@@ -186,9 +185,12 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
 
         const { data } = response;
         const list = data?.data;
-        // TODO FIX FILTER
-        const filterdList = list?.filter((item) => item.current_classroom_id !== parseInt(classroom_id.id) || item.current_classroom_id == null)
-        setData(filterdList);
+        const filteredStudent = list.filter(student => {
+          return !student.student_classrooms.some(classroom => classroom.classroom_id === parseInt(id));
+        });
+
+
+        setData(filteredStudent);
         setTotalPage(data?.paging?.total_page);
         setTotalData(data?.paging?.total_item);
 

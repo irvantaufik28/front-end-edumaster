@@ -92,15 +92,18 @@ model Staff {
   first_name  String
   middle_name String?
   last_name   String
+  phone       String      
+  email       String      
   birth_date  String
   birth_place String
   gender      String
   foto_url    String
   religion    String
   status      String
+  address     String      
   created_at  DateTime    @default(now())
   updated_at  DateTime    @updatedAt
-  StaffUser   StaffUser[]
+  staff_user  StaffUser[]
 
   @@map("staff")
 }

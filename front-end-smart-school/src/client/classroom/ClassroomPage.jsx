@@ -9,7 +9,7 @@ import ButtonSuccess from "../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { classMajorSelector, getAll } from "../../features/classMajorSlice";
+import { classMajorSelector, list } from "../../features/classMajorSlice";
 import FormModal from "./components/FormModal";
 import axios from "axios";
 import config from "../../config";
@@ -20,7 +20,7 @@ import HeaderContent from "./components/HeaderContent";
 import { useNavigate } from "react-router-dom";
 
 export const ClassroomPage = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const defaultFormModal = {
     show: false,
     initialValues: null,
@@ -74,8 +74,8 @@ export const ClassroomPage = () => {
   };
 
   const handleManage = (data) => {
-    navigate('/classroom/manage/' + data.id)
-  }
+    navigate("/classroom/manage/" + data.id);
+  };
 
   const onSubmitSuccess = () => {
     handleCloseForm();
@@ -87,7 +87,7 @@ export const ClassroomPage = () => {
   const dispacth = useDispatch();
 
   useEffect(() => {
-    dispacth(getAll());
+    dispacth(list());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -132,6 +132,27 @@ export const ClassroomPage = () => {
     document.getElementById("status").value = "";
   };
 
+  const arrayObjek = [
+    { id: 1, name: "Objek 1" },
+    { id: 2, name: "Objek 2" },
+    { id: 3, name: "Objek 3" },
+  ];
+
+  const [inputValue, setInputValue] = useState("");
+  const [suggestedOptions, setSuggestedOptions] = useState([]);
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+
+    // Filter options based on input
+    const filteredOptions = arrayObjek.filter((option) =>
+      option.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setSuggestedOptions(filteredOptions);
+  };
+
   return (
     <>
       <Topbar />
@@ -160,6 +181,24 @@ export const ClassroomPage = () => {
               </div>
               <div className="search-box-global">
                 <div className="row">
+                  <div>
+                    <input
+                      type="text"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      placeholder="Type to search..."
+                    />
+                    <ul>
+                      {suggestedOptions.map((option) => (
+                        <li
+                          key={option.id}
+                          onClick={() => setInputValue(option.name)}
+                        >
+                          {option.name}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                   <div className="col-md-4 mb-4">
                     <label htmlFor="nama-classroom" className="form-label">
                       code
