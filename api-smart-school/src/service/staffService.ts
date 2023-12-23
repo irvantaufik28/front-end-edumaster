@@ -1,13 +1,14 @@
 import { transformAndValidate } from "class-transformer-validator";
 import { prismaClient } from "../application/database";
 import { ResponseError } from "../error/response-error";
-import { CreateOrUpdateClassMajorDto } from "../dto/create-or-update-classmajor.dto";
 import bcrypt from "bcrypt";
 import {
     generateDefaultPassword,
     generateStaffUsername,
 } from "../application/common/common";
 import { CreateOrUpdateStaffDto } from "../dto/create-or-update-staffDto";
+import { skip } from "node:test";
+
 class StaffService {
     async get(request: any) {
         const page = request.page ?? 1;
@@ -124,7 +125,7 @@ class StaffService {
     }
 
     async create(request: any) {
-        console.log(request)
+
         try {
             await transformAndValidate(CreateOrUpdateStaffDto, request);
         } catch (e: any) {
@@ -206,6 +207,49 @@ class StaffService {
                 },
             },
         });
+    }
+
+    async update(request: any, id: string) {
+
+        try {
+            await transformAndValidate(CreateOrUpdateStaffDto, request, {
+                validator: { skipMissingProperties: true }
+            });
+        } catch (e: any) {
+            throw new ResponseError(400, e.toString());
+        }
+
+        const staff = await prismaClient.staff.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!staff) {
+            throw new ResponseError(404, "staff not found")
+        }
+
+        return await prismaClient.staff.update({
+            where: {
+                id: id,
+            },
+            data: {
+                nik: request.nik,
+                first_name: request.first_name,
+                middle_name: request.middle_name,
+                last_name: request.last_name,
+                birth_date: request.birth_date,
+                birth_place: request.birth_place,
+                gender: request.gender,
+                foto_url: request.foto_url,
+                religion: request.religion,
+                phone: request.phone,
+                email: request.email,
+                address: request.address,
+                status: request.status,
+            }
+        });
+
     }
 }
 

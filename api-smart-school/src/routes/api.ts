@@ -36,6 +36,8 @@ userRouter.delete('/api/v1/class/major/:id',authorized.allowedRoles(["administra
 // role route
 userRouter.get('/api/v1/role', roleController.get)
 userRouter.post('/api/v1/role',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), roleController.create)
+userRouter.post('/api/v1/user-role',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), roleController.createUserRole)
+userRouter.delete('/api/v1/user-role',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), roleController.deleteUserRole)
 
 // student route
 userRouter.get('/api/v1/student', studentController.get)
@@ -52,7 +54,9 @@ userRouter.delete('/api/v1/student-parent/:id',authorized.allowedRoles(["adminis
 
 // staff route
 userRouter.get('/api/v1/staff', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.get)
+userRouter.get('/api/v1/staff/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.getById)
 userRouter.post('/api/v1/staff', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.create)
+userRouter.put('/api/v1/staff/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.update)
 
 
 //media upload
