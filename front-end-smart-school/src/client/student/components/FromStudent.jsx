@@ -10,14 +10,16 @@ import "../styles/fromstudent.css";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import default_person from "../../../assets/default/default_person.jpg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../../components/ui/button/ButtonDanger";
+import { createStudent } from "../../../features/studentSlice";
 
 const FormStudent = () => {
+  const dispacth = useDispatch()
   const navigate = useNavigate();
   const dataInitialValues = useSelector((state) => state.student.data);
   const defaultValues = useMemo(
@@ -145,11 +147,17 @@ const FormStudent = () => {
           formData.append("file", image);
           formData.append("type", "image");
           formData.append("folder", "student_foto");
+
+          const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
           const response = await axios.post(
             config.apiUrl + `/upload`,
             formData,
             {
               headers: {
+                authorization: token,
                 "Content-Type": "multipart/form-data",
               },
             }
@@ -157,7 +165,8 @@ const FormStudent = () => {
           payload.foto_url = response.data.url;
         }
 
-        await axios.post(config.apiUrl + `/student`, payload);
+        // await axios.post(config.apiUrl + `/student`, payload);
+        dispacth(createStudent(payload))
         navigate("/student");
       } else {
         if (image) {

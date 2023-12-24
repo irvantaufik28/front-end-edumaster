@@ -17,25 +17,22 @@ const IndexRoutes = () => {
     <Router>
       <Routes>
         <Route path="/" element={<SigninPage />} />
-      {/* </Routes> */}
-      {/* <Topbar /> */}
-      {/* <div className="content"> */}
-        {/* <SideBar /> */}
-        {/* <Routes> */}
-          <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
-            <Route path="/admin/dashboard" element={<DashboardPage />} />
-            
-            <Route path="/student" element={<StudentPage />} />
-            <Route path="/student/form" element={<StudentFormPage />} />
-            <Route path="/student/detail/:id" element={<StudentDetailPage />} />
-            
-             
-            <Route path="/classroom" element={<ClassroomPage />} />
-            <Route path="/classmajor" element={<ClassMajorPage />} />
-            <Route path="/classroom/manage/:id" element={<ManageClassroomPage />} />
-          </Route>
-        </Routes>
-      {/* </div> */}
+
+        <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
+          <Route path="/admin/dashboard" element={<DashboardPage />} />
+
+          <Route path="/student" element={<StudentPage />} />
+          <Route path="/student/form" element={<StudentFormPage />} />
+          <Route path="/student/detail/:id" element={<StudentDetailPage />} />
+
+          <Route path="/classroom" element={<ClassroomPage />} />
+          <Route path="/classmajor" element={<ClassMajorPage />} />
+          <Route
+            path="/classroom/manage/:id"
+            element={<ManageClassroomPage />}
+          />
+        </Route>
+      </Routes>
     </Router>
   );
 };
