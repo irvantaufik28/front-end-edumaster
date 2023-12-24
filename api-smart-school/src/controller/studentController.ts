@@ -14,6 +14,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             status: req.query.status,
             current_classroom_id :req.query.current_classroom_id,
             register_year: req.query.register_year,
+            not_in_classroom_id: req.query.not_in_classroom_id,
             nis: req.query.nis,
             page: req.query.page,
             size: req.query.size,

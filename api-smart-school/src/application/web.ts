@@ -1,6 +1,5 @@
 import express from "express";
 import { errorMiddleware } from "../middleware/error-middleware";
-import { publicRouter } from "../routes/public";
 import { userRouter } from "../routes/api";
 import cors from "cors"
 
@@ -32,6 +31,5 @@ web.use((req: any, res: any, next: any) => {
 
 web.use(cors());
 
-web.use(publicRouter);
 web.use(userRouter);
 web.use(errorMiddleware);

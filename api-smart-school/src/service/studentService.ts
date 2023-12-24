@@ -72,6 +72,16 @@ class StudentService {
             })
         }
 
+        if (request.not_in_classroom_id) {
+            filters.push({
+              student_classrooms: {
+                none: {
+                  classroom_id: parseInt(request.not_in_classroom_id),
+                },
+              },
+            });
+          }
+          
 
 
         let orders = {

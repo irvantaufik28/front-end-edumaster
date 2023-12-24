@@ -5,9 +5,15 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
@@ -92,15 +98,15 @@ model Staff {
   first_name  String
   middle_name String?
   last_name   String
-  phone       String      
-  email       String      
+  phone       String
+  email       String
   birth_date  String
   birth_place String
   gender      String
   foto_url    String
   religion    String
   status      String
-  address     String      
+  address     String
   created_at  DateTime    @default(now())
   updated_at  DateTime    @updatedAt
   staff_user  StaffUser[]
@@ -161,8 +167,8 @@ model Classroom {
   id                 Int                @id @default(autoincrement())
   code               String
   level              String
-  year_group         String             @default("active")
-  status             String
+  year_group         String
+  status             String             @default("active")
   classMajor         ClassMajor         @relation(fields: [class_major_id], references: [id])
   class_major_id     Int
   created_at         DateTime           @default(now())

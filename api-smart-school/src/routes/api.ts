@@ -10,9 +10,12 @@ import studentParentController from "../controller/studentParentController"
 import staffController from "../controller/staffController"
 import uploadMediaController from "../controller/uploadMediaController";
 import {upload} from '../middleware/handle-upload'
+import authController from "../controller/authController";
 
 const userRouter = express.Router();
 
+userRouter.post('/api/v1/login', authController.login)
+userRouter.get('/api/v1/class/major-list', classMajorController.list);
 
 userRouter.get('/api/v1/user', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), userController.get);
 userRouter.get('/api/v1/user/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), userController.getById);
@@ -20,14 +23,14 @@ userRouter.get('/api/v1/user/:id', authorized.allowedRoles(["administrator", "ma
 // classroom route
 userRouter.get('/api/v1/classroom', classroomController.get);
 userRouter.get('/api/v1/classroom/:id', classroomController.getById);
-userRouter.post('/api/v1/classroom', classroomController.create);
+userRouter.post('/api/v1/classroom',authorized.allowedRoles(["administrator", "manager", "staff_tu"]) ,classroomController.create);
 userRouter.put('/api/v1/classroom/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomController.update);
 userRouter.delete('/api/v1/classroom/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomController.deleted);
 userRouter.post('/api/v1/classroom/move-student/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomController.moveStudent);
 userRouter.delete('/api/v1/classroom/delete/student',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomController.deleteStudent);
 
 // class major route
-userRouter.get('/api/v1/class/major', authorized.allowedRoles(["administrator", "manager"]), classMajorController.get);
+userRouter.get('/api/v1/class/major', classMajorController.get);
 userRouter.get('/api/v1/class/major/:id', classMajorController.getById);
 userRouter.post('/api/v1/class/major', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classMajorController.create);
 userRouter.put('/api/v1/class/major/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classMajorController.update);
@@ -40,7 +43,7 @@ userRouter.post('/api/v1/user-role',authorized.allowedRoles(["administrator", "m
 userRouter.delete('/api/v1/user-role',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), roleController.deleteUserRole)
 
 // student route
-userRouter.get('/api/v1/student', studentController.get)
+userRouter.get('/api/v1/student', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), studentController.get)
 userRouter.get('/api/v1/student/:id', studentController.getById)
 userRouter.post('/api/v1/student',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), studentController.create)
 userRouter.put('/api/v1/student/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), studentController.update)

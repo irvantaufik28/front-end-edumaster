@@ -14,10 +14,6 @@ export class CreateOrUpdateClassroomDto {
     year_group: string
    
     @IsNotEmpty()
-    @IsString()
-    status: string
-
-    @IsNotEmpty()
     @IsNumber()
     class_major_id : number
    
