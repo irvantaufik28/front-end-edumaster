@@ -1,29 +1,48 @@
+// {
+//   "compilerOptions": {
+//     "target": "es2016",
+//     "lib": [
+//       "esnext"
+//     ],
+//     "experimentalDecorators": true,
+//     "emitDecoratorMetadata": true,
+//     "module": "commonjs",
+//     "moduleResolution": "node",
+//     "baseUrl": ".",
+//     "paths": {
+//       "*": [
+//         "node_modules/*",
+//         "src/types/*"
+//       ]
+//     },
+//     "sourceMap": true,
+//     "outDir": "dist",
+//     "esModuleInterop": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "strict": true,
+//     "strictPropertyInitialization": false,
+//     "skipLibCheck": true
+//   },
+//   "include": [
+//     "./src/**/*"
+//   ]
+// }
+
 {
   "compilerOptions": {
-    "target": "es2016",
-    "lib": [
-      "esnext"
-    ],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "*": [
-        "node_modules/*",
-        "src/types/*"
-      ]
-    },
-    "sourceMap": true,
-    "outDir": "dist",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "skipLibCheck": true
+      "module": "commonjs",
+      "experimentalDecorators": true,
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "target": "es6",
+      "noImplicitAny": true,
+      "moduleResolution": "node",
+      "sourceMap": true,
+      "outDir": "dist",
+      "baseUrl": ".",
+      "paths": {
+          "*": ["node_modules/*", "src/types/*"]
+      }
   },
-  "include": [
-    "./src/**/*"
-  ]
-}
+  "include": ["./src/**/*"]
+  }
