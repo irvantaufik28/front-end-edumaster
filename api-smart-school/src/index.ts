@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 // })
 
 // app.use(userRouter);
-// app.use(errorMiddleware);
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 4000;
 
