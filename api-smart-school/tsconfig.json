@@ -52,6 +52,10 @@
     "outDir": "dist",
     "target": "ESNext",
     "module": "CommonJS",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
   }
 }
