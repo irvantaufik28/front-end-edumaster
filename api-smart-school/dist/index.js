@@ -23,13 +23,13 @@ exports.app.use((0, cors_1.default)({
 exports.app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World" });
 });
-exports.app.use((req, res, next) => {
-    req.classroomUC = classroomUC,
-        req.classMajorUC = classMajorUC,
-        req.studentUC = studentUC,
-        req.staffUC = staffUC;
-    next();
-});
+//   app.use((req: any, res: any, next: any) => {
+//     req.classroomUC = classroomUC,
+//     req.classMajorUC = classMajorUC,
+//     req.studentUC = studentUC,
+//     req.staffUC = staffUC
+//     next()
+// })
 // app.use(userRouter);
 // app.use(errorMiddleware);
 const PORT = process.env.PORT || 4000;

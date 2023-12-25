@@ -33,14 +33,14 @@ app.get("/", (req, res) => {
   });
 
 
-  app.use((req: any, res: any, next: any) => {
-    req.classroomUC = classroomUC,
-    req.classMajorUC = classMajorUC,
-    req.studentUC = studentUC,
-    req.staffUC = staffUC
+//   app.use((req: any, res: any, next: any) => {
+//     req.classroomUC = classroomUC,
+//     req.classMajorUC = classMajorUC,
+//     req.studentUC = studentUC,
+//     req.staffUC = staffUC
 
-    next()
-})
+//     next()
+// })
 
 // app.use(userRouter);
 // app.use(errorMiddleware);
