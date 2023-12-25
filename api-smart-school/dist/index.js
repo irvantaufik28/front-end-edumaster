@@ -8,16 +8,15 @@ const express_1 = __importDefault(require("express"));
 const error_middleware_1 = require("./middleware/error-middleware");
 const api_1 = require("./routes/api");
 const cors_1 = __importDefault(require("cors"));
-// import UserRepository from "./repository/userRepository";
-// import ClassroomService from "./service/classroomService";
-// import ClassMajorService from "./service/classMajorService";
-// import StudentService from "./service/studentService";
-// import StaffService from "./service/staffService";
-// import { logger } from "./application/logging";
-// const classroomUC = new ClassroomService(new UserRepository())
-// const classMajorUC = new ClassMajorService()
-// const studentUC = new StudentService()
-// const staffUC = new StaffService()
+const userRepository_1 = __importDefault(require("./repository/userRepository"));
+const classroomService_1 = __importDefault(require("./service/classroomService"));
+const classMajorService_1 = __importDefault(require("./service/classMajorService"));
+const studentService_1 = __importDefault(require("./service/studentService"));
+const staffService_1 = __importDefault(require("./service/staffService"));
+const classroomUC = new classroomService_1.default(new userRepository_1.default());
+const classMajorUC = new classMajorService_1.default();
+const studentUC = new studentService_1.default();
+const staffUC = new staffService_1.default();
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cors_1.default)({
@@ -26,13 +25,13 @@ exports.app.use((0, cors_1.default)({
 exports.app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World" });
 });
-//   app.use((req: any, res: any, next: any) => {
-//     req.classroomUC = classroomUC,
-//     req.classMajorUC = classMajorUC,
-//     req.studentUC = studentUC,
-//     req.staffUC = staffUC
-//     next()
-// })
+exports.app.use((req, res, next) => {
+    req.classroomUC = classroomUC,
+        req.classMajorUC = classMajorUC,
+        req.studentUC = studentUC,
+        req.staffUC = staffUC;
+    next();
+});
 exports.app.use(api_1.userRouter);
 exports.app.use(error_middleware_1.errorMiddleware);
 const PORT = process.env.PORT || 4000;
