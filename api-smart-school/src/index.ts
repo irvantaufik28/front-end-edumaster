@@ -1,6 +1,6 @@
 import express from "express";
 // import { errorMiddleware } from "./middleware/error-middleware";
-// import { userRouter } from "./routes/api";
+import { userRouter } from "./routes/api";
 // import cors from "cors"
 
 // import UserRepository from "./repository/userRepository";
@@ -36,7 +36,7 @@ app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World" });
   });
 
-// app.use(userRouter);
+app.use(userRouter);
 // app.use(errorMiddleware);
 
 export default app
