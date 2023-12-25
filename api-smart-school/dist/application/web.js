@@ -26,6 +26,9 @@ exports.web.use((req, res, next) => {
         req.staffUC = staffUC;
     next();
 });
+exports.web.get("/", (req, res) => {
+    res.status(200).json({ message: "Hello World" });
+});
 exports.web.use((0, cors_1.default)());
 exports.web.use(api_1.userRouter);
 exports.web.use(error_middleware_1.errorMiddleware);

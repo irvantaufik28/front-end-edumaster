@@ -28,6 +28,10 @@ web.use((req: any, res: any, next: any) => {
 })
 
 
+web.get("/", (req, res) => {
+    res.status(200).json({ message: "Hello World" });
+  });
+
 
 web.use(cors());
 
