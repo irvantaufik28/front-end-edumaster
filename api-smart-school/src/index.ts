@@ -30,33 +30,13 @@ app.use((req: any, res: any, next: any) => {
 
 
 
-app.use(cors());
+// app.use(cors());
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World" });
   });
 
-app.use(userRouter);
-app.use(errorMiddleware);
-
-
-// app.listen(process.env.PORT, () => {
-//   logger.info(`App start at ${process.env.HOST}:${process.env.PORT}` );
-// });
-
+// app.use(userRouter);
+// app.use(errorMiddleware);
 
 export default app
-
-// import express from "express";
-
-// const app = express();
-// app.use(express.json());
-
-// app.get("/post", (req, res) => {
-//   res.status(200).json({ message: "post routes" });
-// });
-
-// app.get("/", (req, res) => {
-//   res.status(200).json({ message: "Hello World" });
-// });
-// export default app;
