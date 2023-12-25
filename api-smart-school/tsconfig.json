@@ -1,61 +1,19 @@
-// {
-//   "compilerOptions": {
-//     "target": "es2016",
-//     "lib": [
-//       "esnext"
-//     ],
-//     "experimentalDecorators": true,
-//     "emitDecoratorMetadata": true,
-//     "module": "commonjs",
-//     "moduleResolution": "node",
-//     "baseUrl": ".",
-//     "paths": {
-//       "*": [
-//         "node_modules/*",
-//         "src/types/*"
-//       ]
-//     },
-//     "sourceMap": true,
-//     "outDir": "dist",
-//     "esModuleInterop": true,
-//     "forceConsistentCasingInFileNames": true,
-//     "strict": true,
-//     "strictPropertyInitialization": false,
-//     "skipLibCheck": true
-//   },
-//   "include": [
-//     "./src/**/*"
-//   ]
-// }
 
-// {
-//   "compilerOptions": {
-//       "module": "commonjs",
-//       "experimentalDecorators": true,
-//       "esModuleInterop": true,
-//       "allowSyntheticDefaultImports": true,
-//       "target": "es6",
-//       "noImplicitAny": true,
-//       "moduleResolution": "node",
-//       "sourceMap": true,
-//       "outDir": "dist",
-//       "baseUrl": ".",
-//       "paths": {
-//           "*": ["node_modules/*", "src/types/*"]
-//       }
-//   },
-//   "include": ["./src/**/*"]
-//   }
 {
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "outDir": "dist",
-    "target": "ESNext",
     "module": "CommonJS",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "target": "es6",
     "noImplicitAny": true,
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "sourceMap": true,
-  }
+    "outDir": "dist",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+        "*": ["node_modules/*", "src/types/*"]
+    }
+  },
+  "include": ["./src/**/*"]
 }
