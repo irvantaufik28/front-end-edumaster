@@ -1,7 +1,7 @@
 import express from "express";
 // import { errorMiddleware } from "./middleware/error-middleware";
 // import { userRouter } from "./routes/api";
-import cors from "cors"
+// import cors from "cors"
 
 // import UserRepository from "./repository/userRepository";
 // import ClassroomService from "./service/classroomService";
@@ -20,9 +20,9 @@ export const app = express();
 
 app.use(express.json());
 
-app.use(cors({
-  origin: "*",
-}));
+// app.use(cors({
+//   origin: "*",
+// }));
 
 
 
