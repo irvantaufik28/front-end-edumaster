@@ -1,6 +1,6 @@
 import express from "express";
-// import { errorMiddleware } from "./middleware/error-middleware";
-// import { userRouter } from "./routes/api";
+import { errorMiddleware } from "./middleware/error-middleware";
+import { userRouter } from "./routes/api";
 import cors from "cors"
 
 // import UserRepository from "./repository/userRepository";
