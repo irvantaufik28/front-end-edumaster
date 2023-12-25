@@ -1,7 +1,7 @@
 import express from "express";
-import { errorMiddleware } from "./middleware/error-middleware";
-import { userRouter } from "./routes/api";
-import cors from "cors"
+// import { errorMiddleware } from "./middleware/error-middleware";
+// import { userRouter } from "./routes/api";
+// import cors from "cors"
 
 import UserRepository from "./repository/userRepository";
 import ClassroomService from "./service/classroomService";
@@ -30,7 +30,7 @@ app.use((req: any, res: any, next: any) => {
 
 
 
-app.use(cors());
+// app.use(cors());
 
 app.get("/", (req, res) => {
     res.status(200).json({ message: "Hello World" });
