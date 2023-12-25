@@ -48,6 +48,7 @@
 //   }
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "outDir": "dist",
     "target": "ESNext",
     "module": "CommonJS",
