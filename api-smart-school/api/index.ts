@@ -1,2 +1,2 @@
-import web from "../src";
-export default web;
+import app from "../src";
+export default app;
