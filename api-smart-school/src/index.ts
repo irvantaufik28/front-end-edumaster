@@ -37,6 +37,6 @@ app.get("/", (req, res) => {
   });
 
 // app.use(userRouter);
-app.use(errorMiddleware);
+// app.use(errorMiddleware);
 
 export default app
