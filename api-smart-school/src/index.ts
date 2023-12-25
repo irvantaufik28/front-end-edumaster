@@ -1,19 +1,19 @@
 import express from "express";
-import { errorMiddleware } from "./middleware/error-middleware";
-import { userRouter } from "./routes/api";
+// import { errorMiddleware } from "./middleware/error-middleware";
+// import { userRouter } from "./routes/api";
 import cors from "cors"
 
-import UserRepository from "./repository/userRepository";
-import ClassroomService from "./service/classroomService";
-import ClassMajorService from "./service/classMajorService";
-import StudentService from "./service/studentService";
-import StaffService from "./service/staffService";
-import { logger } from "./application/logging";
+// import UserRepository from "./repository/userRepository";
+// import ClassroomService from "./service/classroomService";
+// import ClassMajorService from "./service/classMajorService";
+// import StudentService from "./service/studentService";
+// import StaffService from "./service/staffService";
+// import { logger } from "./application/logging";
 
-const classroomUC = new ClassroomService(new UserRepository())
-const classMajorUC = new ClassMajorService()
-const studentUC = new StudentService()
-const staffUC = new StaffService()
+// const classroomUC = new ClassroomService(new UserRepository())
+// const classMajorUC = new ClassMajorService()
+// const studentUC = new StudentService()
+// const staffUC = new StaffService()
 
 export const app = express();
 

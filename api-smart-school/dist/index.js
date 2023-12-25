@@ -5,16 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
+// import { errorMiddleware } from "./middleware/error-middleware";
+// import { userRouter } from "./routes/api";
 const cors_1 = __importDefault(require("cors"));
-const userRepository_1 = __importDefault(require("./repository/userRepository"));
-const classroomService_1 = __importDefault(require("./service/classroomService"));
-const classMajorService_1 = __importDefault(require("./service/classMajorService"));
-const studentService_1 = __importDefault(require("./service/studentService"));
-const staffService_1 = __importDefault(require("./service/staffService"));
-const classroomUC = new classroomService_1.default(new userRepository_1.default());
-const classMajorUC = new classMajorService_1.default();
-const studentUC = new studentService_1.default();
-const staffUC = new staffService_1.default();
+// import UserRepository from "./repository/userRepository";
+// import ClassroomService from "./service/classroomService";
+// import ClassMajorService from "./service/classMajorService";
+// import StudentService from "./service/studentService";
+// import StaffService from "./service/staffService";
+// import { logger } from "./application/logging";
+// const classroomUC = new ClassroomService(new UserRepository())
+// const classMajorUC = new ClassMajorService()
+// const studentUC = new StudentService()
+// const staffUC = new StaffService()
 exports.app = (0, express_1.default)();
 exports.app.use(express_1.default.json());
 exports.app.use((0, cors_1.default)({
