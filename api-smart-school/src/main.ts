@@ -5,4 +5,3 @@ web.listen(process.env.PORT, () => {
   logger.info(`App start at ${process.env.HOST}:${process.env.PORT}` );
 });
 
-export default web;
