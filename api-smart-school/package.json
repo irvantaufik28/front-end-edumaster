@@ -7,6 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
     "start": "nodemon src/main.ts",
+    "add-build": "git add dist",
+    "ts.check": "tsc --project tsconfig.json",
     "dev": "npx nodemon ./src/main.ts"
   },
   "prisma": {
