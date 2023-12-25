@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 const express_1 = __importDefault(require("express"));
 const error_middleware_1 = require("./middleware/error-middleware");
+const api_1 = require("./routes/api");
 const cors_1 = __importDefault(require("cors"));
 // import UserRepository from "./repository/userRepository";
 // import ClassroomService from "./service/classroomService";
@@ -32,7 +33,7 @@ exports.app.get("/", (req, res) => {
 //     req.staffUC = staffUC
 //     next()
 // })
-// app.use(userRouter);
+exports.app.use(api_1.userRouter);
 exports.app.use(error_middleware_1.errorMiddleware);
 const PORT = process.env.PORT || 4000;
 exports.app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
