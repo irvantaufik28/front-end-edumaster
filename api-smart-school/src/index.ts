@@ -49,3 +49,4 @@ const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, (): void => console.log(`Server is running on ${PORT}`));
 
+export default app
