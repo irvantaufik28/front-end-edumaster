@@ -2,10 +2,13 @@ import { Request, Response, NextFunction } from 'express';
 import { prismaClient } from '../application/database';
 import { transformAndValidate } from 'class-transformer-validator';
 import { CreateOrUpdateRoleDto } from '../dto/create-or-update-role.dto';
+// import { ResponseError } from '../error/response-error';
+import StudentService from '../service/studentService';
 import { ResponseError } from '../error/response-error';
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
+        const studentService = new StudentService()
         const request = {
             first_name: req.query.first_name,
             middle_name: req.query.middle_name,
@@ -21,7 +24,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             orderBy: req.query.orderBy,
             sortBy: req.query.sortBy
         }
-        const result = await req.studentUC.get(request)
+        const result = await studentService.get(request)
         return res.status(200).json(result);
     } catch (error) {
         next(error);
@@ -55,6 +58,10 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
             }
         })
 
+        if (!result) {
+            throw new ResponseError(404, 'student not found')
+        }
+
         res.status(200).json(result);
     } catch (error: any) {
         next(error)
@@ -64,7 +71,8 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
 const create = async (req: any, res: Response, next: NextFunction): Promise<any> => {
 
     try {
-        const result = await req.studentUC.create(req.body);
+        const studentService = new StudentService()
+        const result = await studentService.create(req.body);
 
         res.status(200).json(result);
     } catch (error: any) {
@@ -75,7 +83,8 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
 const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
 
     try {
-        const result = await req.studentUC.update(req.body, req.params.id);
+        const studentService = new StudentService()
+        const result = await studentService.update(req.body, req.params.id);
 
         res.status(200).json(result);
     } catch (error: any) {

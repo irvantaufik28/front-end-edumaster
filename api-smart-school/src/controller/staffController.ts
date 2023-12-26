@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import { prismaClient } from '../application/database';
 import { ResponseError } from '../error/response-error';
+import StaffService from '../service/staffService';
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
+        const staffService = new StaffService()
         const request = {
             first_name: req.query.first_name,
             middle_name: req.query.middle_name,
@@ -17,7 +19,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             orderBy: req.query.orderBy,
             sortBy: req.query.sortBy
         }
-        const staffs = await req.staffUC.get(request)
+        const staffs = await staffService.get(request)
         return res.status(200).json(staffs);
     } catch (error) {
         next(error);
@@ -36,7 +38,7 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
                         user: {
                             include: {
                                 user_permision: true,
-                                user_roles:{
+                                user_roles: {
                                     include: {
                                         role: true
                                     }
@@ -60,8 +62,10 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
 
 const create = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
+        const staffService = new StaffService()
 
-        const staff = await req.staffUC.create(req.body)
+
+        const staff = await staffService.create(req.body)
 
         return res.status(200).json(staff);
     } catch (error) {
@@ -71,8 +75,9 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
 
 const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
+        const staffService = new StaffService()
 
-        const staff = await req.staffUC.update(req.body, req.params.id)
+        const staff = await staffService.update(req.body, req.params.id)
 
         return res.status(200).json({ message: "Staff successfuly Updated" });
     } catch (error) {

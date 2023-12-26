@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@netlify/functions": "^2.4.1",
     "@prisma/client": "5.7.0",
     "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
@@ -33,7 +32,6 @@
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.14",
-    "serverless-http": "^3.2.0",
     "uuid": "^9.0.1",
     "winston": "^3.11.0"
   },

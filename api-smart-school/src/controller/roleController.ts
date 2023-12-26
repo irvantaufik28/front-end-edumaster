@@ -7,8 +7,54 @@ import { CreateOrDeleteUserRolesDto } from '../dto/create-or-delete-userRolse.dt
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
-        const result = await prismaClient.role.findMany()
-        return res.status(200).json({ data: result });
+
+        const request = {
+            page: req.query.page,
+            size: req.query.size,
+            name: req.query.name,
+            orderBy: req.query.orderBy,
+            sortBy: req.query.sortBy
+        }
+
+        const page = request.page ?? 1;
+        const size = request.size ?? 10;
+        const skip = (parseInt(page) - 1) * parseInt(size);
+        const filters: any = [];
+
+        if (request.name) {
+            filters.push({
+                name: {
+                    contains: request.name,
+                    mode: 'insensitive'
+                }
+            })
+        }
+
+
+        const roles = await prismaClient.role.findMany({
+            where: {
+                AND: filters
+            },
+            take: parseInt(size),
+            skip: skip,
+        })
+
+        const totalItems = await prismaClient.role.count({
+            where: {
+                AND: filters
+            }
+        })
+
+        const result = {
+            data: roles,
+            paging: {
+                page: page,
+                total_item: totalItems,
+                total_page: Math.ceil(totalItems / parseInt(size))
+            }
+        }
+        
+        return res.status(200).json(result);
     } catch (error) {
         next(error);
     }

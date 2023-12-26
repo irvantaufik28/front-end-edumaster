@@ -1,19 +1,26 @@
-
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "lib": [
+      "esnext"
+    ],
+    "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
     "target": "es6",
     "noImplicitAny": true,
-    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
     "sourceMap": true,
     "outDir": "dist",
-    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
     "baseUrl": ".",
-    "paths": {
-        "*": ["node_modules/*", "src/types/*"]
-    }
+      "paths": {
+          "*": ["node_modules/*", "src/types/*"]
+      }
   },
   "include": ["./src/**/*"]
 }

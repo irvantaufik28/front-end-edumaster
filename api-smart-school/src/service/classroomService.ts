@@ -8,8 +8,8 @@ import { MoveStudentClassroomDto } from "../dto/move-student-classroom.dto";
 class ClassroomService {
   private userRepository: UserRepository;
 
-  constructor(userRepository: UserRepository) {
-    this.userRepository = userRepository;
+  constructor() {
+
   }
   async create(request: any) {
     try {
@@ -120,7 +120,7 @@ class ClassroomService {
     } catch (e: any) {
       throw new ResponseError(400, e.toString());
     }
-    
+
     const classroom = await prismaClient.classroom.findUnique({
       where: {
         id: classroom_id
@@ -152,7 +152,7 @@ class ClassroomService {
         }
       })
     }
-   
+
   }
 
 

@@ -7,6 +7,8 @@ import { CreateOrUpdateStudentParentDto } from '../dto/create-or-update-studentP
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
+
+        
         const request = {
             first_name: req.query.first_name,
             last_name: req.query.last_name,

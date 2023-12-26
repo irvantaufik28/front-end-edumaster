@@ -3,10 +3,12 @@ import { prismaClient } from '../application/database';
 import { transformAndValidate } from 'class-transformer-validator';
 import { CreateOrUpdateClassMajorDto } from '../dto/create-or-update-classmajor.dto';
 import { ResponseError } from '../error/response-error';
+import ClassMajorService from '../service/classMajorService';
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
-        const result = await req.classMajorUC.get({
+        const service = new ClassMajorService()
+        const result = await service.get({
             name: req.query.name,
             page: req.query.page,
             size: req.query.size,

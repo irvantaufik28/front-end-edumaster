@@ -15,7 +15,8 @@ class ClassMajorService {
         if (request.name) {
             filters.push({
                 name: {
-                    contains: request.name
+                    contains: request.name,
+                    mode: 'insensitive'
                 }
             })
         }
