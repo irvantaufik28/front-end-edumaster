@@ -26,4 +26,5 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   logger.info(`App start at ${process.env.HOST}:${process.env.PORT}`);
 });
+
 export default app
