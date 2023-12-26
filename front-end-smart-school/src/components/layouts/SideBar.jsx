@@ -1,7 +1,7 @@
 import {
   LineStyle,
   Timeline,
-  TrendingUp,
+
   PermIdentity,
   Storefront,
   AttachMoney,
@@ -63,7 +63,7 @@ export default function SideBar() {
               <ul className="sublink">
                 <li
                   className="sidebarListItem"
-                  onClick={() => handleNavigation("/classmajor")}
+                  onClick={() => handleNavigation("/admin/classmajor")}
                 >
                   <FaCircle className="subSideBarIcon" />
                   class major
@@ -84,7 +84,7 @@ export default function SideBar() {
                 </li>
                 <li
                   className="sidebarListItem"
-                  onClick={() => handleNavigation("/role")}
+                  onClick={() => handleNavigation("/admin/role")}
                 >
                   <FaCircle className="subSideBarIcon" />
                   role

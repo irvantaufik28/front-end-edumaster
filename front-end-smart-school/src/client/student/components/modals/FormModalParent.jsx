@@ -62,6 +62,10 @@ const FormModalParent = (props) => {
   }, [props.initialValues, defaultValues]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
       const payload = _.pick(values, [
         "nik",
@@ -90,11 +94,19 @@ const FormModalParent = (props) => {
         let response;
         if (props.type === "add") {
           payload.student_id = props.student_id;
-          response = await axios.post(config.apiUrl + `/student-parent`, payload);
+          response = await axios.post(config.apiUrl + `/student-parent`, payload , {
+            headers: {
+              Authorization: token
+            }
+          });
         } else {
           response = await axios.put(
             config.apiUrl + `/student-parent/` + props.editId,
-            payload
+            payload , {
+              headers: {
+                Authorization: token
+              }
+            }
           );
         }
   

@@ -12,13 +12,13 @@ import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useRef, useState } from "react";
 import axios from "axios";
 import config from "../../config";
-import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 
 import { useDispatch } from "react-redux";
 import { setDataStudent } from "../../features/studentSlice";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
 import HeaderContent from "./components/HeaderContent";
+import Swal from "sweetalert2";
 export const StudentPage = () => {
   const navigate = useNavigate();
   const dispacth = useDispatch();
@@ -64,9 +64,48 @@ export const StudentPage = () => {
 
   const handleDelete = async (data) => {
     const id = data.id;
-    const url = config.apiUrl + `/student/` + id;
-    await ConfirmationDelete(url);
-    tableRef.current.refreshData();
+
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const token = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("token="))
+            ?.split("=")[1];
+
+          await axios.delete(config.apiUrl + `/student/` + id, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          tableRef.current.refreshData();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to delete. Please try again.",
+            icon: "error",
+          });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const [search, setSearch] = useState({

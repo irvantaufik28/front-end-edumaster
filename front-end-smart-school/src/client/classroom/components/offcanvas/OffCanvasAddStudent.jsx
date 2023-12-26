@@ -36,9 +36,19 @@ const OffcanvasAddStudent = (props) => {
 
       if (result.isConfirmed) {
         try {
+
+          const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("token="))
+          ?.split("=")[1];
+
           await axios.post(
             config.apiUrl + `/classroom/move-student/` + classroom_id.id,
-            payload
+            payload , {
+              headers: {
+                authorization: `Bearer ${token}`,
+              }
+            }
           );
           dispacth(getById(classroom_id.id));
           props.onSuccess();

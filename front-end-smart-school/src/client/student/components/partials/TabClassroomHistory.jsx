@@ -22,6 +22,10 @@ const TabClassroomHistory = () => {
   const [formModal, setFormModal] = useState(defaultFormModal);
 
   const handleDelete = async (id) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -37,7 +41,11 @@ const TabClassroomHistory = () => {
         try {
           await axios.delete(
             config.apiUrl +
-              `/classroom/delete/student?student_id=${student?.id}&classroom_id=${id}`
+              `/classroom/delete/student?student_id=${student?.id}&classroom_id=${id}` , {
+                headers: {
+                  Authorization : token 
+                }
+              }
           );
           dispacth(getById(student?.id));
 

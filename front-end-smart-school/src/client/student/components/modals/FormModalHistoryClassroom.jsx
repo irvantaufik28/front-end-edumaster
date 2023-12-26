@@ -38,6 +38,11 @@ const FormModalHistoryClassroom = (props) => {
   }, [props.initialValues, defaultValues]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+
     try {
       const payload = _.pick(values, ["id", "students"]);
       const confirmation = await Swal.fire({
@@ -53,7 +58,12 @@ const FormModalHistoryClassroom = (props) => {
       if (confirmation.isConfirmed) {
         await axios.post(
           config.apiUrl + `/classroom/move-student/` + payload.id,
-          payload
+          payload,
+          {
+            headers: {
+              authorization: token,
+            },
+          }
         );
 
         Swal.fire({

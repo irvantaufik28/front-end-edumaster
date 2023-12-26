@@ -11,6 +11,9 @@ import staffController from "../controller/staffController"
 import uploadMediaController from "../controller/uploadMediaController";
 import {upload} from '../middleware/handle-upload'
 import authController from "../controller/authController";
+import courseController from "../controller/courseController";
+import teacherCourseController from "../controller/teacherCourseController";
+import classroomScheduleController from "../controller/classroomScheduleController";
 
 const router = express.Router();
 
@@ -60,6 +63,27 @@ router.get('/staff', authorized.allowedRoles(["administrator", "manager", "staff
 router.get('/staff/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.getById)
 router.post('/staff', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.create)
 router.put('/staff/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), staffController.update)
+
+// course route 
+router.get('/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.get)
+router.get('/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.getById)
+router.post('/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.create)
+router.put('/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.update)
+router.delete('/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.deleted)
+
+// teacher course route 
+router.get('/teacher/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.get)
+router.get('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.getById)
+router.post('/teacher/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.create)
+router.put('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.update)
+router.delete('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.deleted)
+
+// teacher course route 
+router.get('/classroom-schedule', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.get)
+router.get('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.getById)
+router.post('/classroom-schedule', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.create)
+router.put('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.update)
+router.delete('/classroom/-chedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.deleted)
 
 
 //media upload

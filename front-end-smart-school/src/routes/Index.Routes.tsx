@@ -10,7 +10,8 @@ import PrivateRoute from "../utils/PrivateRoute";
 import Topbar from "../components/layouts/TopBar";
 import SideBar from "../components/layouts/SideBar";
 import ManageClassroomPage from "../client/classroom/ManageClassroomPage";
-import ClassMajorPage from "../client/admin/classmajor/ClassMajorPage";
+import ClassMajorPage from "../client/admin/classmajor/ClassmajorPage";
+import RolePage from "../client/admin/role/RolePage";
 
 const IndexRoutes = () => {
   return (
@@ -20,6 +21,8 @@ const IndexRoutes = () => {
 
         <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
           <Route path="/admin/dashboard" element={<DashboardPage />} />
+          <Route path="/admin/role" element={<RolePage />} />
+          <Route path="/admin/classmajor" element={<ClassMajorPage />} />
 
           <Route path="/student" element={<StudentPage />} />
           <Route path="/student/form" element={<StudentFormPage />} />

@@ -122,7 +122,7 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
   const [totalData, setTotalData] = useState(0);
 
   const filters = useRef({});
-
+  console.log(filters);
   const currentPageIndex = useRef({});
   const currentpage = useRef(11);
   const currentSortBy = useRef({});
@@ -175,22 +175,20 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
           .split("; ")
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
-
-        const response = await axios.get(apiUrl, {
+       
+          params.not_in_classroom_id = parseInt(id);
+       
+          const response = await axios.get(apiUrl, {
           params,
-          // headers: {
-          //   access_token: token
-          // }
+          headers: {
+            authorization: token,
+          },
         });
 
         const { data } = response;
         const list = data?.data;
-        const filteredStudent = list.filter(student => {
-          return !student.student_classrooms.some(classroom => classroom.classroom_id === parseInt(id));
-        });
-
-
-        setData(filteredStudent);
+     
+        setData(list);
         setTotalPage(data?.paging?.total_page);
         setTotalData(data?.paging?.total_item);
 

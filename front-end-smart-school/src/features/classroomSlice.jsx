@@ -26,6 +26,56 @@ export const getAll = createAsyncThunk(
   }
 );
 
+export const createClassroom = createAsyncThunk(
+  "classroom/create",
+  async (payload = {}, { rejectWithValue }) => {
+  
+    const apiUrl = config.apiUrl;
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+    try {
+      const response = await axios.post(`${apiUrl}/classroom`, payload, {
+        headers: {
+          authorization: `Bearer ${token}`
+        }
+      });
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+export const updateClassroom = createAsyncThunk(
+  "classroom/update",
+  async ({ payload, id }, { rejectWithValue }) => {
+    const apiUrl = config.apiUrl;
+    const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
+
+    console.log(payload);
+    try {
+      const response = await axios.put(`${apiUrl}/classroom/${id}`, payload, {
+        headers: {
+          authorization: `Bearer ${token}`
+        },
+      });
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getById = createAsyncThunk(
   "classroom/getById",
   async (id, { rejectWithValue }) => {
@@ -52,6 +102,34 @@ const classroomSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(createClassroom.pending, (state) => {
+        state.loading = true;
+        state.data = null;
+      })
+      .addCase(createClassroom.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(createClassroom.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = null;
+      })
+      .addCase(updateClassroom.pending, (state) => {
+        state.loading = true;
+        state.data = null;
+      })
+      .addCase(updateClassroom.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(updateClassroom.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = null;
+      })            
       .addCase(getAll.pending, (state) => {
         state.loading = true;
         state.data = null;

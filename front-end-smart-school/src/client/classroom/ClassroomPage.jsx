@@ -9,15 +9,15 @@ import ButtonSuccess from "../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { classMajorSelector, list } from "../../features/classMajorSlice";
+import { classMajorSelector, getAll } from "../../features/classMajorSlice";
 import FormModal from "./components/FormModal";
 import axios from "axios";
 import config from "../../config";
-import ConfirmationDelete from "../../components/modals/ConfirmationDelete";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
 import HeaderContent from "./components/HeaderContent";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const ClassroomPage = () => {
   const navigate = useNavigate();
@@ -61,9 +61,48 @@ export const ClassroomPage = () => {
 
   const handleDelete = async (data) => {
     const id = data.id;
-    const url = config.apiUrl + `/classroom/` + id;
-    await ConfirmationDelete(url);
-    tableRef.current.refreshData();
+
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          const token = document.cookie
+            .split("; ")
+            .find((row) => row.startsWith("token="))
+            ?.split("=")[1];
+
+          await axios.delete(config.apiUrl + `/classroom/` + id, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          tableRef.current.refreshData();
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            title: "Error",
+            text: "Failed to delete. Please try again.",
+            icon: "error",
+          });
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCloseForm = () => {
@@ -87,7 +126,7 @@ export const ClassroomPage = () => {
   const dispacth = useDispatch();
 
   useEffect(() => {
-    dispacth(list());
+    dispacth(getAll());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

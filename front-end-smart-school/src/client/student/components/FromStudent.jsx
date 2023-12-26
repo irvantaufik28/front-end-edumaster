@@ -19,7 +19,7 @@ import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 import { createStudent } from "../../../features/studentSlice";
 
 const FormStudent = () => {
-  const dispacth = useDispatch()
+  const dispacth = useDispatch();
   const navigate = useNavigate();
   const dataInitialValues = useSelector((state) => state.student.data);
   const defaultValues = useMemo(
@@ -122,6 +122,11 @@ const FormStudent = () => {
   }, [dataInitialValues, defaultValues]);
   const handleSubmit = async (values) => {
     try {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+        
       const payload = _.pick(values, [
         "birth_certificate_no",
         "family_identity_no",
@@ -148,16 +153,12 @@ const FormStudent = () => {
           formData.append("type", "image");
           formData.append("folder", "student_foto");
 
-          const token = document.cookie
-          .split('; ')
-          .find((row) => row.startsWith('token='))
-          ?.split('=')[1];
           const response = await axios.post(
             config.apiUrl + `/upload`,
             formData,
             {
               headers: {
-                authorization: token,
+                authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data",
               },
             }
@@ -165,8 +166,12 @@ const FormStudent = () => {
           payload.foto_url = response.data.url;
         }
 
-        // await axios.post(config.apiUrl + `/student`, payload);
-        dispacth(createStudent(payload))
+        await axios.post(config.apiUrl + `/student`, payload, {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+
         navigate("/student");
       } else {
         if (image) {

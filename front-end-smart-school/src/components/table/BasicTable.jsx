@@ -205,9 +205,8 @@ const BasicTable = ({
               {headerGroup.headers.map((column) => (
                 <th className="th-react-table"
                 {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {/* <th {...column.getHeaderProps()}> */}
                   {column.render("Header")}
-                  <span style={{ marginLeft: "10px", position: "relative" }}>
+                  <span style={{ marginLeft: column.marginleft ?? "10px", position: "relative" }}>
                     {column.isSorted ? (
                       column.isSortedDesc ? (
                         <span style={{ position: "relative" }}>
@@ -237,7 +236,7 @@ const BasicTable = ({
               <tr key={i} {...row.getRowProps()}>
                 {row.cells.map((cell, cellIdx) => {
                   return (
-                    <td {...cell.getCellProps()}>
+                    <td {...cell.getCellProps()} style={{ width: cell.width }}>
                     {cell.column.id === 'foto_url' ? (
                       <img
                         src={cell.value}

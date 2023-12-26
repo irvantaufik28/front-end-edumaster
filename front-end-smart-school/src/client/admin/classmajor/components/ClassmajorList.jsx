@@ -10,60 +10,29 @@ import {
   useRef,
   useState,
 } from "react";
-import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete  } from "react-icons/md";
 
-import config from "../../../config";
-import BasicTable from "../../../components/table/BasicTable";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import { MdDelete, MdModeEdit } from "react-icons/md";
+import { BiSolidDetail } from "react-icons/bi";
+import config from "../../../../config";
+import BasicTable from "../../../../components/table/BasicTable";
 
-const ListOrderTable = forwardRef((props, ref) => {
-  const apiUrl = config.apiUrl + "/student";
+const ClassmajorList = forwardRef((props, ref) => {
+  const apiUrl = config.apiUrl + "/class/major";
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const columns = useMemo(
     () => [
       {
-        Header: "ID",
+        Header: "Id",
         accessor: "id",
       },
       {
-        Header: "NIS",
-        accessor: "nis",
-      },
-      {
-        Header: "Foto",
-        accessor: "foto_url",
-      },
-      {
-        Header: "First Name",
-        accessor: "first_name",
-      },
-      {
-        Header: "Middle Name",
-        accessor: "middle_name",
-      },
-      {
-        Header: "Last Name",
-        accessor: "last_name",
-      },
-      {
-        Header: "Birth Date",
-        accessor: "birth_date",
-      },
-
-      {
-        Header: "Register",
-        accessor: "register_year",
-      },
-      {
-        Header: "Gender",
-        accessor: "gender",
-      },
-      {
-        Header: "Status",
-        accessor: "status",
+        Header: "Name",
+        accessor: "name",
+        marginleft: "800px",
       },
       {
         Header: "Action",
@@ -73,9 +42,9 @@ const ListOrderTable = forwardRef((props, ref) => {
               variant="secondary"
               size="sm"
               className="me-2"
-              onClick={() => props.onDetail(row.values)}
+              onClick={() => props.onManage(row.values)}
             >
-            <BiSolidDetail />  Detail
+              <BiSolidDetail /> Manage
             </Button>
             <Button
               variant="info"
@@ -83,14 +52,14 @@ const ListOrderTable = forwardRef((props, ref) => {
               className="me-2"
               onClick={() => props.onEdit(row.values)}
             >
-           <MdModeEdit />   Edit
+              <MdModeEdit /> Edit
             </Button>
             <Button
               variant="danger"
               size="sm"
               onClick={() => props.onDelete(row.values)}
             >
-            <MdDelete />  Delete
+              <MdDelete /> Delete
             </Button>
           </>
         ),
@@ -158,9 +127,9 @@ const ListOrderTable = forwardRef((props, ref) => {
 
         const response = await axios.get(apiUrl, {
           params,
-          headers: {
-            authorization: token
-          }
+          // headers: {
+          //   access_token: token
+          // }
         });
 
         const { data } = response;
@@ -194,10 +163,10 @@ const ListOrderTable = forwardRef((props, ref) => {
   );
 });
 
-export default ListOrderTable;
+export default ClassmajorList;
 
-ListOrderTable.defaultProps = {
-  onDetail: (data) => {},
+ClassmajorList.defaultProps = {
+  onManage: (data) => {},
   onEdit: (data) => {},
   onDelete: (data) => {},
 };

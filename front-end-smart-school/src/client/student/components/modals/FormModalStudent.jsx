@@ -74,6 +74,11 @@ const FormModalStudent = (props) => {
   }, [props.initialValues, defaultValues]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
     try {
       const payload = _.pick(values, [
         "birth_certificate_no",
@@ -106,7 +111,11 @@ const FormModalStudent = (props) => {
       if (result.isConfirmed) {
         const response = await axios.put(
           config.apiUrl + `/student/` + props.editId,
-          payload
+          payload ,{
+            headers: {
+              Authorization: token
+            }
+          }
         );
         dispacth(setDataStudent(response.data));
         Swal.fire({

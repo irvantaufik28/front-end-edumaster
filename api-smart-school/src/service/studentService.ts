@@ -81,6 +81,16 @@ class StudentService {
               },
             });
           }
+
+          if (request.in_classroom_id) {
+            filters.push({
+              student_classrooms: {
+                some: {
+                  classroom_id: parseInt(request.in_classroom_id),
+                },
+              },
+            });
+          }
           
 
 

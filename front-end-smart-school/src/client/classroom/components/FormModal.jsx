@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import ConfirmationEdit from "../../../components/modals/ConfirmationEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { classMajorSelector, list } from "../../../features/classMajorSlice";
+import Swal from "sweetalert2";
 
 const FormModal = (props) => {
   const classMajor = useSelector(classMajorSelector.selectAll);
@@ -59,18 +60,60 @@ const FormModal = (props) => {
       ]);
 
       payload.class_major_id = parseInt(payload.class_major_id);
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
 
-      if (props.type === "add") {
-        await axios.post(config.apiUrl + `/classroom`, payload);
-      } else {
-        const url = config.apiUrl + `/classroom/` + props.editId;
-        await ConfirmationEdit(url, payload);
-        // await axios.put(config.apiUrl + `/classroom/` + props.editId, payload);
+      const confirmation = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+      });
+
+      if (confirmation.isConfirmed) {
+        let response;
+        if (props.type === "add") {
+          payload.student_id = props.student_id;
+          response = await axios.post(config.apiUrl + `/classroom`, payload, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+        } else {
+          response = await axios.put(
+            config.apiUrl + `/classroom/` + props.editId,
+            payload,
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
+
+        Swal.fire({
+          title: props.type,
+          text: "Your file has been updated.",
+          icon: "success",
+        });
       }
 
+    
       props.onSuccess(props.type);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to update. Please try again.",
+        icon: "error",
+      });
+    } finally {
+      setSubmitting(false);
     }
     setSubmitting(false);
   };

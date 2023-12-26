@@ -54,6 +54,10 @@ const TabParentsInfo = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -67,7 +71,11 @@ const TabParentsInfo = () => {
   
       if (result.isConfirmed) {
         try {
-          await axios.delete(config.apiUrl + `/student-parent/` + id);
+          await axios.delete(config.apiUrl + `/student-parent/` + id , {
+            headers: {
+              Authorization: token
+            }
+          });
           dispacth(getById(student?.id));
   
           Swal.fire({
