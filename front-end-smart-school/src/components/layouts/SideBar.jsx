@@ -134,7 +134,7 @@ export default function SideBar() {
                 </li>
                 <li
                   className="sidebarListItem"
-                  onClick={() => handleNavigation("/staff/office")}
+                  onClick={() => handleNavigation("/staff/teacher")}
                 >
                   <FaCircle className="subSideBarIcon" />
                   Staff Teacher

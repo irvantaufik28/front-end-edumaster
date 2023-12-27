@@ -171,27 +171,6 @@ export const ClassroomPage = () => {
     document.getElementById("status").value = "";
   };
 
-  const arrayObjek = [
-    { id: 1, name: "Objek 1" },
-    { id: 2, name: "Objek 2" },
-    { id: 3, name: "Objek 3" },
-  ];
-
-  const [inputValue, setInputValue] = useState("");
-  const [suggestedOptions, setSuggestedOptions] = useState([]);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-
-    // Filter options based on input
-    const filteredOptions = arrayObjek.filter((option) =>
-      option.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    setSuggestedOptions(filteredOptions);
-  };
-
   return (
     <>
       <Topbar />
@@ -220,24 +199,6 @@ export const ClassroomPage = () => {
               </div>
               <div className="search-box-global">
                 <div className="row">
-                  <div>
-                    <input
-                      type="text"
-                      value={inputValue}
-                      onChange={handleInputChange}
-                      placeholder="Type to search..."
-                    />
-                    <ul>
-                      {suggestedOptions.map((option) => (
-                        <li
-                          key={option.id}
-                          onClick={() => setInputValue(option.name)}
-                        >
-                          {option.name}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                   <div className="col-md-4 mb-4">
                     <label htmlFor="nama-classroom" className="form-label">
                       code

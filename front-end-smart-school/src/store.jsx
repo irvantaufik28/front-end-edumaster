@@ -4,6 +4,8 @@ import classroomSlice from "./features/classroomSlice";
 import classMajorSlice from "./features/classMajorSlice";
 import studentSlice from "./features/studentSlice";
 import studentParentSlice from "./features/studentParentSlice";
+import courseSlice from "./features/courseSlice";
+import staffSlice from "./features/staffSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +13,9 @@ const store = configureStore({
     classroom: classroomSlice,
     classmajor: classMajorSlice,
     student: studentSlice,
-    studentParent: studentParentSlice
+    studentParent: studentParentSlice,
+    course: courseSlice,
+    staff : staffSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

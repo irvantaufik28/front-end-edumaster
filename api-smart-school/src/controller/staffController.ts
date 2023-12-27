@@ -13,6 +13,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             gender: req.query.gender,
             status: req.query.status,
             nik: req.query.nik,
+            course_id : req.query.course_id,
             page: req.query.page,
             size: req.query.size,
             role_id: req.query.role_id,
@@ -33,6 +34,11 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         const staff = await prismaClient.staff.findUnique({
             where: { id: req.params.id },
             include: {
+                teacher_course: {
+                    include: {
+                        courses: true
+                    }
+                },
                 staff_user: {
                     include: {
                         user: {
@@ -53,7 +59,7 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         if (!staff) {
             throw new ResponseError(404, "staff not found")
         }
-        return res.status(200).json({ data: staff });
+        return res.status(200).json(staff);
     } catch (error) {
         next(error);
     }
@@ -79,7 +85,7 @@ const update = async (req: any, res: Response, next: NextFunction): Promise<any>
 
         const staff = await staffService.update(req.body, req.params.id)
 
-        return res.status(200).json({ message: "Staff successfuly Updated" });
+        return res.status(200).json(staff);
     } catch (error) {
         next(error);
     }

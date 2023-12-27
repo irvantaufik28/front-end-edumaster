@@ -61,6 +61,7 @@ class StaffService {
                 },
             });
         }
+        let include_course = false
         if (request.role_id) {
             filters.push({
                 staff_user: {
@@ -75,7 +76,22 @@ class StaffService {
                     },
                 },
             });
+            include_course = true
         }
+
+        if (request.course_id) {
+            filters.push({
+                teacher_course: {
+                    some: {
+                        courses: {
+                            id: parseInt(request.course_id
+)                        }
+                    }
+                }
+            })
+
+        }
+
 
         let orders = {
             [request.orderBy || "created_at"]: request.sortBy || "desc",
@@ -89,6 +105,11 @@ class StaffService {
             },
 
             include: {
+                teacher_course: {
+                    include: {
+                        courses: include_course
+                    }
+                },
                 staff_user: {
                     include: {
                         user: {
@@ -229,7 +250,7 @@ class StaffService {
             throw new ResponseError(404, "staff not found")
         }
 
-        return await prismaClient.staff.update({
+     await prismaClient.staff.update({
             where: {
                 id: id,
             },
@@ -249,6 +270,12 @@ class StaffService {
                 status: request.status,
             }
         });
+
+        return await prismaClient.staff.findFirst({
+            where: {
+                id: staff.id
+            }
+        })
 
     }
 }

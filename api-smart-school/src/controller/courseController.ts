@@ -60,6 +60,8 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
 };
 
 
+
+
 const getById = async (req: any, res: Response, next: NextFunction): Promise<any> => {
 
     try {
@@ -78,6 +80,19 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         if (!course) {
             throw new ResponseError(404, "course not found")
         }
+
+        return res.status(200).json({ data: course });
+    } catch (error: any) {
+        next(error)
+    }
+};
+
+const list = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+
+    try {
+        const course = await prismaClient.course.findMany();
+
+
 
         return res.status(200).json({ data: course });
     } catch (error: any) {
@@ -173,6 +188,7 @@ const deleted = async (req: any, res: Response, next: NextFunction): Promise<any
 export default {
     get,
     getById,
+    list,
     create,
     update,
     deleted

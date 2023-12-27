@@ -66,6 +66,7 @@ router.put('/staff/:id', authorized.allowedRoles(["administrator", "manager", "s
 
 // course route 
 router.get('/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.get)
+router.get('/course-list',courseController.list)
 router.get('/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.getById)
 router.post('/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.create)
 router.put('/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), courseController.update)

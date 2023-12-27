@@ -12,6 +12,8 @@ import SideBar from "../components/layouts/SideBar";
 import ManageClassroomPage from "../client/classroom/ManageClassroomPage";
 import ClassMajorPage from "../client/admin/classmajor/ClassmajorPage";
 import RolePage from "../client/admin/role/RolePage";
+import StaffTeacherPage from "../client/staff-teacher/StaffTeacherPage";
+import StaffTeacherDetailPage from "../client/staff-teacher/StaffTeacherDetailPage";
 
 const IndexRoutes = () => {
   return (
@@ -23,6 +25,9 @@ const IndexRoutes = () => {
           <Route path="/admin/dashboard" element={<DashboardPage />} />
           <Route path="/admin/role" element={<RolePage />} />
           <Route path="/admin/classmajor" element={<ClassMajorPage />} />
+         
+          <Route path="/staff/teacher" element={<StaffTeacherPage />} />
+          <Route path="/staff/teacher/detail/:id" element={<StaffTeacherDetailPage />} />
 
           <Route path="/student" element={<StudentPage />} />
           <Route path="/student/form" element={<StudentFormPage />} />

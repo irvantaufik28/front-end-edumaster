@@ -5,23 +5,37 @@ import _ from "lodash";
 import axios from "axios";
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import config from "../../../../config";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { classroomSelector, getAll } from "../../../../features/classroomSlice";
+import { courseSelector, list } from "../../../../features/courseSlice";
+import { staffSelector } from "../../../../features/staffSlice";
 
-const FormModalHistoryClassroom = (props) => {
+const FormModalAddTeacherCourse = (props) => {
   const dispacth = useDispatch();
-  const classroom = useSelector(classroomSelector.selectAll);
+  const course = useSelector(courseSelector.selectAll);
+  const staff = useSelector(staffSelector.getById);
   useEffect(() => {
-    dispacth(getAll());
+    dispacth(list());
   }, [dispacth]);
+
+  let courses_list = course
+
+  if (staff?.teacher_course?.length) {
+    const associatedCourseIds = staff?.teacher_course?.map(
+      (course) => course.course_id
+    );
+    const availableCourses = course?.filter(
+      (course) => !associatedCourseIds.includes(course.id)
+    );
+
+    courses_list = availableCourses
+  }
 
   const defaultValues = useMemo(
     () => ({
-      id: null,
-      students: [{ id: "" }],
+      staff_id: "",
+      course_id: null,
     }),
     []
   );
@@ -42,7 +56,7 @@ const FormModalHistoryClassroom = (props) => {
       ?.split("=")[1];
 
     try {
-      const payload = _.pick(values, ["id", "students"]);
+      const payload = _.pick(values, ["staff_id", "course_id"]);
       const confirmation = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -54,15 +68,12 @@ const FormModalHistoryClassroom = (props) => {
       });
 
       if (confirmation.isConfirmed) {
-        await axios.post(
-          config.apiUrl + `/classroom/move-student/` + payload.id,
-          payload,
-          {
-            headers: {
-              authorization: token,
-            },
-          }
-        );
+        payload.course_id = parseInt(payload.course_id);
+        await axios.post(config.apiUrl + `/teacher/course`, payload, {
+          headers: {
+            authorization: token,
+          },
+        });
 
         Swal.fire({
           title: "Updated",
@@ -114,27 +125,25 @@ const FormModalHistoryClassroom = (props) => {
                     <Form.Control
                       as="select"
                       className="input-form-parent-student mb-3"
-                      name="id"
-                      value={values.id}
-                      isInvalid={
-                        touched.id && touched.id && errors.id && errors.id
-                      }
+                      name="course_id" // Change the name attribute to "course_id"
+                      value={values.course_id}
+                      isInvalid={touched.course_id && errors.course_id} // Update the field names here as well
                       onChange={handleChange}
                     >
-                      <option value="">Select Classroom</option>
-                      {classroom.map((item) => (
+                      <option value="">Select Course</option>
+                      {courses_list?.map((item) => (
                         <option key={item?.id} value={item?.id}>
-                          {item?.classMajor?.name} {item?.level}{item?.code}
+                          {item?.name} Kelas {item?.level}
                         </option>
                       ))}
                     </Form.Control>
 
-                    {touched.id && touched.id && errors.id && errors.id && (
+                    {touched.course_id && errors.course_id && (
                       <Form.Control.Feedback
                         type="invalid"
                         style={{ display: "unset" }}
                       >
-                        {errors.id}
+                        {errors.course_id}
                       </Form.Control.Feedback>
                     )}
                   </Col>
@@ -161,7 +170,7 @@ const FormModalHistoryClassroom = (props) => {
   );
 };
 
-FormModalHistoryClassroom.defaultProps = {
+FormModalAddTeacherCourse.defaultProps = {
   onHide: () => {},
   show: false,
   type: "add",
@@ -170,4 +179,4 @@ FormModalHistoryClassroom.defaultProps = {
   onSuccess: () => {},
 };
 
-export default FormModalHistoryClassroom;
+export default FormModalAddTeacherCourse;
