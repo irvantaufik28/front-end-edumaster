@@ -8,6 +8,7 @@ import { MdPhotoCamera } from "react-icons/md";
 import TabStaffTeacherInfo from "./partials/TabStaffTeacherInfo";
 import { getById, staffSelector } from "../../../features/staffSlice";
 import TabCourseInfo from "./partials/TabCourseInfo";
+import TabTeacherSchedule from "./partials/TabTeacherSchedule";
 const StaffTeacherDetail = () => {
   const student = useSelector(staffSelector.getById);
   const { id } = useParams();
@@ -83,7 +84,7 @@ const StaffTeacherDetail = () => {
               title="schedule"
               className="tab-student-detail"
             >
-              {/* <TabClassroomHistory /> */}
+              <TabTeacherSchedule />
             </Tab>
           </Tabs>
         </Card.Body>

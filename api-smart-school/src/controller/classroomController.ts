@@ -36,6 +36,28 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
     }
 };
 
+const clasroomList = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    try {
+        const result = await prismaClient.classroom.findMany({
+            where: {
+                level: req.query.level,
+                status: req.query.status
+            },
+            include: {
+                classMajor: true
+            }
+        })
+
+        if (!result) {
+            throw new ResponseError(404, "classroom not found!")
+        }
+
+        return res.status(200).json({ data: result });
+    } catch (error) {
+        next(error)
+    }
+}
+
 const getById = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
         const result = await prismaClient.classroom.findUnique({
@@ -187,6 +209,7 @@ const deleteStudent = async (req: any, res: Response, next: NextFunction): Promi
 export default {
     get,
     create,
+    clasroomList,
     getById,
     update,
     deleted,

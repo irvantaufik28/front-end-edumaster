@@ -10,15 +10,17 @@ import {
   useRef,
   useState,
 } from "react";
-import config from "../../../config";
-import BasicTable from "../../../components/table/BasicTable";
+import config from "../../../../config";
 import { Button } from "react-bootstrap";
-import axios from "axios";
-import { MdDelete, MdModeEdit } from "react-icons/md";
 import { BiSolidDetail } from "react-icons/bi";
+import { MdDelete, MdModeEdit } from "react-icons/md";
+import axios from "axios";
+import BasicTable from "../../../../components/table/BasicTable";
+import { useParams } from "react-router-dom";
 
-const ListOrderTable = forwardRef((props, ref) => {
-  const apiUrl = config.apiUrl + "/classroom";
+const ListTeacherSchedule = forwardRef((props, ref) => {
+  const { id } = useParams();
+  const apiUrl = config.apiUrl + "/teacher-schedule/";
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -29,45 +31,46 @@ const ListOrderTable = forwardRef((props, ref) => {
         accessor: "id",
       },
       {
-        Header: "Code",
-        accessor: "code",
+        Header: "Day",
+        accessor: "day_name",
       },
       {
-        Header: "Class Major",
-        accessor: "classMajor.name",
+        Header: "Course",
+        accessor: "",
+        Cell: ({ row }) => (
+          <div>
+            <div>
+              {`${row.original.teacher_course.courses.name} Kelas ${row.original.teacher_course.courses.level}` ||
+                "-"}
+            </div>
+          </div>
+        ),
+      },
+     
+      {
+        Header: "Classroom",
+        accessor: "",
+        Cell: ({ row }) => (
+          <div>
+            <div>
+              {`${row.original.classroom.classMajor.name} Kelas ${row.original.classroom.level} ${row.original.classroom.code} ${row.original.classroom.year_group}` ||
+                "-"}
+            </div>
+          </div>
+        ),
       },
       {
-        Header: "Grade",
-        accessor: "level",
+        Header: "Start Time",
+        accessor: "start_time",
       },
       {
-        Header: "Year",
-        accessor: "year_group",
-      },
-      {
-        Header: "Status",
-        accessor: "status",
+        Header: "End Time",
+        accessor: "end_time",
       },
       {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onManage(row.values)}
-            >
-              <BiSolidDetail /> Manage
-            </Button>
-            <Button
-              variant="info"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-              <MdModeEdit /> Edit
-            </Button>
             <Button
               variant="danger"
               size="sm"
@@ -139,11 +142,11 @@ const ListOrderTable = forwardRef((props, ref) => {
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
 
-        const response = await axios.get(apiUrl, {
+        const response = await axios.get(apiUrl + id, {
           params,
-          // headers: {
-          //   access_token: token
-          // }
+          headers: {
+            authorization: token,
+          },
         });
 
         const { data } = response;
@@ -177,9 +180,9 @@ const ListOrderTable = forwardRef((props, ref) => {
   );
 });
 
-export default ListOrderTable;
+export default ListTeacherSchedule;
 
-ListOrderTable.defaultProps = {
+ListTeacherSchedule.defaultProps = {
   onManage: (data) => {},
   onEdit: (data) => {},
   onDelete: (data) => {},

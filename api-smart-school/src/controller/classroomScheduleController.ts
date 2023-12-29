@@ -1,7 +1,5 @@
 import { Response, NextFunction } from 'express';
 import { prismaClient } from '../application/database';
-import { transformAndValidate } from 'class-transformer-validator';
-import { CreateOrUpdateRoleDto } from '../dto/create-or-update-role.dto';
 import { ResponseError } from '../error/response-error';
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
@@ -11,7 +9,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
             page: req.query.page,
             size: req.query.size,
             classroom_id: req.query.classroom_id,
-            day_name : req.query.day_name,
+            day_name: req.query.day_name,
             orderBy: req.query.orderBy,
             sortBy: req.query.sortBy
         }
@@ -27,7 +25,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
                     equals: parseInt(request.classroom_id),
                 }
             })
-        }    
+        }
         if (request.day_name) {
             filters.push({
                 day_name: {
@@ -35,9 +33,13 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
                 }
             })
         }
+        let orders = {
+            [request.orderBy || 'created_at']: request.sortBy || 'desc',
+        };
 
 
         const classroomSchedule = await prismaClient.classroomSchedule.findMany({
+            orderBy: orders,
             where: {
                 AND: filters
             },
@@ -66,6 +68,71 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
     }
 };
 
+const getTeacherSchedule = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    try {
+
+        const request = {
+            page: req.query.page,
+            size: req.query.size,
+            orderBy: req.query.orderBy,
+            sortBy: req.query.sortBy
+        }
+
+        const page = request.page ?? 1;
+        const size = request.size ?? 10;
+        const skip = (parseInt(page) - 1) * parseInt(size);
+
+        let orders = {
+            [request.orderBy || 'day_name']: request.sortBy || 'desc',
+        };
+
+        const teacherSchedule = await prismaClient.classroomSchedule.findMany({
+            orderBy: orders,
+            where: {
+                teacher_course: {
+                    staff_id: req.params.teacher_id
+                }
+            },
+            include: {
+                classroom: {
+                    include: {
+                        classMajor: true
+                    }
+                },
+                teacher_course: {
+                    include: {
+                        courses: true
+                    }
+                }
+            },
+            take: parseInt(size),
+            skip: skip,
+        })
+
+        const totalItems = await prismaClient.classroomSchedule.count({
+            where: {
+                teacher_course: {
+                    staff_id: req.params.teacher_id
+                }
+            }
+        })
+
+        const result = {
+            data: teacherSchedule,
+            paging: {
+                page: page,
+                total_item: totalItems,
+                total_page: Math.ceil(totalItems / parseInt(size))
+            }
+        }
+
+
+        return res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 const getById = async (req: any, res: Response, next: NextFunction): Promise<any> => {
 
@@ -73,6 +140,13 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         const classroomSchedule = await prismaClient.classroomSchedule.findUnique({
             where: {
                 id: parseInt(req.params.id)
+            },
+            include: {
+                teacher_course: {
+                    include: {
+                        staff: true
+                    }
+                }
             }
         });
 
@@ -171,6 +245,7 @@ const deleted = async (req: any, res: Response, next: NextFunction): Promise<any
 export default {
     get,
     getById,
+    getTeacherSchedule,
     create,
     update,
     deleted

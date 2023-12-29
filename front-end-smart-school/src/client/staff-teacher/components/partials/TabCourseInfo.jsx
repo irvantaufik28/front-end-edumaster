@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Row } from "react-bootstrap";
 import ButtonDanger from "../../../../components/ui/button/ButtonDanger";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import {  MdDelete } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
 // import FormModalHistoryClassroom from "../modals/FormModalHistoryClassroom";
@@ -67,9 +67,7 @@ const TabCourseInfo = () => {
     }
   };
 
-  const handleEditCurrentClassroom = () => {
-    console.log("click");
-  };
+
   const handleAdd = async () => {
     setFormModal({
       ...defaultFormModal,

@@ -70,9 +70,9 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         const course = await prismaClient.teacherCourse.findUnique({
             where: {
                 id: parseInt(req.params.id)
-            }, 
-            include : {
-                staff : true,
+            },
+            include: {
+                staff: true,
                 courses: true,
                 classroom_schedule: true
             }
@@ -82,6 +82,24 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
         if (!course) {
             throw new ResponseError(404, "teacher Courses course not found")
         }
+
+        return res.status(200).json({ data: course });
+    } catch (error: any) {
+        next(error)
+    }
+};
+
+const getByStaffId = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+
+    try {
+        const course = await prismaClient.teacherCourse.findMany({
+            where: {
+                staff_id: req.params.id
+            },
+            include: {
+                courses: true,
+            }
+        });
 
         return res.status(200).json({ data: course });
     } catch (error: any) {
@@ -111,7 +129,7 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
 
         const course = await prismaClient.course.findUnique({
             where: {
-                id : parseInt(req.body.course_id)
+                id: parseInt(req.body.course_id)
             }
         })
 
@@ -122,7 +140,7 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
             data: req.body,
         });
 
-        return res.status(200).json({data : result});
+        return res.status(200).json({ data: result });
     } catch (error: any) {
         next(error)
     }
@@ -150,7 +168,7 @@ const update = async (req: any, res: Response, next: NextFunction): Promise<any>
 
         const course = await prismaClient.course.findUnique({
             where: {
-                id : parseInt(req.body.course_id)
+                id: parseInt(req.body.course_id)
             }
         })
 
@@ -159,7 +177,7 @@ const update = async (req: any, res: Response, next: NextFunction): Promise<any>
             throw new ResponseError(404, "teacher course not found")
         }
 
-         await prismaClient.teacherCourse.update({
+        await prismaClient.teacherCourse.update({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -204,6 +222,7 @@ const deleted = async (req: any, res: Response, next: NextFunction): Promise<any
 export default {
     get,
     getById,
+    getByStaffId,
     create,
     update,
     deleted

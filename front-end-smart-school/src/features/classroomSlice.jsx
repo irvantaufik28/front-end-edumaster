@@ -26,6 +26,22 @@ export const getAll = createAsyncThunk(
   }
 );
 
+export const classroomList = createAsyncThunk(
+  "classroom/list",
+  async (params = {}, { rejectWithValue }) => {
+    const apiUrl = config.apiUrl;
+    try {
+      const response = await axios.get(`${apiUrl}/classroom-list?status=${params.status}&level=${params.level}`);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const createClassroom = createAsyncThunk(
   "classroom/create",
   async (payload = {}, { rejectWithValue }) => {
@@ -112,6 +128,20 @@ const classroomSlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(createClassroom.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = null;
+      })  
+      .addCase(classroomList.pending, (state) => {
+        state.loading = true;
+        state.data = null;
+      })
+      .addCase(classroomList.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(classroomList.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;

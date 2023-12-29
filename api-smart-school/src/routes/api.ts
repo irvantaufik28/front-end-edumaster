@@ -25,6 +25,7 @@ router.get('/user/:id', authorized.allowedRoles(["administrator", "manager", "st
 
 // classroom route
 router.get('/classroom', classroomController.get);
+router.get('/classroom-list', classroomController.clasroomList);
 router.get('/classroom/:id', classroomController.getById);
 router.post('/classroom',authorized.allowedRoles(["administrator", "manager", "staff_tu"]) ,classroomController.create);
 router.put('/classroom/:id',authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomController.update);
@@ -75,6 +76,7 @@ router.delete('/course/:id', authorized.allowedRoles(["administrator", "manager"
 // teacher course route 
 router.get('/teacher/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.get)
 router.get('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.getById)
+router.get('/teacher/course-staff/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.getByStaffId)
 router.post('/teacher/course', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.create)
 router.put('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.update)
 router.delete('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.deleted)
@@ -84,8 +86,10 @@ router.get('/classroom-schedule', authorized.allowedRoles(["administrator", "man
 router.get('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.getById)
 router.post('/classroom-schedule', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.create)
 router.put('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.update)
-router.delete('/classroom/-chedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.deleted)
+router.delete('/classroom/-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.deleted)
 
+//teacher schedule 
+router.get('/teacher-schedule/:teacher_id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.getTeacherSchedule)
 
 //media upload
 router.post('/upload', upload.single('file'),authorized.allowedRoles(["administrator", "manager", "staff_tu"]), uploadMediaController.upload)
