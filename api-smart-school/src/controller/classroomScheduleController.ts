@@ -1,22 +1,16 @@
 import { Response, NextFunction } from 'express';
 import { prismaClient } from '../application/database';
 import { ResponseError } from '../error/response-error';
+import { sortSchedule } from '../application/common/common';
 
 const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
 
         const request = {
-            page: req.query.page,
-            size: req.query.size,
             classroom_id: req.query.classroom_id,
             day_name: req.query.day_name,
-            orderBy: req.query.orderBy,
-            sortBy: req.query.sortBy
         }
 
-        const page = request.page ?? 1;
-        const size = request.size ?? 10;
-        const skip = (parseInt(page) - 1) * parseInt(size);
         const filters: any = [];
 
         if (request.classroom_id) {
@@ -33,40 +27,33 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
                 }
             })
         }
-        let orders = {
-            [request.orderBy || 'created_at']: request.sortBy || 'desc',
-        };
 
 
         const classroomSchedule = await prismaClient.classroomSchedule.findMany({
-            orderBy: orders,
             where: {
                 AND: filters
             },
-            take: parseInt(size),
-            skip: skip,
-        })
-
-        const totalItems = await prismaClient.classroomSchedule.count({
-            where: {
-                AND: filters
+            include: {
+                teacher_course: {
+                    include: {
+                        staff: true,
+                        courses: true
+                    }
+                }
             }
         })
 
-        const result = {
-            data: classroomSchedule,
-            paging: {
-                page: page,
-                total_item: totalItems,
-                total_page: Math.ceil(totalItems / parseInt(size))
-            }
-        }
-
+        const result = classroomSchedule.sort(sortSchedule);
         return res.status(200).json(result);
     } catch (error) {
         next(error);
     }
 };
+
+
+
+
+
 
 const getTeacherSchedule = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     try {
@@ -179,6 +166,34 @@ const create = async (req: any, res: Response, next: NextFunction): Promise<any>
         next(error)
     }
 };
+const createMany = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    // try {
+    //     await transformAndValidate("", req.body);
+    // } catch (e: any) {
+    //     return res.status(404).json({ message: e.toString() });
+    // }
+    
+    try {
+        const timeTables = req.body.timeTables
+
+        for (const time of timeTables) {
+           await prismaClient.classroomSchedule.create({
+                data: {
+                    classroom_id: parseInt(req.body.classroom_id),
+                    teacher_course_id: parseInt(req.body.teacher_course_id),
+                    day_name: time.day_name.toUpperCase(),
+                    start_time: time.start_time,
+                    end_time: time.end_time
+                },
+            });
+            
+        }
+
+        return res.status(200).json({ message: "classroom schedule successfully created" });
+    } catch (error: any) {
+        next(error)
+    }
+};
 
 const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
     // try {
@@ -247,6 +262,7 @@ export default {
     getById,
     getTeacherSchedule,
     create,
+    createMany,
     update,
     deleted
 };

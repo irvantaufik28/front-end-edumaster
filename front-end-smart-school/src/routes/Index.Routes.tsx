@@ -25,9 +25,12 @@ const IndexRoutes = () => {
           <Route path="/admin/dashboard" element={<DashboardPage />} />
           <Route path="/admin/role" element={<RolePage />} />
           <Route path="/admin/classmajor" element={<ClassMajorPage />} />
-         
+
           <Route path="/staff/teacher" element={<StaffTeacherPage />} />
-          <Route path="/staff/teacher/detail/:id" element={<StaffTeacherDetailPage />} />
+          <Route
+            path="/staff/teacher/detail/:id"
+            element={<StaffTeacherDetailPage />}
+          />
 
           <Route path="/student" element={<StudentPage />} />
           <Route path="/student/form" element={<StudentFormPage />} />

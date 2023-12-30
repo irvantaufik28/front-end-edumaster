@@ -1,11 +1,10 @@
-import { Card, Col, Row, Table } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
-import { MdModeEdit } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { classroomSelector, getById } from "../../../features/classroomSlice";
+import { useDispatch } from "react-redux";
+import { getById } from "../../../features/classroomSlice";
 import OffCanvasAddStudent from "./offcanvas/OffCanvasAddStudent";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -29,7 +28,7 @@ const ManageClassroom = () => {
   const tableRef = useRef(null);
   const { id } = useParams();
   const dispacth = useDispatch();
-  const classroom = useSelector(classroomSelector.selectAll);
+
   useEffect(() => {
     dispacth(getById(id));
   }, [dispacth, id]);
@@ -151,122 +150,7 @@ const ManageClassroom = () => {
 
   return (
     <>
-      <div className="button-edit-current-classroom">
-        <ButtonPrimary
-          title="Edit Classroom"
-          icon={<MdModeEdit />}
-          // onClick={() => handleEditCurrentClassroom()}
-        />
-      </div>
       <Row>
-        <Card style={{ width: "100%", height: "auto" }}>
-          <Card.Body>
-            <Row>
-              <Col md={6}>
-                <Table>
-                  <tbody>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Code
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-code">{classroom?.code}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Class Major
-                      </th>
-                      <td className="no-border">
-                        :{" "}
-                        <span id="text-class_major">
-                          {classroom?.classMajor?.name}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Grade
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-level">{classroom?.level}</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Year Group
-                      </th>
-                      <td className="no-border">
-                        :{" "}
-                        <span id="text-year_group">
-                          {classroom?.year_group}
-                        </span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Total Student
-                      </th>
-                      <td className="no-border">
-                        :{" "}
-                        <span id="text-year_group">
-                          {classroom?.students_classroom?.length} Person
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Col>
-              <Col md={6}>
-                <Table>
-                  <tbody>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Homeroom Teacher
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-code">Dummy Homeroom Teacher</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Leader
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-class_major">Dummy Leader</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Vice Leader
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-level">Dummy Vice Leadey</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Secertary
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-year_group">Dummy Secretary</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <th className="no-border" width="150">
-                        Finance
-                      </th>
-                      <td className="no-border">
-                        : <span id="text-year_group">Dummy Finance</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
-
         <Col md={6}>
           <div className="title-form-student">Students</div>
         </Col>
@@ -281,128 +165,128 @@ const ManageClassroom = () => {
         </Col>
         <hr></hr>
         <div className="search-box-global">
-                <div className="row">
-                  <div className="col-md-4 mb-4">
-                    <label htmlFor="nama-classroom" className="form-label">
-                      NIS
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="nis"
-                      onChange={(e) =>
-                        setSearch({ ...search, ...{ nis: e.target.value } })
-                      }
-                    />
-                  </div>
+          <div className="row">
+            <div className="col-md-4 mb-4">
+              <label htmlFor="nama-classroom" className="form-label">
+                NIS
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="nis"
+                onChange={(e) =>
+                  setSearch({ ...search, ...{ nis: e.target.value } })
+                }
+              />
+            </div>
 
-                  <div className="col-md-4">
-                    <label htmlFor="status" className="form-label">
-                      Status
-                    </label>
-                    <div>
-                      <select
-                        className="form-control"
-                        aria-label="Default select example"
-                        id="status"
-                        onChange={(e) =>
-                          setSearch({
-                            ...search,
-                            ...{ status: e.target.value },
-                          })
-                        }
-                      >
-                        <option selected value={""}>
-                          select status
-                        </option>
-                        <option value="active">Active</option>
-                        <option value="preparation">Preparation</option>
-                        <option value="drop_out">Drop Out</option>
-                        <option value="graduate">Graduate</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      Register Year
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="register_year"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ register_year: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ first_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Middle Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="middle_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ middle_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="last_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ last_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="col-md-6 button-search-student">
-                  <ButtonSuccess
-                    title="search"
-                    icon={<FaSearch />}
-                    onClick={handleSearch}
-                  />
-                  <ButtonDanger
-                    title="reset"
-                    icon={<RxReset />}
-                    onClick={handleReset}
-                  />
-                </div>
+            <div className="col-md-4">
+              <label htmlFor="status" className="form-label">
+                Status
+              </label>
+              <div>
+                <select
+                  className="form-control"
+                  aria-label="Default select example"
+                  id="status"
+                  onChange={(e) =>
+                    setSearch({
+                      ...search,
+                      ...{ status: e.target.value },
+                    })
+                  }
+                >
+                  <option selected value={""}>
+                    select status
+                  </option>
+                  <option value="active">Active</option>
+                  <option value="preparation">Preparation</option>
+                  <option value="drop_out">Drop Out</option>
+                  <option value="graduate">Graduate</option>
+                </select>
               </div>
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="class" className="form-label">
+                Register Year
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="register_year"
+                onChange={(e) =>
+                  setSearch({
+                    ...search,
+                    ...{ register_year: e.target.value },
+                  })
+                }
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-4">
+              <label htmlFor="class" className="form-label">
+                First Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="first_name"
+                onChange={(e) =>
+                  setSearch({
+                    ...search,
+                    ...{ first_name: e.target.value },
+                  })
+                }
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="year" className="form-label">
+                Middle Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="middle_name"
+                onChange={(e) =>
+                  setSearch({
+                    ...search,
+                    ...{ middle_name: e.target.value },
+                  })
+                }
+              />
+            </div>
+            <div className="col-md-4">
+              <label htmlFor="year" className="form-label">
+                Last Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="last_name"
+                onChange={(e) =>
+                  setSearch({
+                    ...search,
+                    ...{ last_name: e.target.value },
+                  })
+                }
+              />
+            </div>
+          </div>
+
+          <div className="col-md-6 button-search-student">
+            <ButtonSuccess
+              title="search"
+              icon={<FaSearch />}
+              onClick={handleSearch}
+            />
+            <ButtonDanger
+              title="reset"
+              icon={<RxReset />}
+              onClick={handleReset}
+            />
+          </div>
+        </div>
         <ClassroomStudentList
           ref={tableRef}
           onDelete={(data) => handleDeleteStudent(data)}

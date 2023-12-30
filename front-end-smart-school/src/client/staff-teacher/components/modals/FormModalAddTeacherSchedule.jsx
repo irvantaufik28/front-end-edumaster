@@ -224,7 +224,7 @@ const FormModalAddTeacherSchedule = (props) => {
                       <option value="MONDAY">MONDAY</option>
                       <option value="TUESDAY">TUESDAY</option>
                       <option value="WEDNESDAY">WEDNESDAY</option>
-                      <option value="THRUSDAY">THURDAY</option>
+                      <option value="THURSDAY">THURSDAY</option>
                       <option value="FRIDAY">FRIDAY</option>
                       <option value="SATURDAY">SATURDAY</option>
                     </Form.Control>

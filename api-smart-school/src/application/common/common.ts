@@ -45,9 +45,49 @@ const  generateDefaultPassword = (birth_date : string) => {
   return result;
 }
 
+interface Schedule {
+  id: number;
+  classroom_id: number;
+  day_name: string;
+  start_time: string;
+  end_time: string;
+  teacher_course_id: number;
+  created_at: Date; 
+  updated_at: Date; 
+}
+
+const sortSchedule = (scheduleA: Schedule, scheduleB: Schedule): number => {
+  const daysOrder: { [key: string]: number } = {
+      "SUNDAY": 0,
+      "MONDAY": 1,
+      "TUESDAY": 2,
+      "WEDNESDAY": 3,
+      "THURSDAY": 4,
+      "FRIDAY": 5,
+      "SATURDAY": 6
+  };
+
+  const dayOrderA = daysOrder[scheduleA.day_name];
+  const dayOrderB = daysOrder[scheduleB.day_name];
+
+  if (dayOrderA !== undefined && dayOrderB !== undefined) {
+      if (dayOrderA !== dayOrderB) {
+          return dayOrderA - dayOrderB;
+      }
+
+      const startTimeA = new Date(`1970-01-01T${scheduleA.start_time}`);
+      const startTimeB = new Date(`1970-01-01T${scheduleB.start_time}`);
+
+      return startTimeA.getTime() - startTimeB.getTime();
+  }
+
+  return 0;
+};
+
 export {
   generateNIS,
   generateStaffUsername,
   generateDefaultPassword,
-  generateAccessToken
+  generateAccessToken,
+  sortSchedule
 }

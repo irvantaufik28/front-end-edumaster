@@ -7,6 +7,7 @@ import studentParentSlice from "./features/studentParentSlice";
 import courseSlice from "./features/courseSlice";
 import staffSlice from "./features/staffSlice";
 import teacherCourseSlice from "./features/teacherCourse";
+import classroomScheduleSlice from "./features/classroomScheduleSlice";
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -17,6 +18,7 @@ const store = configureStore({
     course: courseSlice,
     staff: staffSlice,
     teacherCourse: teacherCourseSlice,
+    classroomSchedule: classroomScheduleSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

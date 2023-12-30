@@ -7,7 +7,6 @@ import config from "../../../config";
 import { Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 import { FieldArray, Formik } from "formik";
 import * as Yup from "yup";
-import ConfirmationEdit from "../../../components/modals/ConfirmationEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { classMajorSelector, list } from "../../../features/classMajorSlice";
 import Swal from "sweetalert2";

@@ -28,17 +28,19 @@ const ListOrderTable = forwardRef((props, ref) => {
         Header: "Id",
         accessor: "id",
       },
-      {
-        Header: "Code",
-        accessor: "code",
-      },
+
       {
         Header: "Class Major",
         accessor: "classMajor.name",
       },
+
       {
         Header: "Grade",
         accessor: "level",
+      },
+      {
+        Header: "Code",
+        accessor: "code",
       },
       {
         Header: "Year",

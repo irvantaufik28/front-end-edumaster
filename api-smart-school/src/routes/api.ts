@@ -81,10 +81,11 @@ router.post('/teacher/course', authorized.allowedRoles(["administrator", "manage
 router.put('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.update)
 router.delete('/teacher/course/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), teacherCourseController.deleted)
 
-// teacher course route 
+// classroom schedule route 
 router.get('/classroom-schedule', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.get)
 router.get('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.getById)
 router.post('/classroom-schedule', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.create)
+router.post('/classroom-schedule/create-many', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.createMany)
 router.put('/classroom-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.update)
 router.delete('/classroom/-schedule/:id', authorized.allowedRoles(["administrator", "manager", "staff_tu"]), classroomScheduleController.deleted)
 

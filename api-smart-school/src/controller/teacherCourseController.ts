@@ -10,7 +10,7 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
         const request = {
             page: req.query.page,
             size: req.query.size,
-            name: req.query.name,
+            course_id: req.query.course_id,
             orderBy: req.query.orderBy,
             sortBy: req.query.sortBy
         }
@@ -20,11 +20,11 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
         const skip = (parseInt(page) - 1) * parseInt(size);
         const filters: any = [];
 
-        if (request.name) {
+        if (request.course_id) {
             filters.push({
-                name: {
-                    contains: request.name,
-                    mode: 'insensitive'
+                course_id: {
+                    equals: parseInt(request.course_id),
+
                 }
             })
         }

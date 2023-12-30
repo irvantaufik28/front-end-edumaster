@@ -65,12 +65,7 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
                 id: parseInt(req.params.id)
             },
             include: {
-                students_classroom: {
-                    include: {
-                        student: true,
-
-                    }
-                }
+                classMajor: true
             }
         })
 

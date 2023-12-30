@@ -15,9 +15,9 @@ import axios from "axios";
 import config from "../../config";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
-import HeaderContent from "./components/HeaderContent";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import HeaderContentGlobal from "../../components/ui/header/HeaderContentGlobal";
 
 export const ClassroomPage = () => {
   const navigate = useNavigate();
@@ -177,7 +177,7 @@ export const ClassroomPage = () => {
       <div className="content">
         <SideBar />
         <div className="main-content">
-          <HeaderContent title={"Classroom"} type={"List"} />
+          <HeaderContentGlobal page={"Classrom"} title={"Classroom"} type={"List"} />
           <div className="main-content-alpha">
             <div className="student-head">
               <div className="row sub-header-content">

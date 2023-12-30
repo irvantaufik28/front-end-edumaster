@@ -25,6 +25,33 @@ export const listByStaffId = createAsyncThunk(
     }
   }
 );
+
+export const listAllTeacherCourse = createAsyncThunk(
+  "teacher-course/list-all",
+  async (params = {}, { rejectWithValue }) => {
+    const apiUrl = config.apiUrl;
+    try {
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+      const response = await axios.get(
+        `${apiUrl}/teacher/course?course_id=${params.course_id}`,
+        {
+          headers: {
+            authorization: token,
+          },
+        }
+      );
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data); // Use `rejectWithValue` here
+    }
+  }
+);
 const teacherCourseSlice = createSlice({
   name: "teacherCourse",
   initialState: {
@@ -44,6 +71,20 @@ const teacherCourseSlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(listByStaffId.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = null;
+      })
+      .addCase(listAllTeacherCourse.pending, (state) => {
+        state.loading = true;
+        state.data = null;
+      })
+      .addCase(listAllTeacherCourse.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(listAllTeacherCourse.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;

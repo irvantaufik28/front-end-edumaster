@@ -34,7 +34,7 @@ const StaffTeacherPage = () => {
 
   useEffect(() => {
     dispacth(list());
-  }, []);
+  }, [dispacth]);
 
   const tableRef = useRef(null);
 

@@ -1,7 +1,6 @@
 import {
   LineStyle,
   Timeline,
-
   PermIdentity,
   Storefront,
   AttachMoney,
@@ -18,6 +17,7 @@ import "./styles/sidebar.css";
 import { ImUsers } from "react-icons/im";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { SiGoogleclassroom } from "react-icons/si";
 export default function SideBar() {
   const [isMasterClicked, setIsMasterClicked] = useState(false);
   const [isStudentClicked, setIsStudentClicked] = useState(false);
@@ -67,13 +67,6 @@ export default function SideBar() {
                 >
                   <FaCircle className="subSideBarIcon" />
                   class major
-                </li>
-                <li
-                  className="sidebarListItem"
-                  onClick={() => handleNavigation("/classroom")}
-                >
-                  <FaCircle className="subSideBarIcon" />
-                  classroom
                 </li>
                 <li
                   className="sidebarListItem"
@@ -141,6 +134,14 @@ export default function SideBar() {
                 </li>
               </ul>
             )}
+
+            <li
+              className="sidebarListItem"
+              onClick={() => handleNavigation("/classroom")}
+            >
+              <SiGoogleclassroom className="sidebarIcon" />
+              classroom
+            </li>
           </ul>
         </div>
         <div className="sidebarMenu">
