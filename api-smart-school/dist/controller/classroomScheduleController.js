@@ -1,35 +1,39 @@
-import { Response, NextFunction } from 'express';
-import { prismaClient } from '../application/database';
-import { ResponseError } from '../error/response-error';
-import { sortSchedule } from '../application/common/common';
-
-const get = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const database_1 = require("../application/database");
+const response_error_1 = require("../error/response-error");
+const common_1 = require("../application/common/common");
+const get = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-
         const request = {
             classroom_id: req.query.classroom_id,
             day_name: req.query.day_name,
-        }
-
-        const filters: any = [];
-
+        };
+        const filters = [];
         if (request.classroom_id) {
             filters.push({
                 classroom_id: {
                     equals: parseInt(request.classroom_id),
                 }
-            })
+            });
         }
         if (request.day_name) {
             filters.push({
                 day_name: {
                     contains: request.day_name,
                 }
-            })
+            });
         }
-
-
-        const classroomSchedule = await prismaClient.classroomSchedule.findMany({
+        const classroomSchedule = yield database_1.prismaClient.classroomSchedule.findMany({
             where: {
                 AND: filters
             },
@@ -41,39 +45,30 @@ const get = async (req: any, res: Response, next: NextFunction): Promise<any> =>
                     }
                 }
             }
-        })
-
-        const result = classroomSchedule.sort(sortSchedule);
+        });
+        const result = classroomSchedule.sort(common_1.sortSchedule);
         return res.status(200).json(result);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
-};
-
-
-
-
-
-
-const getTeacherSchedule = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+});
+const getTeacherSchedule = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     try {
-
         const request = {
             page: req.query.page,
             size: req.query.size,
             orderBy: req.query.orderBy,
             sortBy: req.query.sortBy
-        }
-
-        const page = request.page ?? 1;
-        const size = request.size ?? 10;
+        };
+        const page = (_a = request.page) !== null && _a !== void 0 ? _a : 1;
+        const size = (_b = request.size) !== null && _b !== void 0 ? _b : 10;
         const skip = (parseInt(page) - 1) * parseInt(size);
-
         let orders = {
             [request.orderBy || 'day_name']: request.sortBy || 'desc',
         };
-
-        const teacherSchedule = await prismaClient.classroomSchedule.findMany({
+        const teacherSchedule = yield database_1.prismaClient.classroomSchedule.findMany({
             orderBy: orders,
             where: {
                 teacher_course: {
@@ -94,16 +89,14 @@ const getTeacherSchedule = async (req: any, res: Response, next: NextFunction): 
             },
             take: parseInt(size),
             skip: skip,
-        })
-
-        const totalItems = await prismaClient.classroomSchedule.count({
+        });
+        const totalItems = yield database_1.prismaClient.classroomSchedule.count({
             where: {
                 teacher_course: {
                     staff_id: req.params.teacher_id
                 }
             }
-        })
-
+        });
         const result = {
             data: teacherSchedule,
             paging: {
@@ -111,20 +104,16 @@ const getTeacherSchedule = async (req: any, res: Response, next: NextFunction): 
                 total_item: totalItems,
                 total_page: Math.ceil(totalItems / parseInt(size))
             }
-        }
-
-
+        };
         return res.status(200).json(result);
-    } catch (error) {
+    }
+    catch (error) {
         next(error);
     }
-};
-
-
-const getById = async (req: any, res: Response, next: NextFunction): Promise<any> => {
-
+});
+const getById = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const classroomSchedule = await prismaClient.classroomSchedule.findUnique({
+        const classroomSchedule = yield database_1.prismaClient.classroomSchedule.findUnique({
             where: {
                 id: parseInt(req.params.id)
             },
@@ -136,48 +125,41 @@ const getById = async (req: any, res: Response, next: NextFunction): Promise<any
                 }
             }
         });
-
-
         if (!classroomSchedule) {
-            throw new ResponseError(404, "classroom schedule  not found")
+            throw new response_error_1.ResponseError(404, "classroom schedule  not found");
         }
-
         return res.status(200).json({ data: classroomSchedule });
-    } catch (error: any) {
-        next(error)
     }
-};
-
-
-const create = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    catch (error) {
+        next(error);
+    }
+});
+const create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // try {
     //     await transformAndValidate("", req.body);
     // } catch (e: any) {
     //     return res.status(404).json({ message: e.toString() });
     // }
-
     try {
-        const classroomSchedule = await prismaClient.classroomSchedule.create({
+        const classroomSchedule = yield database_1.prismaClient.classroomSchedule.create({
             data: req.body,
         });
-
         return res.status(200).json({ data: classroomSchedule });
-    } catch (error: any) {
-        next(error)
     }
-};
-const createMany = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    catch (error) {
+        next(error);
+    }
+});
+const createMany = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // try {
     //     await transformAndValidate("", req.body);
     // } catch (e: any) {
     //     return res.status(404).json({ message: e.toString() });
     // }
-    
     try {
-        const timeTables = req.body.timeTables
-
+        const timeTables = req.body.timeTables;
         for (const time of timeTables) {
-           await prismaClient.classroomSchedule.create({
+            yield database_1.prismaClient.classroomSchedule.create({
                 data: {
                     classroom_id: parseInt(req.body.classroom_id),
                     teacher_course_id: parseInt(req.body.teacher_course_id),
@@ -188,78 +170,62 @@ const createMany = async (req: any, res: Response, next: NextFunction): Promise<
                     end_time: time.end_time
                 },
             });
-            
         }
-
         return res.status(200).json({ message: "classroom schedule successfully created" });
-    } catch (error: any) {
-        next(error)
     }
-};
-
-const update = async (req: any, res: Response, next: NextFunction): Promise<any> => {
+    catch (error) {
+        next(error);
+    }
+});
+const update = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // try {
     //     await transformAndValidate("", req.body);
     // } catch (e: any) {
     //     return res.status(404).json({ message: e.toString() });
     // }
-
     try {
-
-        const classroomSchedule = await prismaClient.classroomSchedule.findUnique({
+        const classroomSchedule = yield database_1.prismaClient.classroomSchedule.findUnique({
             where: {
                 id: parseInt(req.params.id)
             }
         });
-
-
         if (!classroomSchedule) {
-            throw new ResponseError(404, "course not found")
+            throw new response_error_1.ResponseError(404, "course not found");
         }
-
-        await prismaClient.classroomSchedule.update({
+        yield database_1.prismaClient.classroomSchedule.update({
             where: {
                 id: parseInt(req.params.id)
             },
             data: req.body,
         });
-
         return res.status(200).json({ message: "classroom Schedule course successfuly updated" });
-    } catch (error: any) {
-        next(error)
     }
-};
-
-
-
-const deleted = async (req: any, res: Response, next: NextFunction): Promise<any> => {
-
+    catch (error) {
+        next(error);
+    }
+});
+const deleted = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const classroomSchedule = await prismaClient.classroomSchedule.findUnique({
+        const classroomSchedule = yield database_1.prismaClient.classroomSchedule.findUnique({
             where: {
                 id: parseInt(req.params.id)
             }
         });
-
         if (!classroomSchedule) {
-            throw new ResponseError(404, "course not found")
+            throw new response_error_1.ResponseError(404, "course not found");
         }
-
-        await prismaClient.classroomSchedule.delete({
+        yield database_1.prismaClient.classroomSchedule.delete({
             where: {
                 id: parseInt(req.params.id)
             }
-        })
-
+        });
         return res.status(200).json({ message: "classroom Schedulesuccessfully deleted" });
-    } catch (error: any) {
-        next(error)
     }
-};
-
-
-
-export default {
+    catch (error) {
+        next(error);
+    }
+});
+exports.default = {
     get,
     getById,
     getTeacherSchedule,
@@ -268,3 +234,4 @@ export default {
     update,
     deleted
 };
+//# sourceMappingURL=classroomScheduleController.js.map

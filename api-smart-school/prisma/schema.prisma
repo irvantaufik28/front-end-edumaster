@@ -132,11 +132,13 @@ model ClassroomSchedule {
   id                Int           @id @default(autoincrement())
   classroom         Classroom     @relation(fields: [classroom_id], references: [id])
   classroom_id      Int
-  day_name          String
-  start_time        String
-  end_time          String
-  teacher_course    TeacherCourse @relation(fields: [teacher_course_id], references: [id])
-  teacher_course_id Int
+  day_name          String?
+  start_time        String?
+  end_time          String?
+  teacher_course    TeacherCourse? @relation(fields: [teacher_course_id], references: [id])
+  teacher_course_id Int?
+  type              String?
+  semseter          String?
   created_at        DateTime      @default(now())
   updated_at        DateTime      @updatedAt
 
@@ -144,12 +146,12 @@ model ClassroomSchedule {
 }
 
 model Course {
-  id            Int             @id @default(autoincrement())
-  name          String          @db.VarChar(100)
-  level         String
+  id             Int             @id @default(autoincrement())
+  name           String          @db.VarChar(100)
+  level          String
   teacher_course TeacherCourse[]
-  created_at    DateTime        @default(now())
-  updated_at    DateTime        @updatedAt
+  created_at     DateTime        @default(now())
+  updated_at     DateTime        @updatedAt
 
   @@map("course")
 }
