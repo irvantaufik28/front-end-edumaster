@@ -9,6 +9,7 @@ import config from "../../../../config";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import TimePicker from "react-time-picker";
+import * as Yup from "yup";
 import {
   listAllTeacherCourse,
   teacherCourseSelector,
@@ -19,24 +20,12 @@ const FormModalAddClassromSchedule = (props) => {
   const dispatch = useDispatch();
   const teacherCourse = useSelector(teacherCourseSelector.selectAll);
   const courses = useSelector(courseSelector.selectAll);
-  const [filterTeacherCourse, setFilterTeacherCourse] = useState("");
-
-  useEffect(() => {
-    dispatch(listAllTeacherCourse({ course_id: filterTeacherCourse }));
-    dispatch(list());
-  }, [dispatch, filterTeacherCourse]);
-
-  const handleChangeTeacherCourse = (e) => {
-    setFilterTeacherCourse(e.target.value);
-  };
 
   const defaultValues = useMemo(
     () => ({
       teacher_course_id: null,
-      course_id: null,
+      course_id: "",
       classroom_id: null,
-      type: "",
-      semester: "",
       timeTables: [
         {
           day_name: "",
@@ -47,30 +36,87 @@ const FormModalAddClassromSchedule = (props) => {
     }),
     []
   );
+
+  const validationSchema = Yup.object().shape({
+    teacher_course_id: Yup.string().required("teacher course is required"),
+    // TODO FIX VALIDATE COURSE ID
+    // course_id: Yup.string().required("course is required"),
+    timeTables: Yup.array()
+      .of(
+        Yup.object().shape({
+          day_name: Yup.string().required(" Day is Required"),
+          start_time: Yup.string().required(" start time is Required"),
+          end_time: Yup.string().required("end time is required"),
+        })
+      )
+      .min(1, "min 1"),
+  });
+
   const [initialValues, setInitialValues] = useState(defaultValues);
 
   let title = "Add Classroom Schedule";
-  if (props.type === "edit") title = "Edit ClassromSchedule";
 
   useEffect(() => {
     const newValues = { ...defaultValues, ...props.initialValues };
     setInitialValues(newValues);
   }, [props.initialValues, defaultValues]);
 
+  const [filterTeacherCourse, setFilterTeacherCourse] = useState({
+    course_id: initialValues.course_id,
+  });
+
+  useEffect(() => {
+    setFilterTeacherCourse((prevFilter) => ({
+      ...prevFilter,
+      course_id: initialValues.course_id,
+    }));
+  }, [initialValues]);
+
+  useEffect(() => {
+    dispatch(
+      listAllTeacherCourse({ course_id: filterTeacherCourse.course_id })
+    );
+    dispatch(list());
+  }, [dispatch, filterTeacherCourse.course_id]);
+
+  const handleChangeTeacherCourse = (e) => {
+    const newFilterTeacherCourse = {
+      ...filterTeacherCourse,
+      course_id: e.target.value,
+    };
+
+    if (newFilterTeacherCourse.course_id === "") {
+      setInitialValues((prevValues) => ({
+        ...prevValues,
+        teacher_course_id: "",
+      }));
+    }
+
+    setFilterTeacherCourse(newFilterTeacherCourse);
+  };
+
   const handleSubmit = async (values, { setSubmitting }) => {
     const token = document.cookie
       .split("; ")
       .find((row) => row.startsWith("token="))
       ?.split("=")[1];
-
     try {
       const payload = _.pick(values, [
         "classroom_id",
+        "course_id",
         "teacher_course_id",
-        "type",
-        "semester",
         "timeTables",
       ]);
+
+      if (
+        filterTeacherCourse.course_id !== "" ||
+        filterTeacherCourse.course_id !== undefined
+      ) {
+        payload.course_id = parseInt(filterTeacherCourse.course_id);
+      } else {
+        payload.course_id = null;
+      }
+
       if (payload.teacher_course_id) {
         payload.teacher_course_id = parseInt(payload.teacher_course_id);
       }
@@ -86,7 +132,7 @@ const FormModalAddClassromSchedule = (props) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, update it!",
+        confirmButtonText: "Yes",
       });
 
       if (confirmation.isConfirmed) {
@@ -101,14 +147,14 @@ const FormModalAddClassromSchedule = (props) => {
         );
 
         Swal.fire({
-          title: "Updated",
-          text: "Your file has been updated.",
+          title: "Created",
+          text: "Your file has been Created.",
           icon: "success",
         });
       }
 
       // Trigger the success callback
-      props.onSuccess(props.type);
+      props.onSuccess();
     } catch (error) {
       console.error(error);
       Swal.fire({
@@ -130,6 +176,7 @@ const FormModalAddClassromSchedule = (props) => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         enableReinitialize
+        validationSchema={validationSchema}
       >
         {({
           values,
@@ -145,13 +192,13 @@ const FormModalAddClassromSchedule = (props) => {
             <Modal.Body>
               <Form>
                 <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Teacher Course</Form.Label>
+                  <Form.Label className="col-sm-4">Course</Form.Label>
                   <Col md={8}>
                     <Form.Control
                       as="select"
                       className="input-form-parent-student mb-3"
                       name="course_id"
-                      value={filterTeacherCourse}
+                      value={filterTeacherCourse.course_id}
                       isInvalid={touched.course_id && errors.course_id}
                       onChange={handleChangeTeacherCourse}
                     >
@@ -177,7 +224,7 @@ const FormModalAddClassromSchedule = (props) => {
                   <Form.Label className="col-sm-4">Teacher Course</Form.Label>
                   <Col md={8}>
                     <Form.Control
-                      disabled={filterTeacherCourse === ""}
+                      disabled={filterTeacherCourse.course_id === ""}
                       as="select"
                       className="input-form-parent-student mb-3"
                       name="teacher_course_id"
@@ -206,64 +253,6 @@ const FormModalAddClassromSchedule = (props) => {
                     )}
                   </Col>
                 </Row>
-
-                <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Type</Form.Label>
-                  <Col md={8}>
-                    <Form.Control
-                      as="select"
-                      className="input-form-parent-student mb-3"
-                      name="type"
-                      value={values.type}
-                      isInvalid={touched.type && errors.type}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select Type</option>
-                      <option value="MUATAN NASIONAL">Muatan Nasional</option>
-                      <option value="MUATAN KEWILAYAHAN">Muatan Kewilayahan</option>
-                      <option value="DASAR BIDANG KEAHLIAN">Dasar Bidang Keahlian</option>
-                      <option value="DASAR PROGRAM KEAHLIAN">Dasar Program Keahlian</option>
-                      <option value="KOMPETENSI KEAHLIAN">Kompetensi Keahlian</option>
-                    </Form.Control>
-
-                    {touched.type && errors.type && (
-                      <Form.Control.Feedback
-                        type="invalid"
-                        style={{ display: "unset" }}
-                      >
-                        {errors.type}
-                      </Form.Control.Feedback>
-                    )}
-                  </Col>
-                </Row>
-                
-                <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Semester</Form.Label>
-                  <Col md={8}>
-                    <Form.Control
-                      as="select"
-                      className="input-form-parent-student mb-3"
-                      name="semester"
-                      value={values.semester}
-                      isInvalid={touched.semester && errors.semester}
-                      onChange={handleChange}
-                    >
-                      <option value="">Select Semester</option>
-                      <option value="1">Semester 1</option>
-                      <option value="2">Semester 2</option>
-                      </Form.Control>
-
-                    {touched.semester && errors.semester && (
-                      <Form.Control.Feedback
-                        type="invalid"
-                        style={{ display: "unset" }}
-                      >
-                        {errors.semester}
-                      </Form.Control.Feedback>
-                    )}
-                  </Col>
-                </Row>
-
                 <FieldArray name="timeTables">
                   {({ insert, remove, push }) => (
                     <>

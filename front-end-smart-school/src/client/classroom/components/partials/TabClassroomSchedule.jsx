@@ -13,14 +13,19 @@ import config from "../../../../config";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
 import { SiAddthis } from "react-icons/si";
 import FormModalAddClassromSchedule from "../modals/FormModalAddClassromSchedule";
+import FormModalEditClassromSchedule from "../modals/FormModalEditClassromSchedule";
 
 const TabClassroomSchedule = () => {
-  const defaultFormModal = {
+  const defaultFormAddModal = {
     show: false,
     type: "add",
-    editId: null,
   };
-  const [formModal, setFormModal] = useState(defaultFormModal);
+  const defaultFormEditModal = {
+    show: false,
+    type: "add",
+  };
+  const [formAddModal, setFormAddModal] = useState(defaultFormAddModal);
+  const [formEditModal, setFormEditModal] = useState(defaultFormEditModal);
   const classroomSchedule = useSelector(classroomScheduleSelector.selectAll);
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -30,10 +35,11 @@ const TabClassroomSchedule = () => {
   }, [dispatch, id]);
 
   const handleAdd = async () => {
-    setFormModal({
-      ...defaultFormModal,
+    setFormAddModal({
+      ...defaultFormAddModal,
       show: true,
-      initialValues: { classroom_id: id },
+      type: "add",
+      initialValues: { classroom_id: id},
     });
   };
 
@@ -84,19 +90,46 @@ const TabClassroomSchedule = () => {
     }
   };
 
-  const handleEdit = (id) => {
-    alert(id);
+  const handleEdit = async (id) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+
+    const { data: resData } = await axios.get(
+      config.apiUrl + `/classroom-schedule/` + id,
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      }
+    );
+   
+    setFormEditModal({
+      ...defaultFormEditModal,
+      show: true,
+
+      editId: id,
+      initialValues: resData.data,
+    });
   };
 
-  const handleCloseForm = () => {
-    setFormModal({
-      ...formModal,
+  const handleCloseFormAdd = () => {
+    setFormAddModal({
+      ...formAddModal,
+      show: false,
+    });
+  };
+  const handleCloseFormEdit = () => {
+    setFormEditModal({
+      ...formEditModal,
       show: false,
     });
   };
 
   const onSubmitSuccess = () => {
-    handleCloseForm();
+    handleCloseFormAdd();
+    handleCloseFormEdit();
     dispatch(listClassroomSchedule({ id: id, day_name: "" }));
   };
   return (
@@ -114,21 +147,22 @@ const TabClassroomSchedule = () => {
             <tr>
               <th className="th-react-table ">Day</th>
               <th className="th-react-table ">Course</th>
+              <th className="th-react-table ">Type</th>
               <th className="th-react-table ">Start Time</th>
               <th className="th-react-table ">End Time</th>
               <th className="th-react-table ">Teacher</th>
-              <th className="th-react-table ">Type</th>
               <th className="th-react-table ">Action</th>
             </tr>
           </thead>
           <tbody>
             {classroomSchedule?.map((item) => (
               <tr key={item.id}>
-                <td>{item?.day_name}</td>
+               <td>{item?.day_name ? item.day_name : 'No day selected'}</td>
                 <td>
-                  {item?.teacher_course?.courses?.name} kelas{" "}
-                  {item?.teacher_course?.courses?.level}
+                  {item?.courses?.name} kelas{" "}
+                  {item?.courses?.level}
                 </td>
+                <td>{item?.courses?.type}</td>
                 <td>{item?.start_time}</td>
                 <td>{item?.end_time}</td>
                 <td>
@@ -136,7 +170,6 @@ const TabClassroomSchedule = () => {
                   {item?.teacher_course?.staff?.middle_name}{" "}
                   {item?.teacher_course?.staff?.last_name}
                 </td>
-                <td>{item?.type}</td>
                 <td>
                   {" "}
                   <Button
@@ -167,8 +200,13 @@ const TabClassroomSchedule = () => {
         </Card>
       )}
       <FormModalAddClassromSchedule
-        {...formModal}
-        onHide={handleCloseForm}
+        {...formAddModal}
+        onHide={handleCloseFormAdd}
+        onSuccess={onSubmitSuccess}
+      />    
+      <FormModalEditClassromSchedule
+        {...formEditModal}
+        onHide={handleCloseFormEdit}
         onSuccess={onSubmitSuccess}
       />
     </>

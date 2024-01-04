@@ -41,8 +41,6 @@ const FormModalAddTeacherSchedule = (props) => {
       day_name: "",
       start_time: "",
       end_time: "",
-      type: "",
-      semester: "",
       teacher_course_id: null,
     }),
     []
@@ -79,8 +77,6 @@ const FormModalAddTeacherSchedule = (props) => {
         "day_name",
         "start_time",
         "end_time",
-        "type",
-        "semester",
         "teacher_course_id",
         
       ]);
@@ -215,7 +211,7 @@ const FormModalAddTeacherSchedule = (props) => {
                 </Row>
 
 
-                <Row className="mb-3">
+                {/* <Row className="mb-3">
                   <Form.Label className="col-sm-4">Type</Form.Label>
                   <Col md={8}>
                     <Form.Control
@@ -243,8 +239,8 @@ const FormModalAddTeacherSchedule = (props) => {
                       </Form.Control.Feedback>
                     )}
                   </Col>
-                </Row>
-                
+                </Row> */}
+{/*                 
                 <Row className="mb-3">
                   <Form.Label className="col-sm-4">Semester</Form.Label>
                   <Col md={8}>
@@ -270,7 +266,7 @@ const FormModalAddTeacherSchedule = (props) => {
                       </Form.Control.Feedback>
                     )}
                   </Col>
-                </Row>
+                </Row> */}
 
                 <Row className="mb-3">
                   <Form.Label className="col-sm-4">Day</Form.Label>
