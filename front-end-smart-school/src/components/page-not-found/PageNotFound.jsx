@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./pagenotfound.css";
-const PageNotFoud = () => {
+const PageNotFound = () => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -28,4 +28,4 @@ const PageNotFoud = () => {
   );
 };
 
-export default PageNotFoud;
+export default PageNotFound;

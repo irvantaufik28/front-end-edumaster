@@ -117,6 +117,7 @@ const TabClassroomSchedule = () => {
               <th className="th-react-table ">Start Time</th>
               <th className="th-react-table ">End Time</th>
               <th className="th-react-table ">Teacher</th>
+              <th className="th-react-table ">Type</th>
               <th className="th-react-table ">Action</th>
             </tr>
           </thead>
@@ -135,6 +136,7 @@ const TabClassroomSchedule = () => {
                   {item?.teacher_course?.staff?.middle_name}{" "}
                   {item?.teacher_course?.staff?.last_name}
                 </td>
+                <td>{item?.type}</td>
                 <td>
                   {" "}
                   <Button

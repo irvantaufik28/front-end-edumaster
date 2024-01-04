@@ -24,10 +24,6 @@ const FormModalAddClassromSchedule = (props) => {
   useEffect(() => {
     dispatch(listAllTeacherCourse({ course_id: filterTeacherCourse }));
     dispatch(list());
-
-    // if (filterTeacherCourse === "") {
-    //     document.getElementById("teacher_course_id").values = "";
-    // }
   }, [dispatch, filterTeacherCourse]);
 
   const handleChangeTeacherCourse = (e) => {
@@ -39,6 +35,8 @@ const FormModalAddClassromSchedule = (props) => {
       teacher_course_id: null,
       course_id: null,
       classroom_id: null,
+      type: "",
+      semester: "",
       timeTables: [
         {
           day_name: "",
@@ -66,19 +64,21 @@ const FormModalAddClassromSchedule = (props) => {
       ?.split("=")[1];
 
     try {
-    const payload = _.pick(values, [
-      "classroom_id",
-      "teacher_course_id",
-      "timeTables",
-    ]);
-    if (payload.teacher_course_id) {
-      payload.teacher_course_id = parseInt(payload.teacher_course_id);
-    }
+      const payload = _.pick(values, [
+        "classroom_id",
+        "teacher_course_id",
+        "type",
+        "semester",
+        "timeTables",
+      ]);
+      if (payload.teacher_course_id) {
+        payload.teacher_course_id = parseInt(payload.teacher_course_id);
+      }
 
-    if (payload.classroom_id) {
-      payload.classroom_id = parseInt(payload.classroom_id);
-    }
-   
+      if (payload.classroom_id) {
+        payload.classroom_id = parseInt(payload.classroom_id);
+      }
+
       const confirmation = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -90,11 +90,15 @@ const FormModalAddClassromSchedule = (props) => {
       });
 
       if (confirmation.isConfirmed) {
-        await axios.post(config.apiUrl + `/classroom-schedule/create-many`, payload, {
-          headers: {
-            authorization: token,
-          },
-        });
+        await axios.post(
+          config.apiUrl + `/classroom-schedule/create-many`,
+          payload,
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        );
 
         Swal.fire({
           title: "Updated",
@@ -198,6 +202,63 @@ const FormModalAddClassromSchedule = (props) => {
                         style={{ display: "unset" }}
                       >
                         {errors.teacher_course_id}
+                      </Form.Control.Feedback>
+                    )}
+                  </Col>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Type</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      as="select"
+                      className="input-form-parent-student mb-3"
+                      name="type"
+                      value={values.type}
+                      isInvalid={touched.type && errors.type}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Type</option>
+                      <option value="MUATAN NASIONAL">Muatan Nasional</option>
+                      <option value="MUATAN KEWILAYAHAN">Muatan Kewilayahan</option>
+                      <option value="DASAR BIDANG KEAHLIAN">Dasar Bidang Keahlian</option>
+                      <option value="DASAR PROGRAM KEAHLIAN">Dasar Program Keahlian</option>
+                      <option value="KOMPETENSI KEAHLIAN">Kompetensi Keahlian</option>
+                    </Form.Control>
+
+                    {touched.type && errors.type && (
+                      <Form.Control.Feedback
+                        type="invalid"
+                        style={{ display: "unset" }}
+                      >
+                        {errors.type}
+                      </Form.Control.Feedback>
+                    )}
+                  </Col>
+                </Row>
+                
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Semester</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      as="select"
+                      className="input-form-parent-student mb-3"
+                      name="semester"
+                      value={values.semester}
+                      isInvalid={touched.semester && errors.semester}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Semester</option>
+                      <option value="1">Semester 1</option>
+                      <option value="2">Semester 2</option>
+                      </Form.Control>
+
+                    {touched.semester && errors.semester && (
+                      <Form.Control.Feedback
+                        type="invalid"
+                        style={{ display: "unset" }}
+                      >
+                        {errors.semester}
                       </Form.Control.Feedback>
                     )}
                   </Col>

@@ -41,6 +41,8 @@ const FormModalAddTeacherSchedule = (props) => {
       day_name: "",
       start_time: "",
       end_time: "",
+      type: "",
+      semester: "",
       teacher_course_id: null,
     }),
     []
@@ -77,7 +79,10 @@ const FormModalAddTeacherSchedule = (props) => {
         "day_name",
         "start_time",
         "end_time",
+        "type",
+        "semester",
         "teacher_course_id",
+        
       ]);
       if (payload.teacher_course_id) {
         payload.teacher_course_id = parseInt(payload.teacher_course_id);
@@ -124,7 +129,7 @@ const FormModalAddTeacherSchedule = (props) => {
     }
   };
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={props.show} onHide={props.onHide} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
@@ -204,6 +209,64 @@ const FormModalAddTeacherSchedule = (props) => {
                         style={{ display: "unset" }}
                       >
                         {errors.classroom_id}
+                      </Form.Control.Feedback>
+                    )}
+                  </Col>
+                </Row>
+
+
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Type</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      as="select"
+                      className="input-form-parent-student mb-3"
+                      name="type"
+                      value={values.type}
+                      isInvalid={touched.type && errors.type}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Type</option>
+                      <option value="MUATAN NASIONAL">Muatan Nasional</option>
+                      <option value="MUATAN KEWILAYAHAN">Muatan Kewilayahan</option>
+                      <option value="DASAR BIDANG KEAHLIAN">Dasar Bidang Keahlian</option>
+                      <option value="DASAR PROGRAM KEAHLIAN">Dasar Program Keahlian</option>
+                      <option value="KOMPETENSI KEAHLIAN">Kompetensi Keahlian</option>
+                    </Form.Control>
+
+                    {touched.type && errors.type && (
+                      <Form.Control.Feedback
+                        type="invalid"
+                        style={{ display: "unset" }}
+                      >
+                        {errors.type}
+                      </Form.Control.Feedback>
+                    )}
+                  </Col>
+                </Row>
+                
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Semester</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      as="select"
+                      className="input-form-parent-student mb-3"
+                      name="semester"
+                      value={values.semester}
+                      isInvalid={touched.semester && errors.semester}
+                      onChange={handleChange}
+                    >
+                      <option value="">Select Semester</option>
+                      <option value="1">Semester 1</option>
+                      <option value="2">Semester 2</option>
+                      </Form.Control>
+
+                    {touched.semester && errors.semester && (
+                      <Form.Control.Feedback
+                        type="invalid"
+                        style={{ display: "unset" }}
+                      >
+                        {errors.semester}
                       </Form.Control.Feedback>
                     )}
                   </Col>
