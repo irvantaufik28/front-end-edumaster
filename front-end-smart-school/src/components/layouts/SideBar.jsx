@@ -70,10 +70,25 @@ export default function SideBar() {
                 </li>
                 <li
                   className="sidebarListItem"
+                  onClick={() => handleNavigation("/admin/curriculum")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  Curriculum
+                </li>
+                <li
+                  className="sidebarListItem"
                   onClick={() => handleNavigation("/admin/course")}
                 >
                   <FaCircle className="subSideBarIcon" />
                   Course
+                </li>
+
+                <li
+                  className="sidebarListItem"
+                  onClick={() => handleNavigation("/admin/permission")}
+                >
+                  <FaCircle className="subSideBarIcon" />
+                  Permission
                 </li>
                 <li
                   className="sidebarListItem"
@@ -81,13 +96,6 @@ export default function SideBar() {
                 >
                   <FaCircle className="subSideBarIcon" />
                   Role
-                </li>
-                <li
-                  className="sidebarListItem"
-                  onClick={() => handleNavigation("/admin/permission")}
-                >
-                  <FaCircle className="subSideBarIcon" />
-                  Permission
                 </li>
               </ul>
             )}
@@ -140,7 +148,7 @@ export default function SideBar() {
               onClick={() => handleNavigation("/classroom")}
             >
               <SiGoogleclassroom className="sidebarIcon" />
-              classroom
+              Classroom
             </li>
           </ul>
         </div>

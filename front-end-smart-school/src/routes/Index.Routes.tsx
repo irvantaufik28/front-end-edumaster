@@ -15,6 +15,8 @@ import RolePage from "../client/admin/role/RolePage";
 import StaffTeacherPage from "../client/staff-teacher/StaffTeacherPage";
 import StaffTeacherDetailPage from "../client/staff-teacher/StaffTeacherDetailPage";
 import CoursePage from "../client/admin/course/CoursePage";
+import CurriculumPage from "../client/admin/curriculum/CurriculumPage";
+import ManageCurriculumPage from "../client/admin/curriculum/ManageCurriculumPage";
 
 const IndexRoutes = () => {
   return (
@@ -27,6 +29,8 @@ const IndexRoutes = () => {
           <Route path="/admin/role" element={<RolePage />} />
           <Route path="/admin/classmajor" element={<ClassMajorPage />} />
           <Route path="/admin/course" element={<CoursePage />} />
+          <Route path="/admin/curriculum" element={<CurriculumPage />} />
+          <Route path="/admin/curriculum/manage/:id" element={<ManageCurriculumPage />} />
 
           <Route path="/staff/teacher" element={<StaffTeacherPage />} />
           <Route
