@@ -26,12 +26,12 @@ const FormModalAddTeacherSchedule = (props) => {
   const { id } = useParams();
 
   const dispacth = useDispatch();
-  
+
   const availableClassroom = useSelector(classroomSelector.selectAll);
   const teacherCourse = useSelector(teacherCourseSelector.selectAll);
   useEffect(() => {
     dispacth(listByStaffId(id));
-    // todo fik filter available classroom 
+    // todo fik filter available classroom
     dispacth(classroomList({ level: 1, status: "active" }));
   }, [dispacth, id]);
 
@@ -41,12 +41,12 @@ const FormModalAddTeacherSchedule = (props) => {
       day_name: "",
       start_time: "",
       end_time: "",
+      duration: "",
       teacher_course_id: null,
     }),
     []
   );
   const [initialValues, setInitialValues] = useState(defaultValues);
-
 
   const validationSchema = Yup.object().shape({
     classroom_id: Yup.string().required("classroom is required"),
@@ -56,7 +56,6 @@ const FormModalAddTeacherSchedule = (props) => {
     teacher_course_id: Yup.string().required("teacher course is required"),
   });
 
-
   let title = "Add Teacher Schedule";
   if (props.type === "edit") title = "Teacher Schedule";
 
@@ -64,6 +63,63 @@ const FormModalAddTeacherSchedule = (props) => {
     const newValues = { ...defaultValues, ...props.initialValues };
     setInitialValues(newValues);
   }, [props.initialValues, defaultValues]);
+
+  function addMinutesToTime(startTime, durationMinutes) {
+    const startTimeObj = new Date(`2022-01-01T${startTime}:00`);
+    const endTimeObj = new Date(
+      startTimeObj.getTime() + durationMinutes * 60000
+    );
+    const endHours = endTimeObj.getHours();
+    const endMinutes = endTimeObj.getMinutes();
+    const endTime = `${String(endHours).padStart(2, "0")}:${String(
+      endMinutes
+    ).padStart(2, "0")}`;
+
+    return endTime;
+  }
+
+  const [timeCaculation, setTimeCaculation] = useState({
+    start_time: initialValues.start_time,
+    end_time: initialValues.end_time,
+    duration: initialValues.duration,
+  });
+
+  useEffect(() => {
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      start_time: initialValues.start_time,
+    }));
+  }, [initialValues.start_time]);
+
+  const handleChangeStartTime = (time, setFieldValue) => {
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      start_time: time,
+    }));
+    setFieldValue("start_time", time);
+  };
+
+  const handleChangeDuration = (e, setFieldValue) => {
+    const duration = e.target.value;
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      duration: duration,
+    }));
+    const resultEndTime = addMinutesToTime(
+      timeCaculation.start_time,
+      parseInt(duration)
+    );
+    setFieldValue("end_time", resultEndTime);
+  };
+
+  useEffect(() => {
+    if (props.show === false) {
+      setTimeCaculation((prevValues) => ({
+        ...prevValues,
+        duration: "",
+      }));
+    }
+  }, [props.show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const token = document.cookie
@@ -78,7 +134,6 @@ const FormModalAddTeacherSchedule = (props) => {
         "start_time",
         "end_time",
         "teacher_course_id",
-        
       ]);
       if (payload.teacher_course_id) {
         payload.teacher_course_id = parseInt(payload.teacher_course_id);
@@ -149,7 +204,7 @@ const FormModalAddTeacherSchedule = (props) => {
             <Modal.Body>
               <Form>
                 <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Teacher Course</Form.Label>
+                  <Form.Label className="col-sm-4">Teacher Course :</Form.Label>
                   <Col md={8}>
                     <Form.Control
                       as="select"
@@ -164,7 +219,7 @@ const FormModalAddTeacherSchedule = (props) => {
                       <option value="">Select Course</option>
                       {teacherCourse?.map((item) => (
                         <option key={item?.id} value={item?.id}>
-                          {item?.courses?.name} Kelas {item?.courses?.level} 
+                          {item?.courses?.name} Kelas {item?.courses?.level}
                         </option>
                       ))}
                     </Form.Control>
@@ -180,7 +235,7 @@ const FormModalAddTeacherSchedule = (props) => {
                   </Col>
                 </Row>
                 <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Classroom</Form.Label>
+                  <Form.Label className="col-sm-4">Classroom :</Form.Label>
                   <Col md={8}>
                     <Form.Control
                       as="select"
@@ -194,7 +249,7 @@ const FormModalAddTeacherSchedule = (props) => {
                       {availableClassroom?.map((item) => (
                         <option key={item?.id} value={item?.id}>
                           {item?.classMajor?.name} Kelas {item?.level}
-                          {item?.code}  {item?.year_group}
+                          {item?.code} {item?.year_group}
                         </option>
                       ))}
                     </Form.Control>
@@ -209,7 +264,6 @@ const FormModalAddTeacherSchedule = (props) => {
                     )}
                   </Col>
                 </Row>
-
 
                 {/* <Row className="mb-3">
                   <Form.Label className="col-sm-4">Type</Form.Label>
@@ -240,7 +294,7 @@ const FormModalAddTeacherSchedule = (props) => {
                     )}
                   </Col>
                 </Row> */}
-{/*                 
+                {/*                 
                 <Row className="mb-3">
                   <Form.Label className="col-sm-4">Semester</Form.Label>
                   <Col md={8}>
@@ -269,7 +323,7 @@ const FormModalAddTeacherSchedule = (props) => {
                 </Row> */}
 
                 <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Day</Form.Label>
+                  <Form.Label className="col-sm-4">Day :</Form.Label>
                   <Col md={8}>
                     <Form.Control
                       as="select"
@@ -302,42 +356,103 @@ const FormModalAddTeacherSchedule = (props) => {
                   <Form.Label className="col-sm-4">Start Time</Form.Label>
                   <Col md={8}>
                     <TimePicker
-                      className={`form-control ${
-                        touched.start_time && errors.start_time
-                          ? "is-invalid"
-                          : ""
-                      }`}
-                      onChange={(time) => setFieldValue("start_time", time)}
+                      className="input-form-parent-student mb-3"
+                      as="select"
+                      name="start_time"
                       value={values.start_time}
+                      isInvalid={
+                        touched.start_time &&
+                        touched.start_time &&
+                        errors.start_time &&
+                        errors.start_time
+                      }
+                      onChange={(time) =>
+                        handleChangeStartTime(time, setFieldValue)
+                      }
                     />
-                    {touched.start_time && errors.start_time && (
-                      <Form.Control.Feedback
-                        type="invalid"
-                        style={{ display: "unset" }}
-                      >
-                        {errors.start_time}
-                      </Form.Control.Feedback>
-                    )}
+
+                    {touched.start_time &&
+                      touched.start_time &&
+                      errors.start_time &&
+                      errors.start_time && (
+                        <Form.Control.Feedback
+                          type="invalid"
+                          style={{ display: "unset" }}
+                        >
+                          {errors.start_time}
+                        </Form.Control.Feedback>
+                      )}
                   </Col>
                 </Row>
+
                 <Row className="mb-3">
-                  <Form.Label className="col-sm-4">End Time</Form.Label>
+                  <Form.Label className="col-sm-4">Duration :</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      className="input-form-parent-student mb-3"
+                      as="select"
+                      name="duration"
+                      disabled={values.start_time === "" || !values.start_time}
+                      value={timeCaculation.duration}
+                      placeholder="Select Duration"
+                      isInvalid={
+                        touched.duration &&
+                        touched.duration &&
+                        errors.duration &&
+                        errors.duration
+                      }
+                      onChange={(e) => handleChangeDuration(e, setFieldValue)}
+                    >
+                      <option value={"0"}>Select Duration</option>
+                      <option value={"45"}> 45 Minute</option>
+                      <option value={"90"}>90 Minute</option>
+                      <option value={"135"}>135 Minute</option>
+                      <option value={"180"}>180 minute</option>
+                    </Form.Control>
+
+                    {touched.duration &&
+                      touched.duration &&
+                      errors.duration &&
+                      errors.duration && (
+                        <Form.Control.Feedback
+                          type="invalid"
+                          style={{ display: "unset" }}
+                        >
+                          {errors.duration}
+                        </Form.Control.Feedback>
+                      )}
+                  </Col>
+                </Row>
+
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">End Time :</Form.Label>
                   <Col md={8}>
                     <TimePicker
-                      className={`form-control ${
-                        touched.end_time && errors.end_time ? "is-invalid" : ""
-                      }`}
-                      onChange={(time) => setFieldValue("end_time", time)}
+                      className="input-form-parent-student mb-3"
+                      as="select"
+                      name="end_time"
+                      disabled={true}
                       value={values.end_time}
+                      isInvalid={
+                        touched.end_time &&
+                        touched.end_time &&
+                        errors.end_time &&
+                        errors.end_time
+                      }
+                      onChange={(time) => setFieldValue(time, setFieldValue)}
                     />
-                    {touched.end_time && errors.end_time && (
-                      <Form.Control.Feedback
-                        type="invalid"
-                        style={{ display: "unset" }}
-                      >
-                        {errors.end_time}
-                      </Form.Control.Feedback>
-                    )}
+
+                    {touched.end_time &&
+                      touched.end_time &&
+                      errors.end_time &&
+                      errors.end_time && (
+                        <Form.Control.Feedback
+                          type="invalid"
+                          style={{ display: "unset" }}
+                        >
+                          {errors.end_time}
+                        </Form.Control.Feedback>
+                      )}
                   </Col>
                 </Row>
               </Form>

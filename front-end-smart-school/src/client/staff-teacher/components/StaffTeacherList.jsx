@@ -54,7 +54,7 @@ const StaffTeacherList = forwardRef((props, ref) => {
         Cell: ({ row }) => (
             <div>
               <div>
-                {row.original.teacher_course.map(course => course?.courses?.name).join(", ") || "-"}
+              {row.original.teacher_course.map(course => `${course?.courses?.name} kelas ${course?.courses?.level}`).join(", ") || "-"}
               </div>
             </div>
           ),

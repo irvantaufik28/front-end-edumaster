@@ -66,28 +66,28 @@ export default function SideBar() {
                   onClick={() => handleNavigation("/admin/classmajor")}
                 >
                   <FaCircle className="subSideBarIcon" />
-                  class major
+                  Classmajor
                 </li>
                 <li
                   className="sidebarListItem"
-                  onClick={() => handleNavigation("/relationship")}
+                  onClick={() => handleNavigation("/admin/course")}
                 >
                   <FaCircle className="subSideBarIcon" />
-                  relationship
+                  Course
                 </li>
                 <li
                   className="sidebarListItem"
                   onClick={() => handleNavigation("/admin/role")}
                 >
                   <FaCircle className="subSideBarIcon" />
-                  role
+                  Role
                 </li>
                 <li
                   className="sidebarListItem"
-                  onClick={() => handleNavigation("/role")}
+                  onClick={() => handleNavigation("/admin/permission")}
                 >
                   <FaCircle className="subSideBarIcon" />
-                  permission
+                  Permission
                 </li>
               </ul>
             )}

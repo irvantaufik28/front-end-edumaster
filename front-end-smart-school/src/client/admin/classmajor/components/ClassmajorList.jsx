@@ -38,21 +38,13 @@ const ClassmajorList = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onManage(row.values)}
-            >
-              <BiSolidDetail /> Manage
-            </Button>
-            <Button
+          <Button
               variant="info"
               size="sm"
               className="me-2"
               onClick={() => props.onEdit(row.values)}
             >
-              <MdModeEdit /> Edit
+              <MdModeEdit onClick={() => props.onEdit(row.values)} /> Edit
             </Button>
             <Button
               variant="danger"

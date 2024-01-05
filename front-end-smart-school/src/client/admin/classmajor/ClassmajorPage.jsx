@@ -8,10 +8,12 @@ import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import config from "../../../config";
+
 import ClassmajorList from "./components/ClassmajorList";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
 import { Row } from "react-bootstrap";
+import config from "../../../config";
+import FormModalClassmajor from "./components/modals/FormModalClassmajor";
 
 const ClassmajorPage = () => {
   const navigate = useNavigate();
@@ -38,7 +40,7 @@ const ClassmajorPage = () => {
       const id = data.id;
 
       const { data: resData } = await axios.get(
-        config.apiUrl + `/classroom/` + id
+        config.apiUrl + `/class/major/` + id
       );
       setFormModal({
         ...defaultFormModal,
@@ -74,7 +76,7 @@ const ClassmajorPage = () => {
             .find((row) => row.startsWith("token="))
             ?.split("=")[1];
 
-          await axios.delete(config.apiUrl + `/classroom/` + id, {
+          await axios.delete(config.apiUrl + `/class/major/` + id, {
             headers: {
               authorization: `Bearer ${token}`,
             },
@@ -190,11 +192,11 @@ const ClassmajorPage = () => {
         </div>
       </div>
 
-      {/* <FormModal
+      <FormModalClassmajor
       {...formModal}
       onHide={handleCloseForm}
       onSuccess={onSubmitSuccess}
-    /> */}
+    />
     </>
   );
 };

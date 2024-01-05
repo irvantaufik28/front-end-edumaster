@@ -29,6 +29,7 @@ const FormModalEditClassromSchedule = (props) => {
       day_name: "",
       start_time: "",
       end_time: "",
+      duration: "",
     }),
     []
   );
@@ -37,7 +38,7 @@ const FormModalEditClassromSchedule = (props) => {
     teacher_course_id: Yup.string().required("teacher course is required"),
     // TODO FIX VALIDATE COURSE ID
     // course_id: Yup.string().required("course is required"),
-
+    // duration: Yup.string().required(" Duration is Required"),s
     day_name: Yup.string().required(" Day is Required"),
     start_time: Yup.string().required(" start time is Required"),
     end_time: Yup.string().required("end time is required"),
@@ -70,7 +71,7 @@ const FormModalEditClassromSchedule = (props) => {
     dispatch(list());
   }, [dispatch, filterTeacherCourse.course_id]);
 
-  const handleChangeTeacherCourse = (e) => {
+  const handleChangeTeacherCourse = (e, setFieldValue) => {
     const newFilterTeacherCourse = {
       ...filterTeacherCourse,
       course_id: e.target.value,
@@ -82,9 +83,66 @@ const FormModalEditClassromSchedule = (props) => {
         teacher_course_id: "",
       }));
     }
-
+    setFieldValue("course_id", e.target.value);
     setFilterTeacherCourse(newFilterTeacherCourse);
   };
+
+  function addMinutesToTime(startTime, durationMinutes) {
+    const startTimeObj = new Date(`2022-01-01T${startTime}:00`);
+    const endTimeObj = new Date(
+      startTimeObj.getTime() + durationMinutes * 60000
+    );
+    const endHours = endTimeObj.getHours();
+    const endMinutes = endTimeObj.getMinutes();
+    const endTime = `${String(endHours).padStart(2, "0")}:${String(
+      endMinutes
+    ).padStart(2, "0")}`;
+
+    return endTime;
+  }
+
+  const [timeCaculation, setTimeCaculation] = useState({
+    start_time: initialValues.start_time,
+    end_time: initialValues.end_time,
+    duration: initialValues.duration,
+  });
+
+  useEffect(() => {
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      start_time: initialValues.start_time,
+    }));
+  }, [initialValues.start_time]);
+
+  const handleChangeStartTime = (time, setFieldValue) => {
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      start_time: time,
+    }));
+    setFieldValue("start_time", time);
+  };
+
+  const handleChangeDuration = (e, setFieldValue) => {
+    const duration = e.target.value;
+    setTimeCaculation((prevValues) => ({
+      ...prevValues,
+      duration: duration,
+    }));
+    const resultEndTime = addMinutesToTime(
+      timeCaculation.start_time,
+      parseInt(duration)
+    );
+    setFieldValue("end_time", resultEndTime);
+  };
+
+  useEffect(() => {
+    if (props.show === false) {
+      setTimeCaculation((prevValues) => ({
+        ...prevValues,
+        duration: "",
+      }));
+    }
+  }, [props.show]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     const token = document.cookie
@@ -100,15 +158,6 @@ const FormModalEditClassromSchedule = (props) => {
         "start_time",
         "end_time",
       ]);
-
-      if (
-        filterTeacherCourse.course_id !== "" ||
-        filterTeacherCourse.course_id !== undefined
-      ) {
-        payload.course_id = parseInt(filterTeacherCourse.course_id);
-      } else {
-        payload.course_id = null;
-      }
 
       if (payload.teacher_course_id) {
         payload.teacher_course_id = parseInt(payload.teacher_course_id);
@@ -301,7 +350,9 @@ const FormModalEditClassromSchedule = (props) => {
                         errors.start_time &&
                         errors.start_time
                       }
-                      onChange={(time) => setFieldValue("start_time", time)}
+                      onChange={(time) =>
+                        handleChangeStartTime(time, setFieldValue)
+                      }
                     />
 
                     {touched.start_time &&
@@ -317,6 +368,46 @@ const FormModalEditClassromSchedule = (props) => {
                       )}
                   </Col>
                 </Row>
+
+                <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Duration :</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      className="input-form-parent-student mb-3"
+                      as="select"
+                      name="duration"
+                      disabled={values.start_time === "" || !values.start_time}
+                      value={timeCaculation.duration}
+                      placeholder="Select Duration"
+                      isInvalid={
+                        touched.duration &&
+                        touched.duration &&
+                        errors.duration &&
+                        errors.duration
+                      }
+                      onChange={(e) => handleChangeDuration(e, setFieldValue)}
+                    >
+                      <option value={"0"}>Select Duration</option>
+                      <option value={"45"}> 45 Minute</option>
+                      <option value={"90"}>90 Minute</option>
+                      <option value={"135"}>135 Minute</option>
+                      <option value={"180"}>180 minute</option>
+                    </Form.Control>
+
+                    {touched.duration &&
+                      touched.duration &&
+                      errors.duration &&
+                      errors.duration && (
+                        <Form.Control.Feedback
+                          type="invalid"
+                          style={{ display: "unset" }}
+                        >
+                          {errors.duration}
+                        </Form.Control.Feedback>
+                      )}
+                  </Col>
+                </Row>
+
                 <Row className="mb-3">
                   <Form.Label className="col-sm-4">End Time :</Form.Label>
                   <Col md={8}>
@@ -324,6 +415,7 @@ const FormModalEditClassromSchedule = (props) => {
                       className="input-form-parent-student mb-3"
                       as="select"
                       name="end_time"
+                      disabled={true}
                       value={values.end_time}
                       isInvalid={
                         touched.end_time &&
@@ -331,7 +423,7 @@ const FormModalEditClassromSchedule = (props) => {
                         errors.end_time &&
                         errors.end_time
                       }
-                      onChange={(time) => setFieldValue("end_time", time)}
+                      onChange={(time) => setFieldValue(time, setFieldValue)}
                     />
 
                     {touched.end_time &&
