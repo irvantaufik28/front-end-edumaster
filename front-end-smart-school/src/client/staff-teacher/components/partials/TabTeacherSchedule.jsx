@@ -40,7 +40,7 @@ const TabTeacherSchedule = () => {
             .find((row) => row.startsWith("token="))
             ?.split("=")[1];
 
-          await axios.delete(config.apiUrl + `/classroom/-schedule/` + id, {
+          await axios.delete(config.apiUrl + `/classroom-schedule/` + id, {
             headers: {
               authorization: `Bearer ${token}`,
             },

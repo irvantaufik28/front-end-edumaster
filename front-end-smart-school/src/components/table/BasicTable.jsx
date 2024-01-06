@@ -206,7 +206,7 @@ const BasicTable = ({
                 <th className="th-react-table"
                 {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
-                  <span style={{ marginLeft: column.marginleft ?? "10px", position: "relative" }}>
+                  <span style={{ marginLeft: column.marginleft ?? "10px", position: "relative"}}>
                     {column.isSorted ? (
                       column.isSortedDesc ? (
                         <span style={{ position: "relative" }}>

@@ -63,7 +63,7 @@ const TabClassroomSchedule = () => {
             ?.split("=")[1];
 
           await axios.delete(
-            config.apiUrl + `/classroom/-schedule/` + schedule_id,
+            config.apiUrl + `/classroom-schedule/` + schedule_id,
             {
               headers: {
                 authorization: `Bearer ${token}`,

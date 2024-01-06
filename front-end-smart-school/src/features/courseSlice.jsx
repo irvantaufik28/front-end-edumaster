@@ -23,7 +23,11 @@ const courseSlice = createSlice({
     data: [],
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    setDataCourseCheckBox: (state, action) => {
+      state.dataCheckBox = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(list.pending, (state) => {
@@ -42,7 +46,7 @@ const courseSlice = createSlice({
       });
   },
 });
-
+export const { setDataCourseCheckBox } = courseSlice.actions;
 export const courseSelector = {
   selectAll: (state) => state.course.data,
   loading: (state) => state.course.loading,

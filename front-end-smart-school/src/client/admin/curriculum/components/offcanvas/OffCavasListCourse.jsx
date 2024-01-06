@@ -12,48 +12,73 @@ import {
   useState,
 } from "react";
 import axios from "axios";
-import config from "../../../../config";
-import BasicTable from "../../../../components/table/BasicTable";
+import BasicTable from "../../../../../components/table/BasicTable";
 import { Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { setDataCheckBox } from "../../../../features/classroomSlice";
 import { useParams } from "react-router-dom";
+import config from "../../../../../config";
+import { setDataCourseCheckBox } from "../../../../../features/courseSlice";
 
-const OffCanvasListStudent = forwardRef((props, ref) => {
-  const { id } = useParams();
-  const dispacth = useDispatch();
-  const apiUrl = config.apiUrl + "/student";
-  const [ids, setIds] = useState([]);
+const OffCanvasListCourse = forwardRef((props, ref) => {
+  const [loading, setLoading] = useState(false);
+  const { id: structureCurriculumId } = useParams();
+  const dispatch = useDispatch();
+  const apiUrl = config.apiUrl + "/course";
+
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+
   const handleCheckBox = (row) => {
-    setIds((prevIds) => {
-      const existingIndex = prevIds.findIndex((item) => item.id === row.id);
+    setSelectedData((prevSelectedData) => {
+      const existingIndex = prevSelectedData.findIndex((item) => item.course_id === row.id);
 
       if (existingIndex !== -1) {
         return [
-          ...prevIds.slice(0, existingIndex),
-          ...prevIds.slice(existingIndex + 1),
+          ...prevSelectedData.slice(0, existingIndex),
+          ...prevSelectedData.slice(existingIndex + 1),
         ];
       } else {
-        return [...prevIds, { id: row.id }];
+        return [
+          ...prevSelectedData,
+          {
+            course_id: row.id,
+            meet_per_week: 1,
+            structure_curriculum_id: parseInt(structureCurriculumId),
+          },
+        ];
       }
     });
   };
 
   const handleMasterCheckBoxChange = () => {
-    const allChecked = data.length === ids.length;
+    const allChecked = data.length === selectedData.length;
     if (allChecked) {
-      setIds([]);
+      setSelectedData([]);
     } else {
-      setIds(data.map((item) => ({ id: item.id })));
+      setSelectedData(
+        data.map((item) => ({
+          course_id: item.id,
+          meet_per_week: 1,
+          structure_curriculum_id: parseInt(structureCurriculumId),
+        }))
+      );
     }
   };
 
   useEffect(() => {
-    dispacth(setDataCheckBox(ids));
-  }, [dispacth, ids]);
+    dispatch(setDataCourseCheckBox(selectedData));
+  }, [dispatch, selectedData]);
 
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const handleQtyChange = (rowId, value) => {
+    setSelectedData((prevSelectedData) => {
+      const updatedData = prevSelectedData.map((item) =>
+        item.course_id === rowId ? { ...item, meet_per_week: parseInt(value, 10) || 1 } : item
+      );
+
+      return updatedData;
+    });
+  };
+
   const columns = useMemo(
     () => [
       {
@@ -61,7 +86,7 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
         Header: (
           <Form.Check
             type="checkbox"
-            checked={data.length > 0 && data.length === ids.length}
+            checked={data.length > 0 && data.length === selectedData.length}
             onChange={handleMasterCheckBoxChange}
           />
         ),
@@ -69,8 +94,22 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
           <Form.Check
             onChange={() => handleCheckBox(row.original)}
             type="checkbox"
-            checked={ids.some((item) => item.id === row.original.id)}
+            checked={selectedData.some((item) => item.course_id === row.original.id)}
             id={`checkbox-${row.original.id}`}
+          />
+        ),
+      },
+      {
+        id: "meet_per_week",
+        Header: "Meet Per week",
+        Cell: ({ row }) => (
+          <Form.Control
+            type="number"
+            placeholder="1"
+            value={
+              selectedData.find((item) => item.course_id === row.original.id)?.meet_per_week || 1
+            }
+            onChange={(e) => handleQtyChange(row.original.id, e.target.value)}
           />
         ),
       },
@@ -79,44 +118,23 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
         accessor: "id",
       },
       {
-        Header: "NIS",
-        accessor: "nis",
+        Header: "Course Name",
+        accessor: "name",
       },
       {
-        Header: "Foto",
-        accessor: "foto_url",
+        Header: "Grade",
+        accessor: "level",
       },
       {
-        Header: "First Name",
-        accessor: "first_name",
+        Header: "Semester",
+        accessor: "semester",
       },
       {
-        Header: "Middle Name",
-        accessor: "middle_name",
-      },
-      {
-        Header: "Last Name",
-        accessor: "last_name",
-      },
-      {
-        Header: "Birth Date",
-        accessor: "birth_date",
-      },
-
-      {
-        Header: "Register",
-        accessor: "register_year",
-      },
-      {
-        Header: "Gender",
-        accessor: "gender",
-      },
-      {
-        Header: "Status",
-        accessor: "status",
+        Header: "Type",
+        accessor: "type",
       },
     ],
-    [props, ids]
+    [props, selectedData]
   );
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
@@ -169,14 +187,14 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
 
         if (pageSize) params.size = pageSize;
 
+        params.not_in_curriculum = structureCurriculumId
+
         const token = document.cookie
           .split("; ")
           .find((row) => row.startsWith("token="))
           ?.split("=")[1];
-       
-          params.not_in_classroom_id = parseInt(id);
-       
-          const response = await axios.get(apiUrl, {
+
+        const response = await axios.get(apiUrl, {
           params,
           headers: {
             authorization: token,
@@ -185,7 +203,7 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
 
         const { data } = response;
         const list = data?.data;
-     
+
         setData(list);
         setTotalPage(data?.paging?.total_page);
         setTotalData(data?.paging?.total_item);
@@ -213,4 +231,4 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
   );
 });
 
-export default OffCanvasListStudent;
+export default OffCanvasListCourse;
