@@ -1,48 +1,42 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
 import { useEffect, useMemo, useState } from "react";
 import _ from "lodash";
 import axios from "axios";
+
 import { Button, Col, Form, Modal, Row } from "react-bootstrap";
 import { Formik } from "formik";
+import * as Yup from "yup";
+import Swal from "sweetalert2";
 import config from "../../../../config";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import { courseSelector, list } from "../../../../features/courseSlice";
-import { staffSelector } from "../../../../features/staffSlice";
+import {
+  curriculumSelector,
+  listCurriculum,
+} from "../../../../features/curriculumSlice";
 
-const FormModalAddTeacherCourse = (props) => {
+const FormAddScheduleUseTemplate = (props) => {
   const dispatch = useDispatch();
-  const course = useSelector(courseSelector.selectAll);
-  const staff = useSelector(staffSelector.getById);
+  const listStructureCurruculum = useSelector(curriculumSelector.selectAll);
+
   useEffect(() => {
-    dispatch(list());
+    dispatch(listCurriculum());
   }, [dispatch]);
-
-  let courses_list = course
-
-  if (staff?.teacher_course?.length) {
-    const associatedCourseIds = staff?.teacher_course?.map(
-      (course) => course.course_id
-    );
-    const availableCourses = course?.filter(
-      (course) => !associatedCourseIds.includes(course.id)
-    );
-
-    courses_list = availableCourses
-  }
-
   const defaultValues = useMemo(
     () => ({
-      staff_id: "",
-      course_id: null,
+      classroom_id: null,
+      structure_curriculum_id: null,
     }),
     []
   );
+
+
   const [initialValues, setInitialValues] = useState(defaultValues);
 
-  let title = "Add Student Parent";
-  if (props.type === "edit") title = "Edit Student";
+  const validationSchema = Yup.object().shape({
+    structure_curriculum_id: Yup.string().required("Structure Curriculum is required")
+  });
+
+  let title = "Add Schedule Use Template";
 
   useEffect(() => {
     const newValues = { ...defaultValues, ...props.initialValues };
@@ -50,13 +44,18 @@ const FormModalAddTeacherCourse = (props) => {
   }, [props.initialValues, defaultValues]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
-
     try {
-      const payload = _.pick(values, ["staff_id", "course_id"]);
+      const payload = _.pick(values, [
+        "classroom_id",
+        "structure_curriculum_id",
+      ]);
+      console.log(payload)
+
+      const token = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
+
       const confirmation = await Swal.fire({
         title: "Are you sure?",
         text: "You won't be able to revert this!",
@@ -64,45 +63,48 @@ const FormModalAddTeacherCourse = (props) => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, update it!",
+        confirmButtonText: "Yes",
       });
 
       if (confirmation.isConfirmed) {
-        payload.course_id = parseInt(payload.course_id);
-        await axios.post(config.apiUrl + `/teacher/course`, payload, {
-          headers: {
-            authorization: token,
-          },
-        });
+        await axios.post(
+          config.apiUrl + `/classroom-schedule/structure-curriculum`,
+          payload,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         Swal.fire({
-          title: "Updated",
-          text: "Your file has been updated.",
+          title: props.type,
+          text: "Your file has been Created.",
           icon: "success",
         });
       }
 
-      // Trigger the success callback
-      props.onSuccess(props.type);
+      props.onSuccess();
     } catch (error) {
       console.error(error);
       Swal.fire({
         title: "Error",
-        text: "Failed to update. Please try again.",
+        text: "Failed to created. Please try again.",
         icon: "error",
       });
     } finally {
       setSubmitting(false);
     }
+    setSubmitting(false);
   };
-
   return (
-    <Modal show={props.show} onHide={props.onHide}>
+    <Modal show={props.show} onHide={props.onHide} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Formik
         initialValues={initialValues}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize
       >
@@ -110,44 +112,53 @@ const FormModalAddTeacherCourse = (props) => {
           values,
           errors,
           touched,
-          setFieldValue,
           handleChange,
-          handleBlur,
           isSubmitting,
           handleSubmit,
         }) => (
           <>
             <Modal.Body>
               <Form>
-                <Row className="mb-3">
-                  <Form.Label className="col-sm-4">Classroom</Form.Label>
-                  <Col md={8}>
+                {values.id && (
+                  <Row className="mb-3">
+                    <Form.Label className="col-sm-4">ID</Form.Label>
+                    <Col>
+                      <Form.Control type="text" disabled value={values.id} />
+                    </Col>
+                  </Row>
+                )}
+               <Row className="mb-3">
+                  <Form.Label className="col-sm-2">Curriculum</Form.Label>
+                  <Col>
                     <Form.Control
                       as="select"
                       className="input-form-parent-student mb-3"
-                      name="course_id" // Change the name attribute to "course_id"
-                      value={values.course_id}
-                      isInvalid={touched.course_id && errors.course_id} // Update the field names here as well
+                      name="structure_curriculum_id"
+                      value={values.structure_curriculum_id}
+                      isInvalid={
+                        touched.structure_curriculum_id && errors.structure_curriculum_id
+                      }
                       onChange={handleChange}
                     >
-                      <option value="">Select Course</option>
-                      {courses_list?.map((item) => (
+                      <option value="">Select Teacher Course</option>
+                      {listStructureCurruculum?.map((item) => (
                         <option key={item?.id} value={item?.id}>
-                          {item?.name} Kelas {item?.level}
+                          {item?.name} Kelas {item?.level} Semester
+                          {item?.semester} Tahun {item?.year_group}
                         </option>
                       ))}
                     </Form.Control>
 
-                    {touched.course_id && errors.course_id && (
+                    {touched.structure_curriculum_id && errors.structure_curriculum_id && (
                       <Form.Control.Feedback
                         type="invalid"
                         style={{ display: "unset" }}
                       >
-                        {errors.course_id}
+                        {errors.structure_curriculum_id}
                       </Form.Control.Feedback>
                     )}
                   </Col>
-                </Row>
+                  </Row>
               </Form>
             </Modal.Body>
             <Modal.Footer>
@@ -170,7 +181,7 @@ const FormModalAddTeacherCourse = (props) => {
   );
 };
 
-FormModalAddTeacherCourse.defaultProps = {
+FormAddScheduleUseTemplate.defaultProps = {
   onHide: () => {},
   show: false,
   type: "add",
@@ -179,4 +190,4 @@ FormModalAddTeacherCourse.defaultProps = {
   onSuccess: () => {},
 };
 
-export default FormModalAddTeacherCourse;
+export default FormAddScheduleUseTemplate;

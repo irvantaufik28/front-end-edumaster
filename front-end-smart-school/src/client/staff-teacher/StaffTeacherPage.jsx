@@ -25,7 +25,7 @@ import { courseSelector, list } from "../../features/courseSlice";
 const StaffTeacherPage = () => {
   const courseList = useSelector(courseSelector.selectAll);
   const navigate = useNavigate();
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultForm = {
     initialValues: null,
     type: "add",
@@ -33,13 +33,13 @@ const StaffTeacherPage = () => {
   };
 
   useEffect(() => {
-    dispacth(list());
-  }, [dispacth]);
+    dispatch(list());
+  }, [dispatch]);
 
   const tableRef = useRef(null);
 
   const handleAdd = () => {
-    dispacth(setDataStudent({ ...defaultForm }));
+    dispatch(setDataStudent({ ...defaultForm }));
     navigate("/student/form");
   };
 
@@ -51,7 +51,7 @@ const StaffTeacherPage = () => {
         config.apiUrl + `/student/` + id
       );
 
-      dispacth(
+      dispatch(
         setDataStudent({
           ...defaultForm,
           initialValues: resData,

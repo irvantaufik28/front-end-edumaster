@@ -12,7 +12,7 @@ import config from "../../../../config";
 import Swal from "sweetalert2";
 const TabClassroomHistory = () => {
   const student = useSelector(studentSelector.getById);
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultFormModal = {
     show: false,
     type: "add",
@@ -47,7 +47,7 @@ const TabClassroomHistory = () => {
                 }
               }
           );
-          dispacth(getById(student?.id));
+          dispatch(getById(student?.id));
 
           Swal.fire({
             title: "Deleted!",
@@ -88,7 +88,7 @@ const TabClassroomHistory = () => {
 
   const onSubmitSuccess = () => {
     handleCloseForm();
-    dispacth(getById(student?.id));
+    dispatch(getById(student?.id));
   };
   return (
     <>

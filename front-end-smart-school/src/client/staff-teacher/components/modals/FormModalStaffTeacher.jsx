@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import { setDataStaff } from "../../../../features/staffSlice";
 
 const FormModalStaffTeacher = (props) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultValues = useMemo(
     () => ({
       phone: "",
@@ -100,7 +100,7 @@ const FormModalStaffTeacher = (props) => {
             },
           }
         );
-        dispacth(setDataStaff(response.data));
+        dispatch(setDataStaff(response.data));
         Swal.fire({
           title: "Updated",
           text: "Your file has been updated.",

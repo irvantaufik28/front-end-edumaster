@@ -14,7 +14,6 @@ import {
   import { Button } from "react-bootstrap";
   import axios from "axios";
   import { MdDelete, MdModeEdit } from "react-icons/md";
-  import { BiSolidDetail } from "react-icons/bi";
   import config from "../../../../config";
   import BasicTable from "../../../../components/table/BasicTable";
   

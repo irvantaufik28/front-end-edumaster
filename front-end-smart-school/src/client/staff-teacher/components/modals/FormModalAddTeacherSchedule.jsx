@@ -25,15 +25,15 @@ import * as Yup from "yup";
 const FormModalAddTeacherSchedule = (props) => {
   const { id } = useParams();
 
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   const availableClassroom = useSelector(classroomSelector.selectAll);
   const teacherCourse = useSelector(teacherCourseSelector.selectAll);
   useEffect(() => {
-    dispacth(listByStaffId(id));
+    dispatch(listByStaffId(id));
     // todo fik filter available classroom
-    dispacth(classroomList({ level: 1, status: "active" }));
-  }, [dispacth, id]);
+    dispatch(classroomList({ level: 1, status: "active" }));
+  }, [dispatch, id]);
 
   const defaultValues = useMemo(
     () => ({

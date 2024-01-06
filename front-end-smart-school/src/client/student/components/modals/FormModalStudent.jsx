@@ -15,7 +15,7 @@ import moment from "moment";
 import Swal from "sweetalert2";
 
 const FormModalStudent = (props) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultValues = useMemo(
     () => ({
       birth_certificate_no: "",
@@ -117,7 +117,7 @@ const FormModalStudent = (props) => {
             }
           }
         );
-        dispacth(setDataStudent(response.data));
+        dispatch(setDataStudent(response.data));
         Swal.fire({
           title: "Updated",
           text: "Your file has been updated.",

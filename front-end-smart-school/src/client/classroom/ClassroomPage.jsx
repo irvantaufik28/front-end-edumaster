@@ -123,10 +123,10 @@ export const ClassroomPage = () => {
 
   const classMajor = useSelector(classMajorSelector.selectAll);
 
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispacth(getAll());
+    dispatch(getAll());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

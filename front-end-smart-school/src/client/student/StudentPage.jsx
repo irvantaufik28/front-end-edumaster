@@ -21,7 +21,7 @@ import HeaderContent from "./components/HeaderContent";
 import Swal from "sweetalert2";
 export const StudentPage = () => {
   const navigate = useNavigate();
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultForm = {
     initialValues: null,
     type: "add",
@@ -31,7 +31,7 @@ export const StudentPage = () => {
   const tableRef = useRef(null);
 
   const handleAdd = () => {
-    dispacth(setDataStudent({ ...defaultForm }));
+    dispatch(setDataStudent({ ...defaultForm }));
     navigate("/student/form");
   };
 
@@ -43,7 +43,7 @@ export const StudentPage = () => {
         config.apiUrl + `/student/` + id
       );
 
-      dispacth(
+      dispatch(
         setDataStudent({
           ...defaultForm,
           initialValues: resData,

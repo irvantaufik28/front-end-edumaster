@@ -13,7 +13,7 @@ import Swal from "sweetalert2";
 import ButtonSecondary from "../../../../components/ui/button/ButtonSecondary";
 
 const TabParentsInfo = () => {
-  const dispacth = useDispatch()
+  const dispatch = useDispatch()
   const defaultFormModal = {
     show: false,
     type: "add",
@@ -76,7 +76,7 @@ const TabParentsInfo = () => {
               Authorization: token
             }
           });
-          dispacth(getById(student?.id));
+          dispatch(getById(student?.id));
   
           Swal.fire({
             title: "Deleted!",

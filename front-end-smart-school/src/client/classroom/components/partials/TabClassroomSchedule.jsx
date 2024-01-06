@@ -14,6 +14,7 @@ import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
 import { SiAddthis } from "react-icons/si";
 import FormModalAddClassromSchedule from "../modals/FormModalAddClassromSchedule";
 import FormModalEditClassromSchedule from "../modals/FormModalEditClassromSchedule";
+import FormAddScheduleUseTemplate from "../modals/FormAddScheduleUseTemplate";
 
 const TabClassroomSchedule = () => {
   const defaultFormAddModal = {
@@ -22,10 +23,15 @@ const TabClassroomSchedule = () => {
   };
   const defaultFormEditModal = {
     show: false,
+    type: "edit",
+  };
+  const defaultUseTemplate = {
+    show: false,
     type: "add",
   };
   const [formAddModal, setFormAddModal] = useState(defaultFormAddModal);
   const [formEditModal, setFormEditModal] = useState(defaultFormEditModal);
+  const [formUseTemplate, setUseTemplate] = useState(defaultUseTemplate);
   const classroomSchedule = useSelector(classroomScheduleSelector.selectAll);
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -39,7 +45,15 @@ const TabClassroomSchedule = () => {
       ...defaultFormAddModal,
       show: true,
       type: "add",
-      initialValues: { classroom_id: id},
+      initialValues: { classroom_id: id },
+    });
+  };
+  const handleUseTemplate = async () => {
+    setUseTemplate({
+      ...defaultUseTemplate,
+      show: true,
+      type: "add",
+      initialValues: { classroom_id: id },
     });
   };
 
@@ -92,9 +106,9 @@ const TabClassroomSchedule = () => {
 
   const handleEdit = async (id) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
 
     const { data: resData } = await axios.get(
       config.apiUrl + `/classroom-schedule/` + id,
@@ -104,7 +118,7 @@ const TabClassroomSchedule = () => {
         },
       }
     );
-   
+
     setFormEditModal({
       ...defaultFormEditModal,
       show: true,
@@ -126,6 +140,12 @@ const TabClassroomSchedule = () => {
       show: false,
     });
   };
+  const handleCloseUseTemplate = () => {
+    setUseTemplate({
+      ...formEditModal,
+      show: false,
+    });
+  };
 
   const onSubmitSuccess = () => {
     handleCloseFormAdd();
@@ -134,11 +154,16 @@ const TabClassroomSchedule = () => {
   };
   return (
     <>
-      <div className="button-edit-current-classroom">
+      <div className="button-add-schedule-classroom">
         <ButtonPrimary
           title="Add Schedule"
           icon={<SiAddthis />}
           onClick={() => handleAdd()}
+        />
+        <ButtonPrimary
+          title="Add Schedule (Use Template)"
+          icon={<SiAddthis />}
+          onClick={() => handleUseTemplate()}
         />
       </div>
       {classroomSchedule?.length ? (
@@ -157,10 +182,9 @@ const TabClassroomSchedule = () => {
           <tbody>
             {classroomSchedule?.map((item) => (
               <tr key={item.id}>
-               <td>{item?.day_name ? item.day_name : 'No day selected'}</td>
+                <td>{item?.day_name ? item.day_name : "No day selected"}</td>
                 <td>
-                  {item?.courses?.name} kelas{" "}
-                  {item?.courses?.level}
+                  {item?.courses?.name} kelas {item?.courses?.level}
                 </td>
                 <td>{item?.courses?.type}</td>
                 <td>{item?.start_time}</td>
@@ -203,10 +227,15 @@ const TabClassroomSchedule = () => {
         {...formAddModal}
         onHide={handleCloseFormAdd}
         onSuccess={onSubmitSuccess}
-      />    
+      />
       <FormModalEditClassromSchedule
         {...formEditModal}
         onHide={handleCloseFormEdit}
+        onSuccess={onSubmitSuccess}
+      />
+      <FormAddScheduleUseTemplate
+        {...formUseTemplate}
+        onHide={handleCloseUseTemplate}
         onSuccess={onSubmitSuccess}
       />
     </>

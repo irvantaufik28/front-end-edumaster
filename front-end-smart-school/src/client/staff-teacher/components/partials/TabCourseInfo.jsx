@@ -13,7 +13,7 @@ import { getById, staffSelector } from "../../../../features/staffSlice";
 import FormModalAddTeacherCourse from "../modals/FormModalAddTeacherCourse";
 const TabCourseInfo = () => {
   const staff = useSelector(staffSelector.getById);
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const defaultFormModal = {
     show: false,
     type: "add",
@@ -46,7 +46,7 @@ const TabCourseInfo = () => {
               Authorization: token,
             },
           });
-          dispacth(getById(staff?.id));
+          dispatch(getById(staff?.id));
 
           Swal.fire({
             title: "Deleted!",
@@ -85,7 +85,7 @@ const TabCourseInfo = () => {
 
   const onSubmitSuccess = () => {
     handleCloseForm();
-    dispacth(getById(staff?.id));
+    dispatch(getById(staff?.id));
   };
   return (
     <>

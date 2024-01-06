@@ -14,10 +14,10 @@ import Swal from "sweetalert2";
 const FormModal = (props) => {
   const classMajor = useSelector(classMajorSelector.selectAll);
 
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispacth(list());
+    dispatch(list());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

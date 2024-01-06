@@ -19,7 +19,7 @@ import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 import { createStudent } from "../../../features/studentSlice";
 
 const FormStudent = () => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const dataInitialValues = useSelector((state) => state.student.data);
   const defaultValues = useMemo(

@@ -27,11 +27,11 @@ const ManageClassroom = () => {
 
   const tableRef = useRef(null);
   const { id } = useParams();
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    dispacth(getById(id));
-  }, [dispacth, id]);
+    dispatch(getById(id));
+  }, [dispatch, id]);
 
   const handleAdd = () => {
     setFormOffcanvas({

@@ -27,3 +27,11 @@
   padding-top: 20px;
 
 }
+
+.button-add-schedule-classroom {
+  display: flex;
+  justify-content: end;
+  padding-bottom: 20px;
+  padding-top: 10px;
+  column-gap: 15px
+}

@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 import { getById } from "../../../../features/classroomSlice";
 
 const OffcanvasAddStudent = (props) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const classroom_id = useParams();
   const ids = useSelector((state) => state.classroom.dataCheckBox);
   const tableRef = useRef(null);
@@ -50,7 +50,7 @@ const OffcanvasAddStudent = (props) => {
               }
             }
           );
-          dispacth(getById(classroom_id.id));
+          dispatch(getById(classroom_id.id));
           props.onSuccess();
           Swal.fire({
             title: "Moved!",
@@ -124,7 +124,7 @@ const OffcanvasAddStudent = (props) => {
       style={{ width: "150vh" }}
     >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        <Offcanvas.Title>Add Student Classroom</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         {/* <OffCanvasFromFilterStudents /> */}

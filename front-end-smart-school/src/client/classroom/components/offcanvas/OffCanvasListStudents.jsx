@@ -21,7 +21,7 @@ import { useParams } from "react-router-dom";
 
 const OffCanvasListStudent = forwardRef((props, ref) => {
   const { id } = useParams();
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const apiUrl = config.apiUrl + "/student";
   const [ids, setIds] = useState([]);
   const handleCheckBox = (row) => {
@@ -49,8 +49,8 @@ const OffCanvasListStudent = forwardRef((props, ref) => {
   };
 
   useEffect(() => {
-    dispacth(setDataCheckBox(ids));
-  }, [dispacth, ids]);
+    dispatch(setDataCheckBox(ids));
+  }, [dispatch, ids]);
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -67,48 +67,39 @@ const OffCanvasAddCourse = (props) => {
   };
 
   const [search, setSearch] = useState({
-    nis: "",
-    first_name: "",
-    middle_name: "",
-    last_name: "",
-    register_year: "",
-    status: "",
+    name: "",
+    level: "",
+    type: "",
+    semester: "",
   });
 
   const handleSearch = (e) => {
     e.preventDefault();
     tableRef.current.doFilter({
-      nis: search.nis,
-      first_name: search.first_name,
-      middle_name: search.middle_name,
-      last_name: search.last_name,
-      register_year: search.register_year,
-      status: search.status,
+      name: search.name,
+      level: search.level,
+      type: search.type,
+      semester: search.semester
     });
   };
   const handleReset = (e) => {
     e.preventDefault();
     setSearch({
-      nis: "",
-      first_name: "",
-      middle_name: "",
-      last_name: "",
-      status: "",
-      register_year: "",
+      name: "",
+      level: "",
+      type: "",
+      semester: "",
     });
     tableRef.current.doFilter({
-      nis: "",
-      first_name: "",
-      last_name: "",
-      middle_name: "",
-      status: "",
+      name: "",
+      level: "",
+      type: "",
+      semester: "",
     });
-    document.getElementById("nis").value = "";
-    document.getElementById("first_name").value = "";
-    document.getElementById("last_name").value = "";
-    document.getElementById("middle_name").value = "";
-    document.getElementById("status").value = "";
-    document.getElementById("register_year").value = "";
+    document.getElementById("name").value = "";
+    document.getElementById("level").value = "";
+    document.getElementById("type").value = "";
+    document.getElementById("semester").value = "";
   };
   return (
     <Offcanvas
@@ -119,119 +110,113 @@ const OffCanvasAddCourse = (props) => {
       style={{ width: "150vh" }}
     >
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>Offcanvas</Offcanvas.Title>
+        <Offcanvas.Title>Add Course Curriculum</Offcanvas.Title>
       </Offcanvas.Header>
       <Offcanvas.Body>
         <>
           <div className="main-content-alpha">
             <div className="student-head">
-              <div className="search-box-global">
+            <div className="search-box-global">
                 <div className="row">
-                  <div className="col-md-4 mb-4">
+                  <div className="col-md-6 mb-4">
                     <label htmlFor="nama-classroom" className="form-label">
-                      NIS
+                      Course Name
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id="nis"
+                      id="name"
                       onChange={(e) =>
-                        setSearch({ ...search, ...{ nis: e.target.value } })
+                        setSearch({ ...search, ...{ name: e.target.value } })
                       }
                     />
                   </div>
 
-                  <div className="col-md-4">
-                    <label htmlFor="status" className="form-label">
-                      Status
+                  <div className="col-md-6">
+                    <label htmlFor="type" className="form-label">
+                      Type
                     </label>
                     <div>
                       <select
                         className="form-control"
                         aria-label="Default select example"
-                        id="status"
+                        id="type"
                         onChange={(e) =>
                           setSearch({
                             ...search,
-                            ...{ status: e.target.value },
+                            ...{ type: e.target.value },
                           })
                         }
                       >
                         <option selected value={""}>
-                          select status
+                          select type
                         </option>
-                        <option value="active">Active</option>
-                        <option value="preparation">Preparation</option>
-                        <option value="drop_out">Drop Out</option>
-                        <option value="graduate">Graduate</option>
+                        <option value="MUATAN NASIONAL">Muatan Nasional</option>
+                        <option value="MUATAN KEWILAYAHAN">
+                          Muatan Kewilayahan
+                        </option>
+                        <option value="DASAR BIDANG KEAHLIAN">
+                          Dasar Bidang Keahlian
+                        </option>
+                        <option value="DASAR PROGRAM KEAHLIAN">
+                          Dasar Program Keahlian
+                        </option>
+                        <option value="KOMPETENSI KEAHLIAN">
+                          Kompetensi Keahlian
+                        </option>
                       </select>
                     </div>
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      Register Year
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="register_year"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ register_year: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
                 </div>
                 <div className="row">
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      First Name
+                  <div className="col-md-6">
+                    <label htmlFor="semester" className="form-label">
+                      Semester
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ first_name: e.target.value },
-                        })
-                      }
-                    />
+                    <div>
+                      <select
+                        className="form-control"
+                        aria-label="Default select example"
+                        id="semester"
+                        onChange={(e) =>
+                          setSearch({
+                            ...search,
+                            ...{ semester: e.target.value },
+                          })
+                        }
+                      >
+                        <option selected value={""}>
+                          select semester
+                        </option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                      </select>
+                    </div>
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Middle Name
+                  <div className="col-md-6">
+                    <label htmlFor="level" className="form-label">
+                      Grade
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="middle_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ middle_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="last_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ last_name: e.target.value },
-                        })
-                      }
-                    />
+                    <div>
+                      <select
+                        className="form-control"
+                        aria-label="Default select example"
+                        id="level"
+                        onChange={(e) =>
+                          setSearch({
+                            ...search,
+                            ...{ level: e.target.value },
+                          })
+                        }
+                      >
+                        <option selected value={""}>
+                          select grade
+                        </option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
 

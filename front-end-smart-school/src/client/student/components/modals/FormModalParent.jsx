@@ -12,7 +12,7 @@ import { getById } from "../../../../features/studentSlice";
 import Swal from "sweetalert2";
 
 const FormModalParent = (props) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
 
   const defaultValues = useMemo(
     () => ({
@@ -111,7 +111,7 @@ const FormModalParent = (props) => {
         }
   
         // Update redux
-        dispacth(getById(payload.student_id));
+        dispatch(getById(payload.student_id));
         Swal.fire({
           title: "Updated",
           text: "Your file has been updated.",

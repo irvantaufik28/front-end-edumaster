@@ -12,11 +12,11 @@ import Swal from "sweetalert2";
 import { classroomSelector, getAll } from "../../../../features/classroomSlice";
 
 const FormModalHistoryClassroom = (props) => {
-  const dispacth = useDispatch();
+  const dispatch = useDispatch();
   const classroom = useSelector(classroomSelector.selectAll);
   useEffect(() => {
-    dispacth(getAll());
-  }, [dispacth]);
+    dispatch(getAll());
+  }, [dispatch]);
 
   const defaultValues = useMemo(
     () => ({
