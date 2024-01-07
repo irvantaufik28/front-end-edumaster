@@ -59,8 +59,16 @@ export const createStudent = createAsyncThunk(
 );
 
 export const getById = createAsyncThunk("student/detail", async (id) => {
+  const token = document.cookie
+  .split("; ")
+  .find((row) => row.startsWith("token="))
+  ?.split("=")[1];
   const apiUrl = config.apiUrl;
-  const response = await axios.get(apiUrl + `/student/${id}`);
+  const response = await axios.get(apiUrl + `/student/${id}`, {
+    headers: {
+      authorization : token
+    }
+  });
   return response.data;
 });
 

@@ -13,9 +13,18 @@ const initialState = {
 export const getAll = createAsyncThunk(
   "classroom/getAll",
   async (params = {}, { rejectWithValue }) => {
+
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
-      const response = await axios.get(`${apiUrl}/classroom`, params);
+      const response = await axios.get(`${apiUrl}/classroom`, params, {
+        headers: {
+          authorization: token
+        }
+      });
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -29,9 +38,17 @@ export const getAll = createAsyncThunk(
 export const classroomList = createAsyncThunk(
   "classroom/list",
   async (params = {}, { rejectWithValue }) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
-      const response = await axios.get(`${apiUrl}/classroom-list?status=${params.status}&level=${params.level}`);
+      const response = await axios.get(`${apiUrl}/classroom-list?status=${params.status}&level=${params.level}`, {
+        headers: {
+          authorization: token
+        }
+      });
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -95,9 +112,18 @@ export const updateClassroom = createAsyncThunk(
 export const getById = createAsyncThunk(
   "classroom/getById",
   async (id, { rejectWithValue }) => {
+
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
-      const response = await axios.get(`${apiUrl}/classroom/${id}`);
+      const response = await axios.get(`${apiUrl}/classroom/${id}`, {
+        headers: {
+          authorization: token
+        }
+      });
       return response.data;
     } catch (err) {
       if (!err.response) {

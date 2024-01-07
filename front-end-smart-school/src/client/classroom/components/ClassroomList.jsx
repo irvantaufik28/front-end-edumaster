@@ -143,9 +143,9 @@ const ListOrderTable = forwardRef((props, ref) => {
 
         const response = await axios.get(apiUrl, {
           params,
-          // headers: {
-          //   access_token: token
-          // }
+          headers: {
+            authorization: token
+          }
         });
 
         const { data } = response;

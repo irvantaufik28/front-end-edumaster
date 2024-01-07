@@ -42,9 +42,16 @@ export const ClassroomPage = () => {
   const handleEdit = async (data) => {
     try {
       const id = data.id;
-
+      const token = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
       const { data: resData } = await axios.get(
-        config.apiUrl + `/classroom/` + id
+        config.apiUrl + `/classroom/` + id, {
+          headers: {
+            authorization: token
+          }
+        }
       );
       setFormModal({
         ...defaultFormModal,
