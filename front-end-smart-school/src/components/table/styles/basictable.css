@@ -29,3 +29,14 @@ table tr:hover {
 .visually-hidden {
   display: none;
 }
+
+.react-basic-table thead tr th{
+  border: 0;
+}
+
+.react-basic-table tbody tr td{
+  border: 0;
+  border-bottom: 1px solid #dfdfdf;
+  font-size: 14px;
+
+}

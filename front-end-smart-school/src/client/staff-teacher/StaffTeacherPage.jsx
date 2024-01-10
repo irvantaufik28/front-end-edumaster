@@ -40,7 +40,7 @@ const StaffTeacherPage = () => {
 
   const handleAdd = () => {
     dispatch(setDataStudent({ ...defaultForm }));
-    navigate("/student/form");
+    navigate("/staff/teacher/create");
   };
 
   const handleEdit = async (data) => {

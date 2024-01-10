@@ -14,6 +14,7 @@ import config from "../../../config";
 import ListRole from "./components/RoleList";
 import { Row } from "react-bootstrap";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
+import FormModalAddRole from "./components/modals/FormModalAddRole";
 
 const RolePage = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const RolePage = () => {
     type: "add",
     editId: null,
   };
+
 
   const tableRef = useRef(null);
   const [formModal, setFormModal] = useState(defaultFormModal);
@@ -109,7 +111,7 @@ const RolePage = () => {
   };
 
   const handleManage = (data) => {
-    navigate("/classroom/manage/" + data.id);
+    navigate(`/admin/role/manage/${data.id}`)
   };
 
   const onSubmitSuccess = () => {
@@ -191,11 +193,13 @@ const RolePage = () => {
         </div>
       </div>
 
-      {/* <FormModal
+       <FormModalAddRole
         {...formModal}
         onHide={handleCloseForm}
         onSuccess={onSubmitSuccess}
-      /> */}
+      />    
+      
+     
     </>
   );
 };

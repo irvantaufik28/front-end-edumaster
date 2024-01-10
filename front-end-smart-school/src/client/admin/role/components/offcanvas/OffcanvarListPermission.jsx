@@ -5,102 +5,112 @@
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete } from "react-icons/md";
-
-import config from "../../../config";
-import BasicTable from "../../../components/table/BasicTable";
-import { Button } from "react-bootstrap";
 import axios from "axios";
+import BasicTable from "../../../../../components/table/BasicTable";
+import { Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import config from "../../../../../config";
+import { setDataRolePermissionCheckBox } from "../../../../../features/roleSlice";
 
-const StaffTeacherList = forwardRef((props, ref) => {
-  const apiUrl = config.apiUrl + "/staff/teacher";
-  const [data, setData] = useState([]);
+const OffCanvasListPermission = forwardRef((props, ref) => {
+  
   const [loading, setLoading] = useState(false);
+  const { id: role_id } = useParams();
+  const dispatch = useDispatch();
+  const apiUrl = config.apiUrl + "/permission";
+
+  const [data, setData] = useState([]);
+  const [selectedData, setSelectedData] = useState([]);
+
+  const handleCheckBox = (row) => {
+    setSelectedData((prevSelectedData) => {
+      const existingIndex = prevSelectedData.findIndex(
+        (item) => item.permission_id === row.id
+      );
+  
+      if (existingIndex !== -1) {
+        return [
+          ...prevSelectedData.slice(0, existingIndex),
+          ...prevSelectedData.slice(existingIndex + 1),
+        ];
+      } else {
+        return [
+          ...prevSelectedData,
+          {
+            permission_id: row.id,
+            role_id: parseInt(role_id),
+          },
+        ];
+      }
+    });
+  };
+
+  const handleMasterCheckBoxChange = () => {
+    const allChecked = data.length === selectedData.length;
+    if (allChecked) {
+      setSelectedData([]);
+    } else {
+      setSelectedData(
+        data.map((item) => ({
+          permission_id: item.id,
+          role_id: parseInt(role_id),
+        }))
+      );
+    }
+  };
+
+  useEffect(() => {
+    dispatch(setDataRolePermissionCheckBox(selectedData));
+  }, [dispatch, selectedData]);
+
   const columns = useMemo(
     () => [
+      {
+        id: "masterCheckbox",
+        Header: (
+          <Form.Check
+            type="checkbox"
+            checked={data.length > 0 && data.length === selectedData.length}
+            onChange={handleMasterCheckBoxChange}
+          />
+        ),
+        Cell: ({ row }) => (
+          <Form.Check
+            onChange={() => handleCheckBox(row.original)}
+            type="checkbox"
+            checked={selectedData.some(
+              (item) => item.permission_id === row.original.id
+            )}
+            id={`checkbox-${row.original.id}`}
+          />
+        ),
+      },
       {
         Header: "ID",
         accessor: "id",
       },
       {
-        Header: "NIK",
-        accessor: "nik",
+        Header: "Permission",
+        accessor: "name",
       },
-      {
-        Header: "Foto",
-        accessor: "foto_url",
-      },
-      {
-        Header: "First Name",
-        accessor: "first_name",
-      },
-      {
-        Header: "Middle Name",
-        accessor: "middle_name",
-      },
-      {
-        Header: "Last Name",
-        accessor: "last_name",
-      },
-      {
-        Header: "Course",
-        accessor: "teacher_course",
-        Cell: ({ row }) => (
-            <div>
-              <div>
-              {row.original.teacher_course.map(course => `${course?.courses?.name} kelas ${course?.courses?.level}`).join(", ") || "-"}
-              </div>
-            </div>
-          ),
-      },
-      {
-        Header: "Status",
-        accessor: "status",
-      },
-      {
-        Header: "Action",
-        Cell: ({ row }) => (
-          <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onDetail(row.values)}
-            >
-              <BiSolidDetail /> Detail
-            </Button>
-            <Button
-              variant="info"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-              <MdModeEdit /> Edit
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => props.onDelete(row.values)}
-            >
-              <MdDelete /> Delete
-            </Button>
-          </>
-        ),
+       {
+        Header: "Description",
+        accessor: "descripton",
       },
     ],
-    [props]
+    [props, selectedData]
   );
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
 
   const filters = useRef({});
-
   const currentPageIndex = useRef({});
   const currentpage = useRef(11);
   const currentSortBy = useRef({});
@@ -148,6 +158,9 @@ const StaffTeacherList = forwardRef((props, ref) => {
 
         if (pageSize) params.size = pageSize;
 
+        params.not_in_role = role_id;
+    
+
         const token = document.cookie
           .split("; ")
           .find((row) => row.startsWith("token="))
@@ -161,7 +174,6 @@ const StaffTeacherList = forwardRef((props, ref) => {
         });
 
         const { data } = response;
-
         const list = data?.data;
 
         setData(list);
@@ -191,10 +203,4 @@ const StaffTeacherList = forwardRef((props, ref) => {
   );
 });
 
-export default StaffTeacherList;
-
-StaffTeacherList.defaultProps = {
-  onDetail: (data) => {},
-  onEdit: (data) => {},
-  onDelete: (data) => {},
-};
+export default OffCanvasListPermission;

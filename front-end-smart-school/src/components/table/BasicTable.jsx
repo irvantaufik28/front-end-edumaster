@@ -198,7 +198,7 @@ const BasicTable = ({
 
   return (
     <>
-      <Table striped bordered responsive {...getTableProps()}>
+      <Table className="react-basic-table"  responsive {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>

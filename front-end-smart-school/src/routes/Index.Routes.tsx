@@ -17,6 +17,8 @@ import StaffTeacherDetailPage from "../client/staff-teacher/StaffTeacherDetailPa
 import CoursePage from "../client/admin/course/CoursePage";
 import CurriculumPage from "../client/admin/curriculum/CurriculumPage";
 import ManageCurriculumPage from "../client/admin/curriculum/ManageCurriculumPage";
+import RoleManagePage from "../client/admin/role/components/RoleManagePage";
+import StaffTeacherCreatePage from "../client/staff-teacher/StaffTeacherCreatePage";
 
 const IndexRoutes = () => {
   return (
@@ -27,12 +29,16 @@ const IndexRoutes = () => {
         <Route element={<PrivateRoute allowedRoles={["administrator"]} />}>
           <Route path="/admin/dashboard" element={<DashboardPage />} />
           <Route path="/admin/role" element={<RolePage />} />
+          <Route path="/admin/role/manage/:id" element={<RoleManagePage />} />
           <Route path="/admin/classmajor" element={<ClassMajorPage />} />
           <Route path="/admin/course" element={<CoursePage />} />
           <Route path="/admin/curriculum" element={<CurriculumPage />} />
           <Route path="/admin/curriculum/manage/:id" element={<ManageCurriculumPage />} />
 
+ 
+
           <Route path="/staff/teacher" element={<StaffTeacherPage />} />
+          <Route path="/staff/teacher/create" element={<StaffTeacherCreatePage />} />
           <Route
             path="/staff/teacher/detail/:id"
             element={<StaffTeacherDetailPage />}
