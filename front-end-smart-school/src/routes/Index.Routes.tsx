@@ -7,8 +7,6 @@ import { ClassroomPage } from "../client/classroom/ClassroomPage";
 import StudentFormPage from "../client/student/StudentFormPage";
 import StudentDetailPage from "../client/student/StudentDetailPage";
 import PrivateRoute from "../utils/PrivateRoute";
-import Topbar from "../components/layouts/TopBar";
-import SideBar from "../components/layouts/SideBar";
 import ManageClassroomPage from "../client/classroom/ManageClassroomPage";
 import ClassMajorPage from "../client/admin/classmajor/ClassmajorPage";
 import RolePage from "../client/admin/role/RolePage";
@@ -19,6 +17,9 @@ import CurriculumPage from "../client/admin/curriculum/CurriculumPage";
 import ManageCurriculumPage from "../client/admin/curriculum/ManageCurriculumPage";
 import RoleManagePage from "../client/admin/role/components/RoleManagePage";
 import StaffTeacherCreatePage from "../client/staff-teacher/StaffTeacherCreatePage";
+import StaffOfficePage from "../client/staff-office/StaffOfficePage";
+import StaffOfficeCreatePage from "../client/staff-office/StaffOfficeCreatePage";
+import StaffOfficeDetailPage from "../client/staff-office/StaffOfficeDetailPage";
 
 const IndexRoutes = () => {
   return (
@@ -39,7 +40,12 @@ const IndexRoutes = () => {
 
           <Route path="/staff/teacher" element={<StaffTeacherPage />} />
           <Route path="/staff/teacher/create" element={<StaffTeacherCreatePage />} />
+          <Route path="/staff/office" element={<StaffOfficePage />} />
+          <Route path="/staff/office/create" element={<StaffOfficeCreatePage />} />
           <Route
+            path="/staff/office/detail/:id"
+            element={<StaffOfficeDetailPage />}
+          /> <Route
             path="/staff/teacher/detail/:id"
             element={<StaffTeacherDetailPage />}
           />

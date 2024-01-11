@@ -17,7 +17,7 @@ import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 // import { courseSelector, list } from "../../../features/courseSlice";
 
-const FormCreateTeacher = () => {
+const FormCreateStaff = () => {
   // const dispatch = useDispatch();
 
   // useEffect(() => {
@@ -42,10 +42,9 @@ const FormCreateTeacher = () => {
       address: "",
       roles: [
         {
-          role_id: 3,
+          role_id: null,
         },
       ],
-      // courses: [{ id: null }],
     }),
     []
   );
@@ -133,7 +132,6 @@ const FormCreateTeacher = () => {
         "address",
         "foto_url",
         "roles",
-        // "courses",
       ]);
 
       if (payload.birth_date)
@@ -169,38 +167,6 @@ const FormCreateTeacher = () => {
   const handleCancel = () => {
     navigate("/staff/teacher");
   };
-
-  // const courseList = useSelector(courseSelector.selectAll);
-
-  // const [selectedObject, setSelectedObject] = useState({
-  //   id: "",
-  // });
-  // const [suggestedOptions, setSuggestedOptions] = useState([]);
-
-  // const handleInputChange = (e) => {
-  //   const value = e.target.value;
-
-  //   // Filter options based on input
-  //   const filteredOptions = courseList.filter((option) =>
-  //     option.name.toLowerCase().includes(value.toLowerCase())
-  //   );
-
-  //   // Update filtered options to include both name and level in the format "name kelas level"
-  //   const formattedOptions = filteredOptions.map((option) => ({
-  //     id: option.id,
-  //     displayText: `${option.name} kelas ${option.level}`,
-  //   }));
-
-  //   setSuggestedOptions(formattedOptions);
-  // };
-  // const handleOptionClick = (id, name, setFieldValue, index) => {
-  //   setSelectedObject({
-  //     id: id,
-  //     name: name,
-  //   });
-  //   setFieldValue(`courses.${index}.id`, id);
-  //   setSuggestedOptions([]);
-  // };
 
   return (
     <Formik
@@ -256,7 +222,7 @@ const FormCreateTeacher = () => {
                   </Col>
                   <Col md={9}>
                     <div className="student-information">
-                      <h4>Teacher Information</h4>
+                      <h4>Staff Information</h4>
                     </div>
                     <Row className="row mb-3">
                       <Col md={6}>
@@ -496,95 +462,6 @@ const FormCreateTeacher = () => {
                     </Row>
                   </Col>
                 </Row>
-                {/* <div className="student-parents-information">
-                  <h4>Courses Information</h4>
-                </div>
-                <hr></hr> */}
-                {/* <FieldArray name="courses">
-                  {({ insert, remove, push }) => (
-                    <>
-                      {values.courses.length > 0 &&
-                        values.courses.map((parent, index) => (
-                          <div key={index}>
-                            <Row>
-                              <Col md={4}>
-                                <Form.Label className="col-sm-4">
-                                  Courses {index + 1} :
-                                </Form.Label>
-                                <Form.Control
-                                  type="text"
-                                  className="input-form-parent-student mb-3"
-                                  name={`courses.${index}.id`}
-                                  value={selectedObject.name || ""}
-                                  isInvalid={
-                                    touched.courses &&
-                                    touched.courses[index]?.id &&
-                                    errors.courses &&
-                                    errors.courses[index]?.id
-                                  }
-                                  onChange={handleInputChange}
-                                  placeholder="Type to Search..."
-                                />
-                                <ListGroup>
-                                  {suggestedOptions.map((option) => (
-                                    <ListGroup.Item
-                                      key={option.id}
-                                      active={option.id === selectedObject.id}
-                                      onClick={() =>
-                                        handleOptionClick(
-                                          option.id,
-                                          option.displayText,
-                                          setFieldValue,
-                                          index
-                                        )
-                                      }
-                                    >
-                                      {option.displayText}
-                                    </ListGroup.Item>
-                                  ))}
-                                </ListGroup>
-                                <p>Selected ID: {selectedObject.id}</p>
-
-                                {touched.courses &&
-                                  touched.courses[index]?.id &&
-                                  errors.courses &&
-                                  errors.courses[index]?.id && (
-                                    <Form.Control.Feedback
-                                      type="invalid"
-                                      style={{ display: "unset" }}
-                                    >
-                                      {errors.courses[index].id}
-                                    </Form.Control.Feedback>
-                                  )}
-                              </Col>
-                            </Row>
-
-                            <hr />
-
-                            {index + 1 < values.courses.length ? (
-                              <Button
-                                variant="outline-secondary"
-                                onClick={() => remove(index + 1)}
-                              >
-                                x
-                              </Button>
-                            ) : (
-                              <Button
-                                variant="outline-secondary"
-                                onClick={() =>
-                                  push({
-                                    id: "", // or set a default value
-                                  })
-                                }
-                              >
-                                +
-                              </Button>
-                            )}
-                          </div>
-                        ))}
-                    </>
-                  )}
-                </FieldArray> */}
               </Form>
             </Card.Body>
           </Card>
@@ -599,10 +476,10 @@ const FormCreateTeacher = () => {
   );
 };
 
-FormCreateTeacher.defaultProps = {
+FormCreateStaff.defaultProps = {
   type: "add",
   initialValues: null,
   editId: null,
 };
 
-export default FormCreateTeacher;
+export default FormCreateStaff;

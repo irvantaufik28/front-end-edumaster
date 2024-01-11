@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import { Formik } from "formik";
+import { Formik, Form as FormikForm, Field } from "formik";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import example from "../../assets/img/example.webp";
 import "./styles/FormSign.css";
@@ -72,11 +72,8 @@ const SigninPage = () => {
       enableReinitialize
     >
       {({
-        values,
         errors,
         touched,
-        handleChange,
-        handleBlur,
         handleSubmit,
       }) => (
         <>
@@ -89,53 +86,48 @@ const SigninPage = () => {
               <div className="form-login">
                 <h5>Welcome</h5>
 
-                <Form>
-                  <Form.Group className="mb-3" controlId="email">
-                    {errorMessage ? (
+                <FormikForm onSubmit={handleSubmit}>
+                  <Form.Group className="mb-3" controlId="username">
+                    {errorMessage && (
                       <div className="alert alert-danger" role="alert">
                         {errorMessage.meta.message}
                       </div>
-                    ) : null}
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter email"
-                      name="username"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.email}
-                      isInvalid={touched.username && errors.username}
-                    />
-                    {touched.username && errors.username && (
-                      <Form.Control.Feedback type="invalid">
-                        {errors.username}
-                      </Form.Control.Feedback>
                     )}
+                    <Form.Label>Username</Form.Label>
+                    <Field
+                      type="text"
+                      placeholder="Enter username"
+                      name="username"
+                      className={`form-control ${
+                        touched.username && errors.username ? "is-invalid" : ""
+                      }`}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {touched.username && errors.username && errors.username}
+                    </Form.Control.Feedback>
                   </Form.Group>
 
                   <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control
+                    <Field
                       type="password"
                       placeholder="Password"
                       name="password"
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      value={values.password}
-                      isInvalid={touched.password && errors.password}
+                      className={`form-control ${
+                        touched.password && errors.password ? "is-invalid" : ""
+                      }`}
                     />
-                    {touched.password && errors.password && (
-                      <Form.Control.Feedback type="invalid">
-                        {errors.password}
-                      </Form.Control.Feedback>
-                    )}
+                    <Form.Control.Feedback type="invalid">
+                      {touched.password && errors.password && errors.password}
+                    </Form.Control.Feedback>
                   </Form.Group>
-                </Form>
-                <div className="d-grid gap-2 sign-button">
-                  <Button type="submit" variant="custom" onClick={handleSubmit}>
-                    Sign In
-                  </Button>
-                </div>
+
+                  <div className="d-grid gap-2 sign-button">
+                    <Button type="submit" variant="success">
+                      Sign In
+                    </Button>
+                  </div>
+                </FormikForm>
               </div>
             </Col>
           </Row>

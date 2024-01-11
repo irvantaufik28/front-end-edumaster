@@ -6,8 +6,16 @@ export const roleList = createAsyncThunk(
   "role/list",
   async (_, { rejectWithValue }) => {
     const apiUrl = config.apiUrl;
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
-      const response = await axios.get(`${apiUrl}/course-list`);
+      const response = await axios.get(`${apiUrl}/role`, {
+        headers: {
+          authorization: token
+        }
+      });
       return response.data;
     } catch (err) {
       if (!err.response) {

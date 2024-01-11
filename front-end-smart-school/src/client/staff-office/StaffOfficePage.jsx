@@ -9,44 +9,46 @@ import ButtonSuccess from "../../components/ui/button/ButtonSuccess";
 import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataStudent } from "../../features/studentSlice";
 import Topbar from "../../components/layouts/TopBar";
 import SideBar from "../../components/layouts/SideBar";
 import HeaderContentGlobal from "../../components/ui/header/HeaderContentGlobal";
-import StaffTeacherList from "./components/StaffTeacherList";
-import { courseSelector, list } from "../../features/courseSlice";
+import StaffOfficeList from "./components/StaffOfficeList";
+import { roleList, roleSelector } from "../../features/roleSlice";
 
-const StaffTeacherPage = () => {
-  const courseList = useSelector(courseSelector.selectAll);
+const StaffOfficePage = () => {
+  const roles = useSelector(roleSelector.selectAll);
+
+  
+const filteredRoles = roles?.filter((role) => role.name !== "student");
+
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const defaultForm = {
-    initialValues: null,
-    type: "add",
-    editId: null,
-  };
 
   useEffect(() => {
-    dispatch(list());
+    dispatch(roleList());
   }, [dispatch]);
 
+  
   const tableRef = useRef(null);
 
   const handleAdd = () => {
-    dispatch(setDataStudent({ ...defaultForm }));
-    navigate("/staff/teacher/create");
+    navigate("/staff/office/create");
   };
 
+
   const handleDetail = async (data) => {
-    navigate("/staff/teacher/detail/" + data.id);
+    navigate("/staff/office/detail/" + data.id);
   };
+
+  
 
   const [search, setSearch] = useState({
     nik: "",
     first_name: "",
     middle_name: "",
     last_name: "",
-    course_id: "",
+    role_id: "",
     status: "",
   });
 
@@ -57,7 +59,7 @@ const StaffTeacherPage = () => {
       first_name: search.first_name,
       middle_name: search.middle_name,
       last_name: search.last_name,
-      course_id: search.course_id,
+      role_id: search.role_id,
       status: search.status,
     });
   };
@@ -69,7 +71,7 @@ const StaffTeacherPage = () => {
       middle_name: "",
       last_name: "",
       status: "",
-      course_id: "",
+      role_id: "",
     });
     tableRef.current.doFilter({
       nik: "",
@@ -77,15 +79,16 @@ const StaffTeacherPage = () => {
       last_name: "",
       middle_name: "",
       status: "",
-      course_id: "",
+      role_id: "",
     });
     document.getElementById("nik").value = "";
     document.getElementById("first_name").value = "";
     document.getElementById("last_name").value = "";
     document.getElementById("middle_name").value = "";
     document.getElementById("status").value = "";
-    document.getElementById("course_id").value = "";
+    document.getElementById("role_id").value = "";
   };
+
   return (
     <>
       <Topbar />
@@ -93,8 +96,8 @@ const StaffTeacherPage = () => {
         <SideBar />
         <div className="main-content">
           <HeaderContentGlobal
-            title={"Teacher"}
-            page={"Teacher"}
+            title={"Staff"}
+            page={"Staff"}
             type={"List"}
           />
           <div className="main-content-alpha">
@@ -159,27 +162,27 @@ const StaffTeacherPage = () => {
                     </div>
                   </div>
                   <div className="col-md-4">
-                    <label htmlFor="course_id" className="form-label">
-                      Course
+                    <label htmlFor="role_id" className="form-label">
+                        Role
                     </label>
                     <div>
                       <select
                         className="form-control"
                         aria-label="Default select example"
-                        id="course_id"
+                        id="role_id"
                         onChange={(e) =>
                           setSearch({
                             ...search,
-                            ...{ course_id: e.target.value },
+                            ...{ role_id: e.target.value },
                           })
                         }
                       >
                         <option selected value={""}>
-                          select Course
+                          select role
                         </option>
-                        {courseList?.map((option) => (
+                        {filteredRoles?.map((option) => (
                           <option key={option?.id} value={option?.id}>
-                            {option?.name} kelas {option?.level}
+                            {option?.display_name}
                           </option>
                         ))}
                       </select>
@@ -252,7 +255,7 @@ const StaffTeacherPage = () => {
               </div>
             </div>
 
-            <StaffTeacherList
+            <StaffOfficeList
               ref={tableRef}
               onDetail={(data) => handleDetail(data)}
             />
@@ -263,4 +266,4 @@ const StaffTeacherPage = () => {
   );
 };
 
-export default StaffTeacherPage;
+export default StaffOfficePage;

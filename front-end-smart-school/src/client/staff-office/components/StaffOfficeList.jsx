@@ -18,8 +18,8 @@ import BasicTable from "../../../components/table/BasicTable";
 import { Button } from "react-bootstrap";
 import axios from "axios";
 
-const StaffTeacherList = forwardRef((props, ref) => {
-  const apiUrl = config.apiUrl + "/staff/teacher";
+const StaffOfficeList = forwardRef((props, ref) => {
+  const apiUrl = config.apiUrl + "/staff";
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const columns = useMemo(
@@ -49,15 +49,21 @@ const StaffTeacherList = forwardRef((props, ref) => {
         accessor: "last_name",
       },
       {
-        Header: "Course",
-        accessor: "teacher_course",
+        Header: "Gender",
+        accessor: "gender",
+      },
+      {
+        Header: "Position",
+        accessor: "staff_user",
         Cell: ({ row }) => (
+          <div>
             <div>
-              <div>
-              {row.original.teacher_course.map(course => `${course?.courses?.name} kelas ${course?.courses?.level}`).join(", ") || "-"}
-              </div>
+              {row.original.staff_user.map((user) =>
+                user.user.user_roles.map((role) => role.role.display_name.toUpperCase()).join(", ")
+              ) || "-"}
             </div>
-          ),
+          </div>
+        ),
       },
       {
         Header: "Status",
@@ -176,9 +182,9 @@ const StaffTeacherList = forwardRef((props, ref) => {
   );
 });
 
-export default StaffTeacherList;
+export default StaffOfficeList;
 
-StaffTeacherList.defaultProps = {
+StaffOfficeList.defaultProps = {
   onDetail: (data) => {},
   onEdit: (data) => {},
   onDelete: (data) => {},
