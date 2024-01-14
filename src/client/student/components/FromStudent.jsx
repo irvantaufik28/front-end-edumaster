@@ -126,7 +126,7 @@ const FormStudent = () => {
         .split("; ")
         .find((row) => row.startsWith("token="))
         ?.split("=")[1];
-        
+
       const payload = _.pick(values, [
         "birth_certificate_no",
         "family_identity_no",
@@ -185,6 +185,7 @@ const FormStudent = () => {
             formData,
             {
               headers: {
+                authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data",
               },
             }
@@ -193,7 +194,12 @@ const FormStudent = () => {
         }
         await axios.put(
           config.apiUrl + `/student/` + dataInitialValues.editId,
-          payload
+          payload,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
         );
         navigate("/student");
       }
