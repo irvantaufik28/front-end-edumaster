@@ -1,4 +1,0 @@
-[build]
-    functions = "./dist/netlify/functions"
-      base = "api-smart-school"
-     command = "yarn run build"
