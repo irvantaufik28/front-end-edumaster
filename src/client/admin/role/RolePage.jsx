@@ -78,7 +78,7 @@ const RolePage = () => {
             .find((row) => row.startsWith("token="))
             ?.split("=")[1];
 
-          await axios.delete(config.apiUrl + `/classroom/` + id, {
+          await axios.delete(config.apiUrl + `/role/` + id, {
             headers: {
               authorization: `Bearer ${token}`,
             },

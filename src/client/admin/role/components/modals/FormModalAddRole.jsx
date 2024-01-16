@@ -13,6 +13,7 @@ const FormModalAddRole = (props) => {
   const defaultValues = useMemo(
     () => ({
       name: "",
+      display_name: ""
     }),
     []
   );
@@ -30,7 +31,7 @@ const FormModalAddRole = (props) => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const payload = _.pick(values, ["name"]);
+      const payload = _.pick(values, ["name", "display_name"]);
 
       const token = document.cookie
         .split("; ")
@@ -123,6 +124,25 @@ const FormModalAddRole = (props) => {
                     {touched.name && errors.name && (
                       <Form.Control.Feedback type="invalid">
                         {errors.name}
+                      </Form.Control.Feedback>
+                    )}
+                  </Col>
+                </Row>
+                 <Row className="mb-3">
+                  <Form.Label className="col-sm-4">Display Name</Form.Label>
+                  <Col md={8}>
+                    <Form.Control
+                      type="text"
+                      name="display_name"
+                      placeholder="Enter Display Name"
+                      isInvalid={touched.display_name && errors.display_name}
+                      value={values.display_name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                    />
+                    {touched.display_name && errors.display_name && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.display_name}
                       </Form.Control.Feedback>
                     )}
                   </Col>

@@ -37,7 +37,9 @@ const ListRole = forwardRef((props, ref) => {
       {
         Header: "Name",
         accessor: "name",
-        marginleft: "800px",
+      }, {
+        Header: "Display Name",
+        accessor: "display_name",
       },
       {
         Header: "Action",

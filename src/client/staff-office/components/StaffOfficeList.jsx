@@ -59,7 +59,7 @@ const StaffOfficeList = forwardRef((props, ref) => {
           <div>
             <div>
               {row.original.staff_user.map((user) =>
-                user.user.user_roles.map((role) => role.role.display_name.toUpperCase()).join(", ")
+                user?.user?.user_roles?.map((role) => role?.role?.display_name?.toUpperCase()).join(", ")
               ) || "-"}
             </div>
           </div>
