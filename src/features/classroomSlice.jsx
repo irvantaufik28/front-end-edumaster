@@ -7,23 +7,22 @@ const initialState = {
   data: {},
   dataCheckBox: [],
   errorMessage: null,
-  loading: false
+  loading: false,
 };
 
 export const getAll = createAsyncThunk(
   "classroom/getAll",
-  async (params = {}, { rejectWithValue }) => {
-
+  async (_, { rejectWithValue }) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
-      const response = await axios.get(`${apiUrl}/classroom`, params, {
+      const response = await axios.get(`${apiUrl}/classroom`, {
         headers: {
-          authorization: token
-        }
+          authorization: token,
+        },
       });
       return response.data;
     } catch (err) {
@@ -39,16 +38,19 @@ export const classroomList = createAsyncThunk(
   "classroom/list",
   async (params = {}, { rejectWithValue }) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
-      const response = await axios.get(`${apiUrl}/classroom-list?status=${params.status}&level=${params.level}`, {
-        headers: {
-          authorization: token
+      const response = await axios.get(
+        `${apiUrl}/classroom-list?status=${params.status}&level=${params.level}`,
+        {
+          headers: {
+            authorization: token,
+          },
         }
-      });
+      );
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -62,17 +64,16 @@ export const classroomList = createAsyncThunk(
 export const createClassroom = createAsyncThunk(
   "classroom/create",
   async (payload = {}, { rejectWithValue }) => {
-  
     const apiUrl = config.apiUrl;
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     try {
       const response = await axios.post(`${apiUrl}/classroom`, payload, {
         headers: {
-          authorization: `Bearer ${token}`
-        }
+          authorization: `Bearer ${token}`,
+        },
       });
       return response.data;
     } catch (err) {
@@ -96,7 +97,7 @@ export const updateClassroom = createAsyncThunk(
     try {
       const response = await axios.put(`${apiUrl}/classroom/${id}`, payload, {
         headers: {
-          authorization: `Bearer ${token}`
+          authorization: `Bearer ${token}`,
         },
       });
       return response.data;
@@ -112,17 +113,16 @@ export const updateClassroom = createAsyncThunk(
 export const getById = createAsyncThunk(
   "classroom/getById",
   async (id, { rejectWithValue }) => {
-
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     const apiUrl = config.apiUrl;
     try {
       const response = await axios.get(`${apiUrl}/classroom/${id}`, {
         headers: {
-          authorization: token
-        }
+          authorization: token,
+        },
       });
       return response.data;
     } catch (err) {
@@ -157,7 +157,7 @@ const classroomSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;
-      })  
+      })
       .addCase(classroomList.pending, (state) => {
         state.loading = true;
         state.data = null;
@@ -185,7 +185,7 @@ const classroomSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;
-      })            
+      })
       .addCase(getAll.pending, (state) => {
         state.loading = true;
         state.data = null;
@@ -199,7 +199,7 @@ const classroomSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = null;
-      })      
+      })
       .addCase(getById.pending, (state) => {
         state.loading = true;
         state.data = null;

@@ -1,4 +1,14 @@
-.topbar {
+
+.navbar-topbar {
+  position: fixed !important;
+  top: 0 !important;
+  bottom: 100px !important;
+  /* width: 100vw !important; */
+  z-index: 1000 !important; /* Adjust the z-index as needed */
+}
+
+
+/* .topbar {
     width: 100%;
     height: 50px;
     background-color: darkblue;
@@ -56,4 +66,4 @@
       cursor: pointer;
   }
 
-  
+   */

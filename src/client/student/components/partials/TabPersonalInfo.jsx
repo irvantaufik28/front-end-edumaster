@@ -20,9 +20,17 @@ const TabPersonalInfo = () => {
   const student = useSelector(studentSelector.getById);
 
   const handleEdit = async (id) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
       const { data: resData } = await axios.get(
-        config.apiUrl + `/student/` + id
+        config.apiUrl + `/student/` + id, {
+          headers : {
+            Authorization: token
+          }
+        }
       );
 
       setFormModal({

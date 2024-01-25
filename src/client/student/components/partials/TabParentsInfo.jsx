@@ -23,9 +23,17 @@ const TabParentsInfo = () => {
   const student = useSelector(studentSelector.getById);
   const [formModal, setFormModal] = useState(defaultFormModal)
   const handleEdit = async (id) => {
+    const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
     try {
       const { data: resData } = await axios.get(
-        config.apiUrl + `/student-parent/` + id
+        config.apiUrl + `/student-parent/` + id, {
+          headers: {
+            Authorization : token
+          }
+        }
       );
 
       setFormModal({

@@ -10,6 +10,9 @@ import teacherCourseSlice from "./features/teacherCourse";
 import classroomScheduleSlice from "./features/classroomScheduleSlice";
 import curriculumSlice from "./features/curriculumSlice";
 import roleSlice from "./features/roleSlice";
+import categoryProductSlice from "./features/ecommerce/categoryProduct"
+import productSlice from "./features/ecommerce/productSlice";
+
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -22,7 +25,9 @@ const store = configureStore({
     teacherCourse: teacherCourseSlice,
     classroomSchedule: classroomScheduleSlice,
     curriculum : curriculumSlice,
-    role : roleSlice
+    role : roleSlice,
+    categoryProduct: categoryProductSlice,
+    product: productSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,6 +1,4 @@
 import { SiAddthis } from "react-icons/si";
-import SideBar from "../../../components/layouts/SideBar";
-import Topbar from "../../../components/layouts/TopBar";
 import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
 import { useRef, useState } from "react";
 import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
@@ -14,6 +12,9 @@ import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlob
 import { Row } from "react-bootstrap";
 import config from "../../../config";
 import FormModalClassmajor from "./components/modals/FormModalClassmajor";
+import SideBarList from "../../../components/layouts/SideBarList";
+import TopBarList from "../../../components/layouts/TopBarList";
+import Footer from "../../../components/layouts/Footer";
 
 const ClassmajorPage = () => {
   const navigate = useNavigate();
@@ -140,63 +141,74 @@ const ClassmajorPage = () => {
 
   return (
     <>
-      <Topbar />
-      <div className="content">
-        <SideBar />
-        <div className="main-content">
-          <HeaderContentGlobal
-            page={"Class Major"}
-            title={"Classmajor"}
-            type={"List"}
-          />
-          <div className="main-content-alpha">
-            <div className="role-head">
-              <div className="row sub-header-content">
-                <div className="col-md-6 add-role">
-                  <ButtonPrimary
-                    title="add"
-                    onClick={handleAdd}
-                    icon={<SiAddthis />}
-                  />
-                </div>
-              </div>
-              <div className="search-box-global">
-                <Row>
-                  <div className="col-md-4 mb-4">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="search..."
-                      id="name"
-                      onChange={(e) =>
-                        setSearch({ ...search, ...{ name: e.target.value } })
-                      }
-                    />
+      <div id="wrapper">
+        <SideBarList />
+        <div id="content-wrapper" className="d-flex flex-column">
+          <div id="content">
+            <TopBarList />
+            <div className="main-content">
+              <HeaderContentGlobal
+                page={"Class Major"}
+                title={"Classmajor"}
+                type={"List"}
+              />
+              <div className="main-content-alpha">
+                <div className="role-head">
+                  <div className="row sub-header-content">
+                    <div className="col-md-6 add-role">
+                      <ButtonPrimary
+                        title="add"
+                        onClick={handleAdd}
+                        icon={<SiAddthis />}
+                      />
+                    </div>
                   </div>
-                </Row>
+                  <div className="search-box-global">
+                    <Row>
+                      <div className="col-md-4 mb-4">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="search..."
+                          id="name"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ name: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                    </Row>
 
-                <div className="col-md-6 button-search-classroom">
-                  <ButtonSuccess title="search" onClick={handleSearch} />
-                  <ButtonDanger title="reset" onClick={handleReset} />
+                    <div className="col-md-6 button-search-classroom">
+                      <ButtonSuccess title="search" onClick={handleSearch} />
+                      <ButtonDanger title="reset" onClick={handleReset} />
+                    </div>
+                  </div>
                 </div>
+
+                <ClassmajorList
+                  ref={tableRef}
+                  onEdit={(data) => handleEdit(data)}
+                  onDelete={(data) => handleDelete(data)}
+                  onManage={(data) => handleManage(data)}
+                />
               </div>
             </div>
-
-            <ClassmajorList
-              ref={tableRef}
-              onEdit={(data) => handleEdit(data)}
-              onDelete={(data) => handleDelete(data)}
-              onManage={(data) => handleManage(data)}
-            />
           </div>
+          <Footer />
         </div>
       </div>
+      <a className="scroll-to-top rounded" href="#page-top">
+        <i className="fas fa-angle-up" />
+      </a>
 
       <FormModalClassmajor
-      {...formModal}
-      onHide={handleCloseForm}
-      onSuccess={onSubmitSuccess}
-    />
+        {...formModal}
+        onHide={handleCloseForm}
+        onSuccess={onSubmitSuccess}
+      />
     </>
   );
 };

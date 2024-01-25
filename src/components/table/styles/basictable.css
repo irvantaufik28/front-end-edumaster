@@ -22,8 +22,8 @@ table tr:hover {
   padding-top: 12px !important;
   padding-bottom: 12px !important;
   text-align: centes !important;
-  background-color: #04AA6D !important;
-  color: white !important;
+  background-color:white !important;
+  color: black !important;
 }
 
 .visually-hidden {
