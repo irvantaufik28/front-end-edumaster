@@ -20,6 +20,10 @@ import StaffTeacherCreatePage from "../client/staff-teacher/StaffTeacherCreatePa
 import StaffOfficePage from "../client/staff-office/StaffOfficePage";
 import StaffOfficeCreatePage from "../client/staff-office/StaffOfficeCreatePage";
 import StaffOfficeDetailPage from "../client/staff-office/StaffOfficeDetailPage";
+import EcommeceDashboard from "../ecommerce/dashboard/EcommeceDashboard";
+import ProductPage from "../ecommerce/product/ProductPage";
+import ProductCreatePage from "../ecommerce/product/ProductCreatePage";
+import ProductEditPage from "../ecommerce/product/ProductEditPage";
 
 const IndexRoutes = () => {
   return (
@@ -60,6 +64,12 @@ const IndexRoutes = () => {
             path="/classroom/manage/:id"
             element={<ManageClassroomPage />}
           />
+        </Route>
+        <Route element={<PrivateRoute allowedRoles={["administrator", "staff_tu"]} />}>
+        <Route path="/ecommerce/dashboard" element={<EcommeceDashboard />} />
+        <Route path="/ecommerce/list-product" element={<ProductPage />} />
+        <Route path="/ecommerce/add-product" element={<ProductCreatePage />} />
+        <Route path="/ecommerce/edit-product/:id" element={<ProductEditPage />} />
         </Route>
       </Routes>
     </Router>

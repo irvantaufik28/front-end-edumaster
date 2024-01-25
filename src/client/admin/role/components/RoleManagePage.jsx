@@ -7,12 +7,13 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import config from "../../../../config";
-import Topbar from "../../../../components/layouts/TopBar";
-import SideBar from "../../../../components/layouts/SideBar";
 import HeaderContentGlobal from "../../../../components/ui/header/HeaderContentGlobal";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
 import { getByIdRole, roleSelector } from "../../../../features/roleSlice";
 import OffCanvasAddRolePermission from "./offcanvas/OffCanvasAddRolePermission";
+import SideBarList from "../../../../components/layouts/SideBarList";
+import TopBarList from "../../../../components/layouts/TopBarList";
+import Footer from "../../../../components/layouts/Footer";
 
 const RoleManagePage = () => {
   const { id } = useParams();
@@ -101,76 +102,84 @@ const RoleManagePage = () => {
   };
   return (
     <>
-      <Topbar />
-      <div className="content">
-        <SideBar />
-        <div className="main-content">
-          <HeaderContentGlobal
-            page={"Role"}
-            title={"Role Manage"}
-            type={"Manage"}
-          />
-          <div className="main-content-alpha">
-            <Row>
-              <Col md={6}>
-                <div className="title-form-student">Permission List</div>
-              </Col>
-
-              <div className="button-edit-current-classroom">
-                <ButtonPrimary
-                  title="Add Permission"
-                  icon={<SiAddthis />}
-                  onClick={() => handleAdd()}
-                />
-              </div>
-              {rolePermission?.length ? (
-                <Table striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th className="th-react-table ">No</th>
-                      <th className="th-react-table ">Permission Name</th>
-                      <th className="th-react-table ">Description</th>
-                      <th className="th-react-table ">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rolePermission?.map((item, index) => (
-                      <tr key={item.id}>
-                        <td>{index + 1}</td>
-                        <td>{item?.permission?.name}</td>
-                        <td>{item?.permission?.description}</td>
-                        <td>
-                          {" "}
-                          <Button
-                            className="me-2"
-                            variant="danger"
-                            size="sm"
-                            onClick={() => handleDelete(item?.id)}
-                          >
-                            <MdDelete /> Delete
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              ) : (
-                <Card style={{ width: "100%", height: "auto" }}>
-                  <Card.Body style={{ textAlign: "center" }}>
-                    <p>No data available </p>
-                  </Card.Body>
-                </Card>
-              )}
-
-              <OffCanvasAddRolePermission
-                {...formOffcanvas}
-                onHide={handleCloseOffCanvas}
-                onSuccess={onSubmitSuccess}
+      <div id="wrapper">
+        <SideBarList />
+        <div id="content-wrapper" className="d-flex flex-column">
+          <div id="content">
+            <TopBarList />
+            <div className="main-content">
+              <HeaderContentGlobal
+                page={"Role"}
+                title={"Role Manage"}
+                type={"Manage"}
               />
-            </Row>
+              <div className="main-content-alpha">
+                <Row>
+                  <Col md={6}>
+                    <div className="title-form-student">Permission List</div>
+                  </Col>
+
+                  <div className="button-edit-current-classroom">
+                    <ButtonPrimary
+                      title="Add Permission"
+                      icon={<SiAddthis />}
+                      onClick={() => handleAdd()}
+                    />
+                  </div>
+                  {rolePermission?.length ? (
+                    <Table striped bordered hover>
+                      <thead>
+                        <tr>
+                          <th className="th-react-table ">No</th>
+                          <th className="th-react-table ">Permission Name</th>
+                          <th className="th-react-table ">Description</th>
+                          <th className="th-react-table ">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rolePermission?.map((item, index) => (
+                          <tr key={item.id}>
+                            <td>{index + 1}</td>
+                            <td>{item?.permission?.name}</td>
+                            <td>{item?.permission?.description}</td>
+                            <td>
+                              {" "}
+                              <Button
+                                className="me-2"
+                                variant="danger"
+                                size="sm"
+                                onClick={() => handleDelete(item?.id)}
+                              >
+                                <MdDelete /> Delete
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  ) : (
+                    <Card style={{ width: "100%", height: "auto" }}>
+                      <Card.Body style={{ textAlign: "center" }}>
+                        <p>No data available </p>
+                      </Card.Body>
+                    </Card>
+                  )}
+
+                  <OffCanvasAddRolePermission
+                    {...formOffcanvas}
+                    onHide={handleCloseOffCanvas}
+                    onSuccess={onSubmitSuccess}
+                  />
+                </Row>
+              </div>
+            </div>
           </div>
+          <Footer />
         </div>
       </div>
+      <a className="scroll-to-top rounded" href="#page-top">
+        <i className="fas fa-angle-up" />
+      </a>
     </>
   );
 };

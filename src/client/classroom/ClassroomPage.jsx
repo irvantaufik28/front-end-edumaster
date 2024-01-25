@@ -13,11 +13,12 @@ import { classMajorSelector, getAll } from "../../features/classMajorSlice";
 import FormModal from "./components/FormModal";
 import axios from "axios";
 import config from "../../config";
-import Topbar from "../../components/layouts/TopBar";
-import SideBar from "../../components/layouts/SideBar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import HeaderContentGlobal from "../../components/ui/header/HeaderContentGlobal";
+import SideBarList from "../../components/layouts/SideBarList";
+import TopBarList from "../../components/layouts/TopBarList";
+import Footer from "../../components/layouts/Footer";
 
 export const ClassroomPage = () => {
   const navigate = useNavigate();
@@ -43,14 +44,15 @@ export const ClassroomPage = () => {
     try {
       const id = data.id;
       const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
+        .split("; ")
+        .find((row) => row.startsWith("token="))
+        ?.split("=")[1];
       const { data: resData } = await axios.get(
-        config.apiUrl + `/classroom/` + id, {
+        config.apiUrl + `/classroom/` + id,
+        {
           headers: {
-            authorization: token
-          }
+            authorization: token,
+          },
         }
       );
       setFormModal({
@@ -180,146 +182,164 @@ export const ClassroomPage = () => {
 
   return (
     <>
-      <Topbar />
-      <div className="content">
-        <SideBar />
-        <div className="main-content">
-          <HeaderContentGlobal page={"Classrom"} title={"Classroom"} type={"List"} />
-          <div className="main-content-alpha">
-            <div className="student-head">
-              <div className="row sub-header-content">
-                <div className="col-md-6 add-student">
-                  <ButtonPrimary
-                    title="add"
-                    onClick={handleAdd}
-                    icon={<SiAddthis />}
-                  />
-                </div>
-                <div className="col-md-6 right-button-classroom-list">
-                  <div>
-                    <ButtonSecondary title="Import" icon={<CgImport />} />
-                  </div>
-                  <div>
-                    <ButtonSecondary title="Export" icon={<BiExport />} />
-                  </div>
-                </div>
-              </div>
-              <div className="search-box-global">
-                <div className="row">
-                  <div className="col-md-4 mb-4">
-                    <label htmlFor="nama-classroom" className="form-label">
-                      code
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="code"
-                      onChange={(e) =>
-                        setSearch({ ...search, ...{ code: e.target.value } })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      Class
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="level"
-                      onChange={(e) =>
-                        setSearch({ ...search, ...{ level: e.target.value } })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="classMajor" className="form-label">
-                      Class Major
-                    </label>
-                    <div>
-                      <select
-                        className="form-control"
-                        aria-label="Default select example"
-                        id="class_major_id"
-                        onChange={(e) =>
-                          setSearch({
-                            ...search,
-                            ...{ class_major_id: e.target.value },
-                          })
-                        }
-                      >
-                        <option selected value={""}>
-                          select class major
-                        </option>
-                        {classMajor?.map((option) => (
-                          <option key={option.id} value={option.id}>
-                            {option.name}
-                          </option>
-                        ))}
-                      </select>
+      <div id="wrapper">
+        <SideBarList />
+        <div id="content-wrapper" className="d-flex flex-column">
+          <div id="content">
+            <TopBarList />
+            <div className="main-content">
+              <HeaderContentGlobal
+                page={"Classrom"}
+                title={"Classroom"}
+                type={"List"}
+              />
+              <div className="main-content-alpha">
+                <div className="student-head">
+                  <div className="row sub-header-content">
+                    <div className="col-md-6 add-student">
+                      <ButtonPrimary
+                        title="add"
+                        onClick={handleAdd}
+                        icon={<SiAddthis />}
+                      />
+                    </div>
+                    <div className="col-md-6 right-button-classroom-list">
+                      <div>
+                        <ButtonSecondary title="Import" icon={<CgImport />} />
+                      </div>
+                      <div>
+                        <ButtonSecondary title="Export" icon={<BiExport />} />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Year
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="year_group"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ year_group: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="status" className="form-label">
-                      Status
-                    </label>
-                    <div>
-                      <select
-                        className="form-control"
-                        aria-label="Default select example"
-                        id="status"
-                        onChange={(e) =>
-                          setSearch({
-                            ...search,
-                            ...{ status: e.target.value },
-                          })
-                        }
-                      >
-                        <option selected value={""}>
-                          select status
-                        </option>
-                        <option value="active">Active</option>
-                        <option value="not_active">Not Active</option>
-                        <option value="preparation">Preparation</option>
-                      </select>
+                  <div className="search-box-global">
+                    <div className="row">
+                      <div className="col-md-4 mb-4">
+                        <label htmlFor="nama-classroom" className="form-label">
+                          code
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="code"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ code: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="class" className="form-label">
+                          Class
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="level"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ level: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="classMajor" className="form-label">
+                          Class Major
+                        </label>
+                        <div>
+                          <select
+                            className="form-control"
+                            aria-label="Default select example"
+                            id="class_major_id"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ class_major_id: e.target.value },
+                              })
+                            }
+                          >
+                            <option selected value={""}>
+                              select class major
+                            </option>
+                            {classMajor?.map((option) => (
+                              <option key={option.id} value={option.id}>
+                                {option.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <label htmlFor="year" className="form-label">
+                          Year
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="year_group"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ year_group: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="status" className="form-label">
+                          Status
+                        </label>
+                        <div>
+                          <select
+                            className="form-control"
+                            aria-label="Default select example"
+                            id="status"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ status: e.target.value },
+                              })
+                            }
+                          >
+                            <option selected value={""}>
+                              select status
+                            </option>
+                            <option value="active">Active</option>
+                            <option value="not_active">Not Active</option>
+                            <option value="preparation">Preparation</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-md-6 button-search-classroom">
+                      <ButtonSuccess title="search" onClick={handleSearch} />
+                      <ButtonDanger title="reset" onClick={handleReset} />
                     </div>
                   </div>
                 </div>
 
-                <div className="col-md-6 button-search-classroom">
-                  <ButtonSuccess title="search" onClick={handleSearch} />
-                  <ButtonDanger title="reset" onClick={handleReset} />
-                </div>
+                <ClassroomList
+                  ref={tableRef}
+                  onEdit={(data) => handleEdit(data)}
+                  onDelete={(data) => handleDelete(data)}
+                  onManage={(data) => handleManage(data)}
+                />
               </div>
             </div>
-
-            <ClassroomList
-              ref={tableRef}
-              onEdit={(data) => handleEdit(data)}
-              onDelete={(data) => handleDelete(data)}
-              onManage={(data) => handleManage(data)}
-            />
           </div>
+          <Footer />
         </div>
       </div>
+      <a className="scroll-to-top rounded" href="#page-top">
+        <i className="fas fa-angle-up" />
+      </a>
 
       <FormModal
         {...formModal}

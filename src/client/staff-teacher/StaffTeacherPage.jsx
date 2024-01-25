@@ -10,11 +10,12 @@ import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setDataStudent } from "../../features/studentSlice";
-import Topbar from "../../components/layouts/TopBar";
-import SideBar from "../../components/layouts/SideBar";
 import HeaderContentGlobal from "../../components/ui/header/HeaderContentGlobal";
 import StaffTeacherList from "./components/StaffTeacherList";
 import { courseSelector, list } from "../../features/courseSlice";
+import SideBarList from "../../components/layouts/SideBarList";
+import TopBarList from "../../components/layouts/TopBarList";
+import Footer from "../../components/layouts/Footer";
 
 const StaffTeacherPage = () => {
   const courseList = useSelector(courseSelector.selectAll);
@@ -88,177 +89,185 @@ const StaffTeacherPage = () => {
   };
   return (
     <>
-      <Topbar />
-      <div className="content">
-        <SideBar />
-        <div className="main-content">
-          <HeaderContentGlobal
-            title={"Teacher"}
-            page={"Teacher"}
-            type={"List"}
-          />
-          <div className="main-content-alpha">
-            <div className="student-head">
-              <div className="row sub-header-content">
-                <div className="col-md-6 add-student">
-                  <ButtonPrimary
-                    title="add"
-                    onClick={handleAdd}
-                    icon={<SiAddthis />}
-                  />
-                </div>
-                <div className="col-md-6 right-button-student-list">
-                  <div>
-                    <ButtonPrimary title="Import" icon={<CgImport />} />
-                  </div>
-                  <div>
-                    <ButtonPrimary title="Export" icon={<BiExport />} />
-                  </div>
-                </div>
-              </div>
-              <div className="search-box-global">
-                <div className="row">
-                  <div className="col-md-4 mb-4">
-                    <label htmlFor="nama-classroom" className="form-label">
-                      NIK
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="nik"
-                      onChange={(e) =>
-                        setSearch({ ...search, ...{ nis: e.target.value } })
-                      }
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label htmlFor="status" className="form-label">
-                      Status
-                    </label>
-                    <div>
-                      <select
-                        className="form-control"
-                        aria-label="Default select example"
-                        id="status"
-                        onChange={(e) =>
-                          setSearch({
-                            ...search,
-                            ...{ status: e.target.value },
-                          })
-                        }
-                      >
-                        <option selected value={""}>
-                          select status
-                        </option>
-                        <option value="active">Active</option>
-                        <option value="preparation">Preparation</option>
-                        <option value="drop_out">Drop Out</option>
-                        <option value="graduate">Graduate</option>
-                      </select>
+      <div id="wrapper">
+        <SideBarList />
+        <div id="content-wrapper" className="d-flex flex-column">
+          <div id="content">
+            <TopBarList />
+            <div className="main-content">
+              <HeaderContentGlobal
+                title={"Teacher"}
+                page={"Teacher"}
+                type={"List"}
+              />
+              <div className="main-content-alpha">
+                <div className="student-head">
+                  <div className="row sub-header-content">
+                    <div className="col-md-6 add-student">
+                      <ButtonPrimary
+                        title="add"
+                        onClick={handleAdd}
+                        icon={<SiAddthis />}
+                      />
+                    </div>
+                    <div className="col-md-6 right-button-student-list">
+                      <div>
+                        <ButtonPrimary title="Import" icon={<CgImport />} />
+                      </div>
+                      <div>
+                        <ButtonPrimary title="Export" icon={<BiExport />} />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-md-4">
-                    <label htmlFor="course_id" className="form-label">
-                      Course
-                    </label>
-                    <div>
-                      <select
-                        className="form-control"
-                        aria-label="Default select example"
-                        id="course_id"
-                        onChange={(e) =>
-                          setSearch({
-                            ...search,
-                            ...{ course_id: e.target.value },
-                          })
-                        }
-                      >
-                        <option selected value={""}>
-                          select Course
-                        </option>
-                        {courseList?.map((option) => (
-                          <option key={option?.id} value={option?.id}>
-                            {option?.name} kelas {option?.level}
-                          </option>
-                        ))}
-                      </select>
+                  <div className="search-box-global">
+                    <div className="row">
+                      <div className="col-md-4 mb-4">
+                        <label htmlFor="nama-classroom" className="form-label">
+                          NIK
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="nik"
+                          onChange={(e) =>
+                            setSearch({ ...search, ...{ nis: e.target.value } })
+                          }
+                        />
+                      </div>
+
+                      <div className="col-md-4">
+                        <label htmlFor="status" className="form-label">
+                          Status
+                        </label>
+                        <div>
+                          <select
+                            className="form-control"
+                            aria-label="Default select example"
+                            id="status"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ status: e.target.value },
+                              })
+                            }
+                          >
+                            <option selected value={""}>
+                              select status
+                            </option>
+                            <option value="active">Active</option>
+                            <option value="preparation">Preparation</option>
+                            <option value="drop_out">Drop Out</option>
+                            <option value="graduate">Graduate</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="course_id" className="form-label">
+                          Course
+                        </label>
+                        <div>
+                          <select
+                            className="form-control"
+                            aria-label="Default select example"
+                            id="course_id"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ course_id: e.target.value },
+                              })
+                            }
+                          >
+                            <option selected value={""}>
+                              select Course
+                            </option>
+                            {courseList?.map((option) => (
+                              <option key={option?.id} value={option?.id}>
+                                {option?.name} kelas {option?.level}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-4">
+                        <label htmlFor="class" className="form-label">
+                          First Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="first_name"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ first_name: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="year" className="form-label">
+                          Middle Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="middle_name"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ middle_name: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                      <div className="col-md-4">
+                        <label htmlFor="year" className="form-label">
+                          Last Name
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="last_name"
+                          onChange={(e) =>
+                            setSearch({
+                              ...search,
+                              ...{ last_name: e.target.value },
+                            })
+                          }
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-md-6 button-search-student">
+                      <ButtonSuccess
+                        title="search"
+                        icon={<FaSearch />}
+                        onClick={handleSearch}
+                      />
+                      <ButtonDanger
+                        title="reset"
+                        icon={<RxReset />}
+                        onClick={handleReset}
+                      />
                     </div>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-md-4">
-                    <label htmlFor="class" className="form-label">
-                      First Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ first_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Middle Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="middle_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ middle_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="col-md-4">
-                    <label htmlFor="year" className="form-label">
-                      Last Name
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="last_name"
-                      onChange={(e) =>
-                        setSearch({
-                          ...search,
-                          ...{ last_name: e.target.value },
-                        })
-                      }
-                    />
-                  </div>
-                </div>
 
-                <div className="col-md-6 button-search-student">
-                  <ButtonSuccess
-                    title="search"
-                    icon={<FaSearch />}
-                    onClick={handleSearch}
-                  />
-                  <ButtonDanger
-                    title="reset"
-                    icon={<RxReset />}
-                    onClick={handleReset}
-                  />
-                </div>
+                <StaffTeacherList
+                  ref={tableRef}
+                  onDetail={(data) => handleDetail(data)}
+                />
               </div>
             </div>
-
-            <StaffTeacherList
-              ref={tableRef}
-              onDetail={(data) => handleDetail(data)}
-            />
           </div>
+          <Footer />
         </div>
       </div>
+      <a className="scroll-to-top rounded" href="#page-top">
+        <i className="fas fa-angle-up" />
+      </a>
     </>
   );
 };

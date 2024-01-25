@@ -122,7 +122,7 @@ const FormModalHistoryClassroom = (props) => {
                       onChange={handleChange}
                     >
                       <option value="">Select Classroom</option>
-                      {classroom.map((item) => (
+                      {classroom?.map((item) => (
                         <option key={item?.id} value={item?.id}>
                           {item?.classMajor?.name} {item?.level}{item?.code}
                         </option>

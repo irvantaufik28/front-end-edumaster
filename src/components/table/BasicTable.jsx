@@ -243,6 +243,18 @@ const BasicTable = ({
                         alt="Foto"
                         style={{ width: '50px', height: '50px' }}
                       />
+                    ) : cell.column.id === 'product_images' ? (
+                      // Assuming product_images is an array and you want to display the first image
+                      cell.value.length > 0 ? (
+                        <img
+                          src={cell.value.image_url}
+                          alt="Product Image"
+                          style={{ width: '50px', height: '50px' }}
+                        />
+                      ) : (
+                        // Handle the case where there are no product images
+                        'No Images'
+                      )
                     ) : (
                       cell.render('Cell')
                     )}
