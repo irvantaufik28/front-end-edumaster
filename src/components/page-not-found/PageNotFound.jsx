@@ -1,30 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import "./pagenotfound.css";
 const PageNotFound = () => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
   };
   return (
-    <div className="body-error-page">
-      <div className="container">
-        <div className="info-label">
-          <div className="error">
-            <h2> 404 </h2>
-            <div className="text">
-              <b>Error</b>
-            </div>
-          </div>
-        </div>
-        <div className="info-text">
-          <h1>Page not found</h1>
-          <a href="#" onClick={handleBack}>
-            {" "}
-            Go back to the previous page{" "}
-          </a>{" "}
-        </div>
-      </div>
-    </div>
+   <div className="container-fluid">
+  {/* 404 Error Text */}
+  <div className="text-center">
+    <div className="error mx-auto" data-text={404}>404</div>
+    <p className="lead text-gray-800 mb-5">Page Not Found</p>
+    <p className="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
+    <a href="#" onClick={handleBack}>← Go back to the previous page</a>
+  </div>
+</div>
+
   );
 };
 

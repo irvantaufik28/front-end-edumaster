@@ -4,6 +4,10 @@ import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { RxDashboard } from "react-icons/rx";
+import { PiStudentBold } from "react-icons/pi";
+import { ImDatabase, ImUsers } from "react-icons/im";
+import { SiGoogleclassroom } from "react-icons/si";
+import { SiGoogletagmanager } from "react-icons/si";
 const SideBarList = () => {
   const [cookies] = useCookies(["token"]);
   const token = cookies.token ?? null;
@@ -40,9 +44,9 @@ const SideBarList = () => {
           href="index.html"
         >
           <div className="sidebar-brand-icon rotate-n-15">
-            <i className="fas fa-laugh-wink" />
+            <i className="logo-icon"> <SiGoogletagmanager /></i> 
           </div>
-          <div className="sidebar-brand-text mx-3">Edumaster Hub</div>
+          <div className="sidebar-brand-text mx-3">Edumaster</div>
         </a>
         <li className="nav-item">
           <a
@@ -53,7 +57,9 @@ const SideBarList = () => {
             aria-expanded="true"
             aria-controls="dashboard"
           >
-             <i className="sidebar-icon"><RxDashboard /></i>
+            <i className="sidebar-icon">
+              <RxDashboard />
+            </i>
             <span>DASHBOARDS</span>
           </a>
           <div
@@ -96,7 +102,7 @@ const SideBarList = () => {
             aria-expanded="true"
             aria-controls="master"
           >
-            <i className="fas fa-fw fa-cog" />
+            <i className="sidebar-icon"> <ImDatabase /></i>
             <span>Master Data</span>
           </a>
           <div
@@ -146,7 +152,7 @@ const SideBarList = () => {
             aria-expanded="true"
             aria-controls="student"
           >
-            <i className="fas fa-fw fa-cog" />
+            <i className="sidebar-icon"> <PiStudentBold /> </i>
             <span>Student Manage</span>
           </a>
           <div
@@ -178,7 +184,7 @@ const SideBarList = () => {
             aria-expanded="true"
             aria-controls="staff"
           >
-            <i className="fas fa-fw fa-cog" />
+            <i className="sidebar-icon"><ImUsers/></i> 
             <span>Staff Manage</span>
           </a>
           <div
@@ -216,7 +222,7 @@ const SideBarList = () => {
             aria-expanded="true"
             aria-controls="classroom"
           >
-            <i className="fas fa-fw fa-cog" />
+            <i className="sidebar-icon"><SiGoogleclassroom/></i>
             <span>Classroom Manage</span>
           </a>
           <div

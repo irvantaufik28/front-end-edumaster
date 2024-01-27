@@ -1,18 +1,16 @@
 /* eslint-disable react/prop-types */
 import { Button, Offcanvas } from "react-bootstrap";
 import { useRef, useState } from "react";
-import { FaSearch } from "react-icons/fa";
-import { RxReset } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Swal from "sweetalert2";
-import ButtonSuccess from "../../../../../components/ui/button/ButtonSuccess";
-import ButtonDanger from "../../../../../components/ui/button/ButtonDanger";
 import config from "../../../../../config";
 import OffCanvasListPermission from "./OffcanvarListPermission";
 
 const OffCanvasAddRolePermission = (props) => {
-  const dataPermission = useSelector((state) => state.role.dataRolePermissionCheckBox);
+  const dataPermission = useSelector(
+    (state) => state.role.dataRolePermissionCheckBox
+  );
   const tableRef = useRef(null);
   const handleAdd = async () => {
     const payload = {
@@ -71,23 +69,14 @@ const OffCanvasAddRolePermission = (props) => {
       name: search.name,
     });
   };
-  const handleReset = (e) => {
-    e.preventDefault();
-    setSearch({
-      name: "",
-    });
-    tableRef.current.doFilter({
-      name: "",
-    });
-    document.getElementById("name").value = "";
-  };
+
   return (
     <Offcanvas
       placement="end"
       backdrop="static"
       show={props.show}
       onHide={props.onHide}
-      style={{ width: "150vh" }}
+      style={{ width: "100vh" }}
     >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Add Permission Role</Offcanvas.Title>
@@ -95,36 +84,31 @@ const OffCanvasAddRolePermission = (props) => {
       <Offcanvas.Body>
         <>
           <div className="main-content-alpha">
-            <div className="student-head">
-              <div className="search-box-global">
-                <div className="row">
-                  <div className="col-md-6 mb-4">
-                    <label htmlFor="nama-classroom" className="form-label">
-                      permission Name
-                    </label>
+            <div className="global-head">
+              <div className="search-box-single d-flex justify-content-end align-items-end">
+                <form onSubmit={handleSearch}>
+                  <div className="input-group">
                     <input
                       type="text"
-                      className="form-control"
+                      className="form-control bg-light border-2 small"
+                      placeholder="search ..."
+                      aria-label="Search"
                       id="name"
+                      aria-describedby="basic-addon2"
                       onChange={(e) =>
-                        setSearch({ ...search, ...{ name: e.target.value } })
+                        setSearch({
+                          ...search,
+                          ...{ name: e.target.value },
+                        })
                       }
                     />
+                    <div className="input-group-append">
+                      <button className="btn btn-primary" type="submit">
+                        <i className="fas fa-search fa-sm" />
+                      </button>
+                    </div>
                   </div>
-                </div>
-
-                <div className="col-md-6 button-search-student">
-                  <ButtonSuccess
-                    title="search"
-                    icon={<FaSearch />}
-                    onClick={handleSearch}
-                  />
-                  <ButtonDanger
-                    title="reset"
-                    icon={<RxReset />}
-                    onClick={handleReset}
-                  />
-                </div>
+                </form>
               </div>
             </div>
 

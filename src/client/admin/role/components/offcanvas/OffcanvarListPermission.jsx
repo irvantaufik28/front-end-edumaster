@@ -73,6 +73,10 @@ const OffCanvasListPermission = forwardRef((props, ref) => {
   const columns = useMemo(
     () => [
       {
+        Header: "ID",
+        accessor: "id",
+      },
+      {
         id: "masterCheckbox",
         Header: (
           <Form.Check
@@ -91,18 +95,17 @@ const OffCanvasListPermission = forwardRef((props, ref) => {
             id={`checkbox-${row.original.id}`}
           />
         ),
-      },
-      {
-        Header: "ID",
-        accessor: "id",
+        width : '10px'
       },
       {
         Header: "Permission",
         accessor: "name",
+        width: '100vh'
       },
        {
         Header: "Description",
         accessor: "descripton",
+        width: '100vh'
       },
     ],
     [props, selectedData]

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { RxDashboard } from "react-icons/rx";
 import { LuShoppingBag } from "react-icons/lu";
+import { SiGoogletagmanager } from "react-icons/si";
 const SideBarEcommerce = () => {
   const [cookies] = useCookies(["token"]);
   const token = cookies.token ?? null;
@@ -41,9 +42,9 @@ const SideBarEcommerce = () => {
           href="index.html"
         >
           <div className="sidebar-brand-icon rotate-n-15">
-            <i className="fas fa-laugh-wink" />
+          <i className="logo-icon"> <SiGoogletagmanager /></i> 
           </div>
-          <div className="sidebar-brand-text mx-3">Edumaster Hub</div>
+          <div className="sidebar-brand-text mx-3">Edumaster</div>
         </a>
         <li className="nav-item">
           <a

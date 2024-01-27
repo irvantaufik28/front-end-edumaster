@@ -115,7 +115,7 @@ const OffCanvasAddCourse = (props) => {
       <Offcanvas.Body>
         <>
           <div className="main-content-alpha">
-            <div className="student-head">
+            <div className="">
             <div className="search-box-global">
                 <div className="row">
                   <div className="col-md-6 mb-4">

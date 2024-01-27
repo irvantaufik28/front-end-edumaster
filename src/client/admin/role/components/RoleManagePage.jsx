@@ -1,5 +1,4 @@
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import { MdDelete } from "react-icons/md";
+import { Card, Col, Row, Table } from "react-bootstrap";
 import { SiAddthis } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -14,6 +13,7 @@ import OffCanvasAddRolePermission from "./offcanvas/OffCanvasAddRolePermission";
 import SideBarList from "../../../../components/layouts/SideBarList";
 import TopBarList from "../../../../components/layouts/TopBarList";
 import Footer from "../../../../components/layouts/Footer";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const RoleManagePage = () => {
   const { id } = useParams();
@@ -143,15 +143,14 @@ const RoleManagePage = () => {
                             <td>{item?.permission?.name}</td>
                             <td>{item?.permission?.description}</td>
                             <td>
-                              {" "}
-                              <Button
-                                className="me-2"
-                                variant="danger"
-                                size="sm"
-                                onClick={() => handleDelete(item?.id)}
+                              <div
+                                className="icon-action-delete"
+                                title="Delete"
                               >
-                                <MdDelete /> Delete
-                              </Button>
+                                <RiDeleteBin5Line
+                                  onClick={() => handleDelete(item?.id)}
+                                />
+                              </div>
                             </td>
                           </tr>
                         ))}

@@ -130,7 +130,7 @@ const OffcanvasAddStudent = (props) => {
         {/* <OffCanvasFromFilterStudents /> */}
         <>
           <div className="main-content-alpha">
-            <div className="student-head">
+            <div className="global-head">
               <div className="search-box-global">
                 <div className="row">
                   <div className="col-md-4 mb-4">

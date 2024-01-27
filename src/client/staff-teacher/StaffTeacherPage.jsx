@@ -101,7 +101,7 @@ const StaffTeacherPage = () => {
                 type={"List"}
               />
               <div className="main-content-alpha">
-                <div className="student-head">
+                <div className="global-head">
                   <div className="row sub-header-content">
                     <div className="col-md-6 add-student">
                       <ButtonPrimary

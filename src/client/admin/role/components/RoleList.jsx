@@ -11,12 +11,12 @@ import {
   useState,
 } from "react";
 
-import { Button } from "react-bootstrap";
 import axios from "axios";
-import { MdDelete, MdModeEdit } from "react-icons/md";
-import { BiSolidDetail } from "react-icons/bi";
+import { MdOutlineEdit } from "react-icons/md";
 import config from "../../../../config";
 import BasicTable from "../../../../components/table/BasicTable";
+import { FaEye } from "react-icons/fa";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const ListRole = forwardRef((props, ref) => {
   const apiUrl = config.apiUrl + "/role";
@@ -26,18 +26,21 @@ const ListRole = forwardRef((props, ref) => {
   const columns = useMemo(
     () => [
       {
-        Header: "No",
-        accessor: "no",
-        Cell: (cellProps) => cellProps.row.index + 1,
-      },
-      {
         Header: "Id",
         accessor: "id",
       },
       {
+        Header: "No",
+        accessor: "no",
+        Cell: (cellProps) => cellProps.row.index + 1,
+        width: "10px",
+      },
+      {
         Header: "Name",
         accessor: "name",
-      }, {
+        width: "50vh",
+      },
+      {
         Header: "Display Name",
         accessor: "display_name",
       },
@@ -45,32 +48,30 @@ const ListRole = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              hidden = {row.original.name === "administrator" || row.original.name === "teacher" || row.original.name === "student"}
-              className="me-2"
-              onClick={() => props.onManage(row.values)}
-            >
-              <BiSolidDetail /> Manage
-            </Button>
-            <Button
-              variant="info"
-              size="sm"
-              hidden = {row.original.name === "administrator" || row.original.name === "teacher" || row.original.name === "student"}
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-              <MdModeEdit /> Edit
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              hidden = {row.original.name === "administrator" || row.original.name === "teacher" || row.original.name === "student"}
-              onClick={() => props.onDelete(row.values)}
-            >
-              <MdDelete /> Delete
-            </Button>
+            <div className="icon-action">
+              <div
+                className="icon-action-detail"
+                title="Manage"
+                hidden={
+                  row.original.name === "administrator" ||
+                  row.original.name === "teacher" ||
+                  row.original.name === "student"
+                }
+              >
+                <FaEye onClick={() => props.onManage(row.values)} />
+              </div>
+              <div
+                className="icon-action-delete"
+                title="Delete"
+                hidden={
+                  row.original.name === "administrator" ||
+                  row.original.name === "teacher" ||
+                  row.original.name === "student"
+                }
+              >
+                <RiDeleteBin5Line onClick={() => props.onDelete(row.values)} />
+              </div>
+            </div>
           </>
         ),
       },

@@ -1,16 +1,13 @@
-/* eslint-disable no-unused-vars */
+
 import { SiAddthis } from "react-icons/si";
 import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
 
 import { useRef, useState } from "react";
-import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
-import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import config from "../../../config";
 import ListRole from "./components/RoleList";
-import { Row } from "react-bootstrap";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
 import FormModalAddRole from "./components/modals/FormModalAddRole";
 import SideBarList from "../../../components/layouts/SideBarList";
@@ -35,26 +32,6 @@ const RolePage = () => {
       show: true,
       initialValues: null,
     });
-  };
-
-  const handleEdit = async (data) => {
-    try {
-      const id = data.id;
-
-      const { data: resData } = await axios.get(
-        config.apiUrl + `/classroom/` + id
-      );
-      setFormModal({
-        ...defaultFormModal,
-        show: true,
-        initialValues: resData.data,
-        type: "edit",
-        editId: id,
-      });
-    } catch (error) {
-      console.log(error);
-      alert(error.message);
-    }
   };
 
   const handleDelete = async (data) => {
@@ -129,17 +106,6 @@ const RolePage = () => {
       name: search.name,
     });
   };
-  const handleReset = (e) => {
-    e.preventDefault();
-    setSearch({
-      name: "",
-    });
-    tableRef.current.doFilter({
-      name: "",
-    });
-    document.getElementById("name").value = "";
-  };
-
   return (
     <>
       <div id="wrapper">
@@ -159,35 +125,37 @@ const RolePage = () => {
                         icon={<SiAddthis />}
                       />
                     </div>
-                  </div>
-                  <div className="search-box-global">
-                    <Row>
-                      <div className="col-md-4 mb-4">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="search..."
-                          id="name"
-                          onChange={(e) =>
-                            setSearch({
-                              ...search,
-                              ...{ name: e.target.value },
-                            })
-                          }
-                        />
-                      </div>
-                    </Row>
 
-                    <div className="col-md-6 button-search-classroom">
-                      <ButtonSuccess title="search" onClick={handleSearch} />
-                      <ButtonDanger title="reset" onClick={handleReset} />
+                    <div className="search-box-single col-md-6 d-flex justify-content-end align-items-end">
+                      <form onSubmit={handleSearch}>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control bg-light border-2 small"
+                            placeholder="search role name..."
+                            aria-label="Search"
+                            id="name"
+                            aria-describedby="basic-addon2"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ name: e.target.value },
+                              })
+                            }
+                          />
+                          <div className="input-group-append">
+                            <button className="btn btn-primary" type="submit">
+                              <i className="fas fa-search fa-sm" />
+                            </button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
 
                 <ListRole
                   ref={tableRef}
-                  onEdit={(data) => handleEdit(data)}
                   onDelete={(data) => handleDelete(data)}
                   onManage={(data) => handleManage(data)}
                 />

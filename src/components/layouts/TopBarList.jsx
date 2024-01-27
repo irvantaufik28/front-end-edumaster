@@ -3,9 +3,12 @@
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie';
 // import './styles/topbar.css'
 
 const TopBarList = () => {
+  const navigate = useNavigate()
   const [cookies] = useCookies(['token']);
   const token = cookies.token?? null;
   const [user, setUser] = useState('')
@@ -14,8 +17,16 @@ const TopBarList = () => {
     if (token) {
       const tokenDecode = jwtDecode(token);
       setUser(tokenDecode)
-    }
+    } 
+
   }, [token]);
+
+  const handleLogout = () => {
+    Cookies.remove('token', { path: '/' });
+    setUser(null);
+    navigate('/')
+    window.location.reload();
+  };
 
   return (
     <>
@@ -291,6 +302,7 @@ const TopBarList = () => {
                 href="#"
                 data-toggle="modal"
                 data-target="#logoutModal"
+                onClick={()=> handleLogout()}
               >
                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400" />
                 Logout

@@ -1,15 +1,12 @@
 import { SiAddthis } from "react-icons/si";
 import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
 import { useRef, useState } from "react";
-import ButtonSuccess from "../../../components/ui/button/ButtonSuccess";
-import ButtonDanger from "../../../components/ui/button/ButtonDanger";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 import ClassmajorList from "./components/ClassmajorList";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
-import { Row } from "react-bootstrap";
 import config from "../../../config";
 import FormModalClassmajor from "./components/modals/FormModalClassmajor";
 import SideBarList from "../../../components/layouts/SideBarList";
@@ -128,16 +125,6 @@ const ClassmajorPage = () => {
       name: search.name,
     });
   };
-  const handleReset = (e) => {
-    e.preventDefault();
-    setSearch({
-      name: "",
-    });
-    tableRef.current.doFilter({
-      name: "",
-    });
-    document.getElementById("name").value = "";
-  };
 
   return (
     <>
@@ -153,7 +140,7 @@ const ClassmajorPage = () => {
                 type={"List"}
               />
               <div className="main-content-alpha">
-                <div className="role-head">
+                <div className="global-head">
                   <div className="row sub-header-content">
                     <div className="col-md-6 add-role">
                       <ButtonPrimary
@@ -162,30 +149,33 @@ const ClassmajorPage = () => {
                         icon={<SiAddthis />}
                       />
                     </div>
-                  </div>
-                  <div className="search-box-global">
-                    <Row>
-                      <div className="col-md-4 mb-4">
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="search..."
-                          id="name"
-                          onChange={(e) =>
-                            setSearch({
-                              ...search,
-                              ...{ name: e.target.value },
-                            })
-                          }
-                        />
-                      </div>
-                    </Row>
-
-                    <div className="col-md-6 button-search-classroom">
-                      <ButtonSuccess title="search" onClick={handleSearch} />
-                      <ButtonDanger title="reset" onClick={handleReset} />
+                    <div className="search-box-single col-md-6 d-flex justify-content-end align-items-end">
+                      <form onSubmit={handleSearch}>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control bg-light border-2 small"
+                            placeholder="search ..."
+                            aria-label="Search"
+                            id="name"
+                            aria-describedby="basic-addon2"
+                            onChange={(e) =>
+                              setSearch({
+                                ...search,
+                                ...{ name: e.target.value },
+                              })
+                            }
+                          />
+                          <div className="input-group-append">
+                            <button className="btn btn-primary" type="submit">
+                              <i className="fas fa-search fa-sm" />
+                            </button>
+                          </div>
+                        </div>
+                      </form>
                     </div>
                   </div>
+
                 </div>
 
                 <ClassmajorList

@@ -2,18 +2,17 @@ import { Card, Col, Row, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { getById, studentSelector } from "../../../../features/studentSlice";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
-import { MdDelete, MdModeEdit } from "react-icons/md";
-import ButtonDanger from "../../../../components/ui/button/ButtonDanger";
+import {  MdOutlineEdit } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
 import FormModalParent from "../modals/FormModalParent";
 import axios from "axios";
 import config from "../../../../config";
 import Swal from "sweetalert2";
-import ButtonSecondary from "../../../../components/ui/button/ButtonSecondary";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const TabParentsInfo = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const defaultFormModal = {
     show: false,
     type: "add",
@@ -21,18 +20,19 @@ const TabParentsInfo = () => {
   };
 
   const student = useSelector(studentSelector.getById);
-  const [formModal, setFormModal] = useState(defaultFormModal)
+  const [formModal, setFormModal] = useState(defaultFormModal);
   const handleEdit = async (id) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     try {
       const { data: resData } = await axios.get(
-        config.apiUrl + `/student-parent/` + id, {
+        config.apiUrl + `/student-parent/` + id,
+        {
           headers: {
-            Authorization : token
-          }
+            Authorization: token,
+          },
         }
       );
 
@@ -49,7 +49,6 @@ const TabParentsInfo = () => {
     }
   };
 
- 
   const handleCloseForm = () => {
     setFormModal({
       ...formModal,
@@ -63,9 +62,9 @@ const TabParentsInfo = () => {
 
   const handleDelete = async (id) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -76,16 +75,16 @@ const TabParentsInfo = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       });
-  
+
       if (result.isConfirmed) {
         try {
-          await axios.delete(config.apiUrl + `/student-parent/` + id , {
+          await axios.delete(config.apiUrl + `/student-parent/` + id, {
             headers: {
-              Authorization: token
-            }
+              Authorization: token,
+            },
           });
           dispatch(getById(student?.id));
-  
+
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
@@ -104,13 +103,13 @@ const TabParentsInfo = () => {
       console.error(error);
     }
   };
-  
+
   const handleAdd = async () => {
     setFormModal({
       ...defaultFormModal,
       show: true,
       initialValues: null,
-      student_id : student?.id
+      student_id: student?.id,
     });
   };
   return (
@@ -130,8 +129,24 @@ const TabParentsInfo = () => {
         <hr></hr>
         {student?.student_parents?.map((item, index) => (
           <>
-            <Card style={{ width: "100%", height: "auto", marginBottom : "50px" }}>
+            <Card
+              style={{ width: "100%", height: "auto", marginBottom: "50px" }}
+            >
               <Card.Body key={index}>
+              <div className="button-edit-parent">
+                  <div className="icon-action">
+                    <div className="icon-action-edit" title="Delete">
+                      <MdOutlineEdit
+                        onClick={() => handleEdit(item?.id)}
+                      />
+                    </div>
+                    <div className="icon-action-delete" title="Delete">
+                      <RiDeleteBin5Line
+                        onClick={() => handleDelete(item?.id)}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <Row>
                   <Table>
                     <tbody>
@@ -215,27 +230,16 @@ const TabParentsInfo = () => {
                     </tbody>
                   </Table>
                 </Row>
-                <div className="button-edit-parent">
-                  <ButtonDanger
-                    title="delete"
-                    icon={<MdDelete />}
-                    onClick={() => handleDelete(item?.id)}
-                  />
-                  <ButtonSecondary
-                    title="Edit"
-                    icon={<MdModeEdit />}
-                    onClick={() => handleEdit(item?.id)}
-                  />
-                </div>
+               
               </Card.Body>
             </Card>
           </>
         ))}
       </Row>
       <FormModalParent
-      {...formModal}
-      onHide={handleCloseForm}
-      onSuccess={onSubmitSuccess}
+        {...formModal}
+        onHide={handleCloseForm}
+        onSuccess={onSubmitSuccess}
       />
     </>
   );

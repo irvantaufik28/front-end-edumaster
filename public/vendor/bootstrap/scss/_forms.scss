@@ -214,42 +214,12 @@ textarea.form-control {
 //
 // Indent the labels to position radios/checkboxes as hanging controls.
 
-.form-check {
-  position: relative;
-  display: block;
-  padding-left: $form-check-input-gutter;
-}
 
-.form-check-input {
-  position: absolute;
-  margin-top: $form-check-input-margin-y;
-  margin-left: -$form-check-input-gutter;
-
-  // Use [disabled] and :disabled for workaround https://github.com/twbs/bootstrap/issues/28247
-  &[disabled] ~ .form-check-label,
-  &:disabled ~ .form-check-label {
-    color: $text-muted;
-  }
-}
 
 .form-check-label {
   margin-bottom: 0; // Override default `<label>` bottom margin
 }
 
-.form-check-inline {
-  display: inline-flex;
-  align-items: center;
-  padding-left: 0; // Override base .form-check
-  margin-right: $form-check-inline-margin-x;
-
-  // Undo .form-check-input defaults and add some `margin-right`.
-  .form-check-input {
-    position: static;
-    margin-top: 0;
-    margin-right: $form-check-inline-input-margin-x;
-    margin-left: 0;
-  }
-}
 
 
 // Form validation
@@ -328,13 +298,7 @@ textarea.form-control {
       width: auto;
       padding-left: 0;
     }
-    .form-check-input {
-      position: relative;
-      flex-shrink: 0;
-      margin-top: 0;
-      margin-right: $form-check-input-margin-x;
-      margin-left: 0;
-    }
+
 
     .custom-control {
       align-items: center;

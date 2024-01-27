@@ -11,12 +11,13 @@ import {
   useState,
 } from "react";
 import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete  } from "react-icons/md";
-
+import { MdModeEdit, MdDelete, MdOutlineEdit  } from "react-icons/md";
+import { RiDeleteBin5Line } from "react-icons/ri";
 import config from "../../../config";
 import BasicTable from "../../../components/table/BasicTable";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import { FaEye } from "react-icons/fa";
 
 const ListOrderTable = forwardRef((props, ref) => {
   const apiUrl = config.apiUrl + "/student";
@@ -69,30 +70,18 @@ const ListOrderTable = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onDetail(row.values)}
-            >
-            <BiSolidDetail />  Detail
-            </Button>
-            <Button
-              variant="info"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-           <MdModeEdit />   Edit
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => props.onDelete(row.values)}
-            >
-            <MdDelete />  Delete
-            </Button>
-          </>
+               <div className="icon-action">
+              <div className="icon-action-detail"  title="Detail">
+                <FaEye onClick={() => props.onDetail(row.values)} />
+              </div>
+              <div className="icon-action-edit"  title="Edit">
+                <MdOutlineEdit onClick={() => props.onEdit(row.values)} />
+              </div>
+              <div className="icon-action-delete" title="Delete">
+                <RiDeleteBin5Line onClick={() => props.onDelete(row.values)} />
+              </div>
+            </div>
+            </>
         ),
       },
     ],

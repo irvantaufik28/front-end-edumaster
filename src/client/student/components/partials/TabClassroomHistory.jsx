@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { getById, studentSelector } from "../../../../features/studentSlice";
 import { Card, Col, Row, Table } from "react-bootstrap";
-import ButtonDanger from "../../../../components/ui/button/ButtonDanger";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdModeEdit } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
 import FormModalHistoryClassroom from "../modals/FormModalHistoryClassroom";
 import axios from "axios";
 import config from "../../../../config";
 import Swal from "sweetalert2";
+import { RiDeleteBin5Line } from "react-icons/ri";
 const TabClassroomHistory = () => {
   const student = useSelector(studentSelector.getById);
   const dispatch = useDispatch();
@@ -23,9 +23,9 @@ const TabClassroomHistory = () => {
 
   const handleDelete = async (id) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     try {
       const result = await Swal.fire({
         title: "Are you sure?",
@@ -41,11 +41,12 @@ const TabClassroomHistory = () => {
         try {
           await axios.delete(
             config.apiUrl +
-              `/classroom/delete/student?student_id=${student?.id}&classroom_id=${id}` , {
-                headers: {
-                  Authorization : token 
-                }
-              }
+              `/classroom/delete/student?student_id=${student?.id}&classroom_id=${id}`,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
           );
           dispatch(getById(student?.id));
 
@@ -205,11 +206,14 @@ const TabClassroomHistory = () => {
                   <td>{data?.classroom?.year_group}</td>
                   <td>{data?.classroom?.status}</td>
                   <td>
-                    <ButtonDanger
-                      title="delete"
-                      icon={<MdDelete />}
-                      onClick={() => handleDelete(data?.classroom?.id)}
-                    />
+                    <div className="icon-action">
+                  
+                      <div className="icon-action-delete" title="Delete">
+                        <RiDeleteBin5Line
+                          onClick={() => handleDelete(data?.classroom?.id)}
+                        />
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}

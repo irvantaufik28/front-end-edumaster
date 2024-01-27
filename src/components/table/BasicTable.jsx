@@ -236,7 +236,7 @@ const BasicTable = ({
               <tr key={i} {...row.getRowProps()}>
                 {row.cells.map((cell, cellIdx) => {
                   return (
-                    <td {...cell.getCellProps()} style={{ width: cell.width }}>
+                    <td {...cell.getCellProps()} style={{ width: cell.column.width }}>
                     {cell.column.id === 'foto_url' ? (
                       <img
                         src={cell.value}

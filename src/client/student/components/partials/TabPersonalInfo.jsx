@@ -5,8 +5,7 @@ import { studentSelector } from "../../../../features/studentSlice";
 import { useState } from "react";
 import config from "../../../../config";
 import axios from "axios";
-import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
-import { MdModeEdit } from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
 import FormModalStudent from "../modals/FormModalStudent";
 const TabPersonalInfo = () => {
   const defaultFormModal = {
@@ -21,15 +20,16 @@ const TabPersonalInfo = () => {
 
   const handleEdit = async (id) => {
     const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+      .split("; ")
+      .find((row) => row.startsWith("token="))
+      ?.split("=")[1];
     try {
       const { data: resData } = await axios.get(
-        config.apiUrl + `/student/` + id, {
-          headers : {
-            Authorization: token
-          }
+        config.apiUrl + `/student/` + id,
+        {
+          headers: {
+            Authorization: token,
+          },
         }
       );
 
@@ -65,11 +65,11 @@ const TabPersonalInfo = () => {
             <div className="title-form-student">Personal Info</div>
             <hr></hr>
             <div className="button-edit-student">
-              <ButtonPrimary
-                title="Edit"
-                icon={<MdModeEdit />}
-                onClick={() => handleEdit(student?.id)}
-              />
+              <div className="icon-action">
+                <div className="icon-action-edit" title="Edit">
+                  <MdOutlineEdit onClick={() => handleEdit(student?.id)} />
+                </div>
+              </div>
             </div>
             <Row>
               <Col md={6}>

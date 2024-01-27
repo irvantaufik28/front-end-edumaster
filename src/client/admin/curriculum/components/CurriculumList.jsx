@@ -11,12 +11,13 @@ import {
     useState,
   } from "react";
   
-  import { Button } from "react-bootstrap";
   import axios from "axios";
-  import { MdDelete, MdModeEdit } from "react-icons/md";
-  import { BiSolidDetail } from "react-icons/bi";
+  import { MdOutlineEdit } from "react-icons/md";
+  import { FaEye } from "react-icons/fa";
+
   import config from "../../../../config";
   import BasicTable from "../../../../components/table/BasicTable";
+import { RiDeleteBin5Line } from "react-icons/ri";
   
   const CurriculumList = forwardRef((props, ref) => {
     const apiUrl = config.apiUrl + "/structure-curriculum";
@@ -30,9 +31,14 @@ import {
           accessor: "id",
         },
         {
+          Header: "No",
+          accessor: "no",
+          Cell: (cellProps) => cellProps.row.index + 1,
+          width: '10px'
+        },
+        {
           Header: "Name",
           accessor: "name",
-        //   marginleft: "800px",
         },
         {
             Header: "Grade",
@@ -50,29 +56,17 @@ import {
           Header: "Action",
           Cell: ({ row }) => (
             <>
-             <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onManage(row.values)}
-            >
-              <BiSolidDetail /> Manage
-            </Button>
-              <Button
-                variant="info"
-                size="sm"
-                className="me-2"
-                onClick={() => props.onEdit(row.values)}
-              >
-                <MdModeEdit /> Edit
-              </Button>
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => props.onDelete(row.values)}
-              >
-                <MdDelete /> Delete
-              </Button>
+               <div className="icon-action">
+              <div className="icon-action-detail"  title="Manage">
+                <FaEye onClick={() => props.onManage(row.values)} />
+              </div>
+              <div className="icon-action-edit"  title="Edit">
+                <MdOutlineEdit onClick={() => props.onEdit(row.values)} />
+              </div>
+              <div className="icon-action-delete" title="Delete">
+                <RiDeleteBin5Line onClick={() => props.onDelete(row.values)} />
+              </div>
+            </div>
             </>
           ),
         },

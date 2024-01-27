@@ -1,7 +1,7 @@
 import ButtonPrimary from "../../../components/ui/button/ButtonPrimary";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
-import { Button, Card, Col, Row, Table } from "react-bootstrap";
-import { MdDelete } from "react-icons/md";
+import { Card, Col, Row, Table } from "react-bootstrap";
+import { MdOutlineEdit } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,6 +18,7 @@ import FormModalCourseCurriculum from "./components/modals/FormModalCourseCurric
 import SideBarList from "../../../components/layouts/SideBarList";
 import TopBarList from "../../../components/layouts/TopBarList";
 import Footer from "../../../components/layouts/Footer";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const ManageCurriculumPage = () => {
   const { id } = useParams();
@@ -260,23 +261,24 @@ const ManageCurriculumPage = () => {
                             <td>{item?.courses?.type}</td>
 
                             <td>
-                              {" "}
-                              <Button
-                                className="me-2"
-                                variant="danger"
-                                size="sm"
-                                onClick={() => handleDelete(item?.id)}
-                              >
-                                <MdDelete /> Delete
-                              </Button>
-                              <Button
-                                className="me-2"
-                                variant="info"
-                                size="sm"
-                                onClick={() => handleUpdateCourse(item?.id)}
-                              >
-                                <MdDelete /> Edit
-                              </Button>
+                              <div className="icon-action">
+                                <div
+                                  className="icon-action-edit"
+                                  title="Delete"
+                                >
+                                  <MdOutlineEdit
+                                    onClick={() => handleUpdateCourse(item?.id)}
+                                  />
+                                </div>
+                                <div
+                                  className="icon-action-delete"
+                                  title="Delete"
+                                >
+                                  <RiDeleteBin5Line
+                                    onClick={() => handleDelete(item?.id)}
+                                  />
+                                </div>
+                              </div>
                             </td>
                           </tr>
                         ))}

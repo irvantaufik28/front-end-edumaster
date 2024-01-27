@@ -98,6 +98,7 @@ const OffCanvasListCourse = forwardRef((props, ref) => {
             id={`checkbox-${row.original.id}`}
           />
         ),
+        width: '10px'
       },
       {
         id: "meet_per_week",
@@ -112,6 +113,7 @@ const OffCanvasListCourse = forwardRef((props, ref) => {
             onChange={(e) => handleQtyChange(row.original.id, e.target.value)}
           />
         ),
+        width: '10px'
       },
       {
         Header: "ID",
@@ -122,6 +124,10 @@ const OffCanvasListCourse = forwardRef((props, ref) => {
         accessor: "name",
       },
       {
+        Header: "Type",
+        accessor: "type",
+      },
+      {
         Header: "Grade",
         accessor: "level",
       },
@@ -129,10 +135,7 @@ const OffCanvasListCourse = forwardRef((props, ref) => {
         Header: "Semester",
         accessor: "semester",
       },
-      {
-        Header: "Type",
-        accessor: "type",
-      },
+     
     ],
     [props, selectedData]
   );
