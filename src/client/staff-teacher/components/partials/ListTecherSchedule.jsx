@@ -17,6 +17,7 @@ import { MdDelete, MdModeEdit } from "react-icons/md";
 import axios from "axios";
 import BasicTable from "../../../../components/table/BasicTable";
 import { useParams } from "react-router-dom";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const ListTeacherSchedule = forwardRef((props, ref) => {
   const { id } = useParams();
@@ -29,6 +30,12 @@ const ListTeacherSchedule = forwardRef((props, ref) => {
       {
         Header: "Id",
         accessor: "id",
+      },
+      {
+        Header: "No",
+        accessor: "no",
+        Cell: (cellProps) => cellProps.row.index + 1,
+        width: '10px'
       },
       {
         Header: "Day",
@@ -46,7 +53,7 @@ const ListTeacherSchedule = forwardRef((props, ref) => {
           </div>
         ),
       },
-     
+
       {
         Header: "Classroom",
         accessor: "",
@@ -71,13 +78,15 @@ const ListTeacherSchedule = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => props.onDelete(row.values)}
-            >
-              <MdDelete /> Delete
-            </Button>
+            <>
+              <div className="icon-action">
+                <div className="icon-action-delete" title="Delete">
+                  <RiDeleteBin5Line
+                    onClick={() => props.onDelete(row.values)}
+                  />
+                </div>
+              </div>
+            </>
           </>
         ),
       },

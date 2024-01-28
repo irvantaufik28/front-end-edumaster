@@ -6,6 +6,7 @@ import jwtDecode from "jwt-decode";
 import { RxDashboard } from "react-icons/rx";
 import { LuShoppingBag } from "react-icons/lu";
 import { SiGoogletagmanager } from "react-icons/si";
+import { RiShoppingCart2Line } from "react-icons/ri";
 const SideBarEcommerce = () => {
   const [cookies] = useCookies(["token"]);
   const token = cookies.token ?? null;
@@ -42,7 +43,10 @@ const SideBarEcommerce = () => {
           href="index.html"
         >
           <div className="sidebar-brand-icon rotate-n-15">
-          <i className="logo-icon"> <SiGoogletagmanager /></i> 
+            <i className="logo-icon">
+              {" "}
+              <SiGoogletagmanager />
+            </i>
           </div>
           <div className="sidebar-brand-text mx-3">Edumaster</div>
         </a>
@@ -55,7 +59,9 @@ const SideBarEcommerce = () => {
             aria-expanded="true"
             aria-controls="dashboard"
           >
-            <i className="sidebar-icon"><RxDashboard /></i>
+            <i className="sidebar-icon">
+              <RxDashboard />
+            </i>
             <span>DASHBOARDS</span>
           </a>
           <div
@@ -97,7 +103,9 @@ const SideBarEcommerce = () => {
             aria-expanded="true"
             aria-controls="product"
           >
-            <i className="sidebar-icon"><LuShoppingBag/></i>
+            <i className="sidebar-icon">
+              <LuShoppingBag />
+            </i>
             <span>Product</span>
           </a>
           <div
@@ -107,7 +115,6 @@ const SideBarEcommerce = () => {
             data-parent="#accordionSidebar"
           >
             <div className="bg-white py-2 collapse-inner rounded">
-              <h6 className="collapse-header">Product Manage :</h6>
               <a
                 className="collapse-item"
                 onClick={() => handleNavigation("/ecommerce/list-product")}
@@ -119,6 +126,48 @@ const SideBarEcommerce = () => {
                 onClick={() => handleNavigation("/ecommerce/add-product")}
               >
                 Add Product
+              </a>
+            </div>
+          </div>
+        </li>
+        <li className="nav-item">
+          <a
+            className="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#order"
+            aria-expanded="true"
+            aria-controls="order"
+          >
+            <i className="sidebar-icon">
+              <RiShoppingCart2Line />
+            </i>
+            <span>Order</span>
+          </a>
+          <div
+            id="order"
+            className="collapse"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar"
+          >
+            <div className="bg-white py-2 collapse-inner rounded">
+              <a
+                className="collapse-item"
+                onClick={() => handleNavigation("/ecommerce/list-order")}
+              >
+                List Order
+              </a>
+              <a
+                className="collapse-item"
+                onClick={() => handleNavigation("/ecommerce/cancel-order")}
+              >
+                Canceled
+              </a>
+              <a
+                className="collapse-item"
+                onClick={() => handleNavigation("/ecommerce/return-order")}
+              >
+                Return
               </a>
             </div>
           </div>

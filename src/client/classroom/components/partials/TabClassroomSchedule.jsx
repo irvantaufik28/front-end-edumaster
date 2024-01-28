@@ -1,4 +1,4 @@
-import { Button, Card, Table } from "react-bootstrap";
+import { Card, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   classroomScheduleSelector,
@@ -6,7 +6,7 @@ import {
 } from "../../../../features/classroomScheduleSlice";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { MdDelete, MdModeEdit } from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
 import Swal from "sweetalert2";
 import axios from "axios";
 import config from "../../../../config";
@@ -15,6 +15,7 @@ import { SiAddthis } from "react-icons/si";
 import FormModalAddClassromSchedule from "../modals/FormModalAddClassromSchedule";
 import FormModalEditClassromSchedule from "../modals/FormModalEditClassromSchedule";
 import FormAddScheduleUseTemplate from "../modals/FormAddScheduleUseTemplate";
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const TabClassroomSchedule = () => {
   const defaultFormAddModal = {
@@ -167,9 +168,10 @@ const TabClassroomSchedule = () => {
         />
       </div>
       {classroomSchedule?.length ? (
-        <Table striped bordered hover>
+        <Table className="react-basic-table">
           <thead>
             <tr>
+              <th className="th-react-table ">No</th>
               <th className="th-react-table ">Day</th>
               <th className="th-react-table ">Course</th>
               <th className="th-react-table ">Type</th>
@@ -180,8 +182,9 @@ const TabClassroomSchedule = () => {
             </tr>
           </thead>
           <tbody>
-            {classroomSchedule?.map((item) => (
+            {classroomSchedule?.map((item, index) => (
               <tr key={item.id}>
+                <td>{index + 1}</td>
                 <td>{item?.day_name ? item.day_name : "No day selected"}</td>
                 <td>
                   {item?.courses?.name} kelas {item?.courses?.level}
@@ -195,22 +198,16 @@ const TabClassroomSchedule = () => {
                   {item?.teacher_course?.staff?.last_name}
                 </td>
                 <td>
-                  {" "}
-                  <Button
-                    variant="info"
-                    size="sm"
-                    className="me-2"
-                    onClick={() => handleEdit(item?.id)}
-                  >
-                    <MdModeEdit /> Edit
-                  </Button>
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => handleDelete(item?.id)}
-                  >
-                    <MdDelete /> Delete
-                  </Button>
+                  <div className="icon-action">
+                    <div className="icon-action-edit" title="Edit">
+                      <MdOutlineEdit onClick={() => handleEdit(item?.id)} />
+                    </div>
+                    <div className="icon-action-delete" title="Delete">
+                      <RiDeleteBin5Line
+                        onClick={() => handleDelete(item?.id)}
+                      />
+                    </div>
+                  </div>
                 </td>
               </tr>
             ))}

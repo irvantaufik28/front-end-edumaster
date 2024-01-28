@@ -180,52 +180,60 @@ const TabClassroomHistory = () => {
             />
           </div>
         </Col>
-        <hr></hr>
 
-        {student?.student_classrooms?.length ? (
-          <table
-            className="table table-striped"
-            style={{ marginBottom: "100px" }}
-          >
-            <thead>
-              <tr>
-                <th className="th-react-table">Code</th>
-                <th className="th-react-table">Grade</th>
-                <th className="th-react-table">Class Major</th>
-                <th className="th-react-table">Year Group</th>
-                <th className="th-react-table">Status</th>
-                <th className="th-react-table">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {student?.student_classrooms.map((data, index) => (
-                <tr key={index}>
-                  <td>{data?.classroom?.code}</td>
-                  <td>{data?.classroom?.level}</td>
-                  <td>{data?.classroom?.classMajor?.name}</td>
-                  <td>{data?.classroom?.year_group}</td>
-                  <td>{data?.classroom?.status}</td>
-                  <td>
-                    <div className="icon-action">
-                  
-                      <div className="icon-action-delete" title="Delete">
-                        <RiDeleteBin5Line
-                          onClick={() => handleDelete(data?.classroom?.id)}
-                        />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <Card style={{ width: "100%", height: "auto" }}>
-            <Card.Body style={{ textAlign: "center" }}>
-              <p>No data available </p>
-            </Card.Body>
-          </Card>
-        )}
+        <Card
+          style={{
+            width: "100%",
+            height: "auto",
+            marginBottom: "20px",
+          }}
+        >
+          <Card.Body>
+            {student?.student_classrooms?.length ? (
+              <table
+                className="react-basic-table"
+                style={{ marginBottom: "100px" }}
+              >
+                <thead>
+                  <tr>
+                    <th className="th-react-table">No</th>
+                    <th className="th-react-table">Code</th>
+                    <th className="th-react-table">Grade</th>
+                    <th className="th-react-table">Class Major</th>
+                    <th className="th-react-table">Year Group</th>
+                    <th className="th-react-table">Status</th>
+                    <th className="th-react-table">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {student?.student_classrooms.map((data, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{data?.classroom?.code}</td>
+                      <td>{data?.classroom?.level}</td>
+                      <td>{data?.classroom?.classMajor?.name}</td>
+                      <td>{data?.classroom?.year_group}</td>
+                      <td>{data?.classroom?.status}</td>
+                      <td>
+                        <div className="icon-action">
+                          <div className="icon-action-delete" title="Delete">
+                            <RiDeleteBin5Line
+                              onClick={() => handleDelete(data?.classroom?.id)}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div style={{ textAlign: "center" }}>
+                <p>No data available </p>
+              </div>
+            )}
+          </Card.Body>
+        </Card>
       </Row>
       <FormModalHistoryClassroom
         {...formModal}

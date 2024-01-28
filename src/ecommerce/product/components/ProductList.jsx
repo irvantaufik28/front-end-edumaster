@@ -10,11 +10,9 @@ import {
   useRef,
   useState,
 } from "react";
-import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete } from "react-icons/md";
+import { MdOutlineEdit } from "react-icons/md";
 
 import config from "../../../config";
-import { Button } from "react-bootstrap";
 import axios from "axios";
 import BasicTableEcommerce from "../../components/table-ecommerce/BasicTableEcommerce";
 
@@ -58,14 +56,13 @@ const ProductList = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-           <Button
-              variant="info"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onEdit(row.values)}
-            >
-              <MdModeEdit /> Edit
-            </Button>
+          <div className="icon-action">
+             
+              <div className="icon-action-edit" title="Edit">
+                <MdOutlineEdit onClick={() => props.onEdit(row.values)} />
+              </div>
+            
+            </div>
           </>
         ),
       },

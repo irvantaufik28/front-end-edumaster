@@ -239,8 +239,17 @@ const ManageCurriculumPage = () => {
                       onClick={() => handleAdd()}
                     />
                   </div>
+
+                  <Card
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <Card.Body>
                   {classroomSchedule?.length ? (
-                    <Table striped bordered hover>
+                    <Table className="react-basic-table">
                       <thead>
                         <tr>
                           <th className="th-react-table ">No</th>
@@ -291,6 +300,9 @@ const ManageCurriculumPage = () => {
                       </Card.Body>
                     </Card>
                   )}
+                  </Card.Body>
+                </Card>
+            
                   <FormModalCourseCurriculum
                     {...formCourseCurriculum}
                     onHide={handleCloseFormCourseCurriculum}

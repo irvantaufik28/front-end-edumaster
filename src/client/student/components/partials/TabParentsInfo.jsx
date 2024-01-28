@@ -135,7 +135,7 @@ const TabParentsInfo = () => {
               <Card.Body key={index}>
               <div className="button-edit-parent">
                   <div className="icon-action">
-                    <div className="icon-action-edit" title="Delete">
+                    <div className="icon-action-edit" title="Edit">
                       <MdOutlineEdit
                         onClick={() => handleEdit(item?.id)}
                       />

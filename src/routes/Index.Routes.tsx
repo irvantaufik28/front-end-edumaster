@@ -24,6 +24,7 @@ import EcommeceDashboard from "../ecommerce/dashboard/EcommeceDashboard";
 import ProductPage from "../ecommerce/product/ProductPage";
 import ProductCreatePage from "../ecommerce/product/ProductCreatePage";
 import ProductEditPage from "../ecommerce/product/ProductEditPage";
+import OrderPage from "../ecommerce/order/OrderPage";
 
 const IndexRoutes = () => {
   return (
@@ -70,6 +71,8 @@ const IndexRoutes = () => {
         <Route path="/ecommerce/list-product" element={<ProductPage />} />
         <Route path="/ecommerce/add-product" element={<ProductCreatePage />} />
         <Route path="/ecommerce/edit-product/:id" element={<ProductEditPage />} />
+       
+        <Route path="/ecommerce/list-order" element={<OrderPage />} />
         </Route>
       </Routes>
     </Router>

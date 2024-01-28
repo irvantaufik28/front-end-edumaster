@@ -126,8 +126,16 @@ const RoleManagePage = () => {
                       onClick={() => handleAdd()}
                     />
                   </div>
+                  <Card
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <Card.Body>
                   {rolePermission?.length ? (
-                    <Table striped bordered hover>
+                    <Table className="react-basic-table">
                       <thead>
                         <tr>
                           <th className="th-react-table ">No</th>
@@ -163,6 +171,10 @@ const RoleManagePage = () => {
                       </Card.Body>
                     </Card>
                   )}
+                  </Card.Body>
+                </Card>
+
+                 
 
                   <OffCanvasAddRolePermission
                     {...formOffcanvas}

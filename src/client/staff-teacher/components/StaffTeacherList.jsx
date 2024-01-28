@@ -10,13 +10,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete } from "react-icons/md";
-
 import config from "../../../config";
 import BasicTable from "../../../components/table/BasicTable";
-import { Button } from "react-bootstrap";
 import axios from "axios";
+import { FaEye } from "react-icons/fa";
 
 const StaffTeacherList = forwardRef((props, ref) => {
   const apiUrl = config.apiUrl + "/staff/teacher";
@@ -67,14 +64,11 @@ const StaffTeacherList = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onDetail(row.values)}
-            >
-              <BiSolidDetail /> Detail
-            </Button>
+              <div className="icon-action">
+              <div className="icon-action-detail"  title="Detail">
+                <FaEye onClick={() => props.onDetail(row.values)} />
+              </div>
+            </div>
           </>
         ),
       },

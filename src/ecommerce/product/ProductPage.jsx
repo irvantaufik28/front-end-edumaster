@@ -1,7 +1,4 @@
 import { RxReset } from "react-icons/rx";
-import Footer from "../../components/layouts/Footer";
-import SideBarEcommerce from "../../components/layouts/SideBarEcommerce";
-import TopBarList from "../../components/layouts/TopBarList";
 import ButtonDanger from "../../components/ui/button/ButtonDanger";
 import { FaSearch } from "react-icons/fa";
 import ButtonSuccess from "../../components/ui/button/ButtonSuccess";
@@ -18,6 +15,7 @@ import {
   categoryProductSelector,
   getAllCategory,
 } from "../../features/ecommerce/categoryProduct";
+import EcommerceLayout from "../../components/layouts/EcommerceLayout";
 
 const ProductPage = () => {
   const categoryProductList = useSelector(categoryProductSelector.selectAll);
@@ -33,9 +31,8 @@ const ProductPage = () => {
   };
 
   const handleEdit = async (data) => {
-      const product_id = data._id; 
-      navigate(`/ecommerce/edit-product/${product_id}`);
-   
+    const product_id = data._id;
+    navigate(`/ecommerce/edit-product/${product_id}`);
   };
 
   const [search, setSearch] = useState({
@@ -64,111 +61,95 @@ const ProductPage = () => {
     document.getElementById("category").value = "";
   };
   return (
-    <>
-      <div id="wrapper">
-        <SideBarEcommerce />
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
-            <TopBarList />
-            <div className="main-content">
-              <HeaderContentGlobal
-                title={"Product"}
-                page={"Product"}
-                type={"List"}
-              />
-              <div className="main-content-alpha">
-                <div className="global-head">
-                  <div className="row sub-header-content">
-                    <div className="col-md-6 add-student">
-                      <ButtonPrimary
-                        title="add"
-                        onClick={handleAdd}
-                        icon={<SiAddthis />}
-                      />
-                    </div>
-                    <div className="col-md-6 right-button-student-list">
-                      <div>
-                        <ButtonPrimary title="Import" icon={<CgImport />} />
-                      </div>
-                      <div>
-                        <ButtonPrimary title="Export" icon={<BiExport />} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="search-box-global">
-                    <div className="row">
-                      <div className="col-md-4 mb-4">
-                        <label htmlFor="nama-classroom" className="form-label">
-                          Product Name:
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="nik"
-                          onChange={(e) =>
-                            setSearch({
-                              ...search,
-                              ...{ name: e.target.value },
-                            })
-                          }
-                        />
-                      </div>
-
-                      <div className="col-md-4">
-                        <label htmlFor="status" className="form-label">
-                          Category
-                        </label>
-                        <div>
-                          <select
-                            className="form-control"
-                            aria-label="Default select example"
-                            id="status"
-                            onChange={(e) =>
-                              setSearch({
-                                ...search,
-                                ...{ category: e.target.value },
-                              })
-                            }
-                            value={search.category}
-                          >
-                            <option value="">Select category</option>
-                            {categoryProductList?.map((option) => (
-                              <option key={option._id} value={option.value}>
-                                {option.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-4">
-                        <div className="col-md-6 button-search-student">
-                          <ButtonSuccess
-                            title="search"
-                            icon={<FaSearch />}
-                            onClick={handleSearch}
-                          />
-                          <ButtonDanger
-                            title="reset"
-                            icon={<RxReset />}
-                            onClick={handleReset}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+    <EcommerceLayout>
+      <div className="main-content">
+        <HeaderContentGlobal title={"Product"} page={"Product"} type={"List"} />
+        <div className="main-content-alpha">
+          <div className="global-head">
+            <div className="row sub-header-content">
+              <div className="col-md-6 add-student">
+                <ButtonPrimary
+                  title="add"
+                  onClick={handleAdd}
+                  icon={<SiAddthis />}
+                />
+              </div>
+              <div className="col-md-6 right-button-student-list">
+                <div>
+                  <ButtonPrimary title="Import" icon={<CgImport />} />
+                </div>
+                <div>
+                  <ButtonPrimary title="Export" icon={<BiExport />} />
+                </div>
+              </div>
+            </div>
+            <div className="search-box-global">
+              <div className="row">
+                <div className="col-md-4 mb-4">
+                  <label htmlFor="nama-classroom" className="form-label">
+                    Product Name:
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="nik"
+                    onChange={(e) =>
+                      setSearch({
+                        ...search,
+                        ...{ name: e.target.value },
+                      })
+                    }
+                  />
                 </div>
 
-                <ProductList
-                  ref={tableRef}
-                  onEdit={(data) => handleEdit(data)}
-                />
+                <div className="col-md-4">
+                  <label htmlFor="status" className="form-label">
+                    Category
+                  </label>
+                  <div>
+                    <select
+                      className="form-control"
+                      aria-label="Default select example"
+                      id="status"
+                      onChange={(e) =>
+                        setSearch({
+                          ...search,
+                          ...{ category: e.target.value },
+                        })
+                      }
+                      value={search.category}
+                    >
+                      <option value="">Select category</option>
+                      {categoryProductList?.map((option) => (
+                        <option key={option._id} value={option.value}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <div className="col-md-6 button-search-student">
+                    <ButtonSuccess
+                      title="search"
+                      icon={<FaSearch />}
+                      onClick={handleSearch}
+                    />
+                    <ButtonDanger
+                      title="reset"
+                      icon={<RxReset />}
+                      onClick={handleReset}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <Footer />
+
+          <ProductList ref={tableRef} onEdit={(data) => handleEdit(data)} />
         </div>
       </div>
-    </>
+    </EcommerceLayout>
   );
 };
 

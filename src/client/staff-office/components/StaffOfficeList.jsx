@@ -10,13 +10,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { BiSolidDetail } from "react-icons/bi";
-import { MdModeEdit, MdDelete } from "react-icons/md";
-
 import config from "../../../config";
 import BasicTable from "../../../components/table/BasicTable";
-import { Button } from "react-bootstrap";
 import axios from "axios";
+import { FaEye } from "react-icons/fa";
 
 const StaffOfficeList = forwardRef((props, ref) => {
   const apiUrl = config.apiUrl + "/staff";
@@ -59,7 +56,9 @@ const StaffOfficeList = forwardRef((props, ref) => {
           <div>
             <div>
               {row.original.staff_user.map((user) =>
-                user?.user?.user_roles?.map((role) => role?.role?.display_name?.toUpperCase()).join(", ")
+                user?.user?.user_roles
+                  ?.map((role) => role?.role?.display_name?.toUpperCase())
+                  .join(", ")
               ) || "-"}
             </div>
           </div>
@@ -73,14 +72,11 @@ const StaffOfficeList = forwardRef((props, ref) => {
         Header: "Action",
         Cell: ({ row }) => (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              className="me-2"
-              onClick={() => props.onDetail(row.values)}
-            >
-              <BiSolidDetail /> Detail
-            </Button>
+            <div className="icon-action">
+              <div className="icon-action-detail" title="Detail">
+                <FaEye onClick={() => props.onDetail(row.values)} />
+              </div>
+            </div>
           </>
         ),
       },

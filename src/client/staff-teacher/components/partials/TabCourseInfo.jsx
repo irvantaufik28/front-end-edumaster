@@ -1,16 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Col, Row } from "react-bootstrap";
-import ButtonDanger from "../../../../components/ui/button/ButtonDanger";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
-import {  MdDelete } from "react-icons/md";
 import { SiAddthis } from "react-icons/si";
 import { useState } from "react";
-// import FormModalHistoryClassroom from "../modals/FormModalHistoryClassroom";
 import axios from "axios";
 import config from "../../../../config";
 import Swal from "sweetalert2";
 import { getById, staffSelector } from "../../../../features/staffSlice";
 import FormModalAddTeacherCourse from "../modals/FormModalAddTeacherCourse";
+import { RiDeleteBin5Line } from "react-icons/ri";
 const TabCourseInfo = () => {
   const staff = useSelector(staffSelector.getById);
   const dispatch = useDispatch();
@@ -19,7 +17,6 @@ const TabCourseInfo = () => {
     type: "add",
     editId: null,
   };
-
 
   const [formModal, setFormModal] = useState(defaultFormModal);
 
@@ -67,7 +64,6 @@ const TabCourseInfo = () => {
     }
   };
 
-
   const handleAdd = async () => {
     setFormModal({
       ...defaultFormModal,
@@ -106,13 +102,13 @@ const TabCourseInfo = () => {
 
         {staff?.teacher_course?.length ? (
           <table
-            className="table table-striped"
+            className="react-basic-table"
             style={{ marginBottom: "100px" }}
           >
             <thead>
               <tr>
-                <th className="th-react-table">id</th>
-                <th className="th-react-table">name</th>
+                <th className="th-react-table">No</th>
+                <th className="th-react-table">Course Name</th>
                 <th className="th-react-table">Grade</th>
                 <th className="th-react-table">Action</th>
               </tr>
@@ -120,15 +116,17 @@ const TabCourseInfo = () => {
             <tbody>
               {staff?.teacher_course?.map((data, index) => (
                 <tr key={index}>
-                  <td>{data?.courses?.id}</td>
+                  <td>{index + 1}</td>
                   <td>{data?.courses?.name}</td>
                   <td>{data?.courses?.level}</td>
                   <td>
-                    <ButtonDanger
-                      title="delete"
-                      icon={<MdDelete />}
-                      onClick={() => handleDelete(data?.id)}
-                    />
+                    <div className="icon-action">
+                      <div className="icon-action-delete" title="Delete">
+                        <RiDeleteBin5Line
+                          onClick={() => handleDelete(data?.id)}
+                        />
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}
