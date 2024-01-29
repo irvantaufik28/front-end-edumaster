@@ -17,9 +17,7 @@ import { useDispatch } from "react-redux";
 import { setDataStudent } from "../../features/studentSlice";
 import HeaderContent from "./components/HeaderContent";
 import Swal from "sweetalert2";
-import SideBarList from "../../components/layouts/SideBarList";
-import TopBarList from "../../components/layouts/TopBarList";
-import Footer from "../../components/layouts/Footer";
+import CmsLayout from "../../components/layouts/CmsLayout";
 export const StudentPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -164,12 +162,8 @@ export const StudentPage = () => {
   };
   return (
     <>
-      <div id="wrapper">
-        <SideBarList />
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
-            <TopBarList />
-            <div className="main-content">
+     <CmsLayout>
+     <div className="main-content">
               <HeaderContent title={"Student"} type={"List"} />
               <div className="main-content-alpha">
                 <div className="global-head">
@@ -323,13 +317,7 @@ export const StudentPage = () => {
                 />
               </div>
             </div>
-          </div>
-          <Footer />
-        </div>
-      </div>
-      <a className="scroll-to-top rounded" href="#page-top">
-        <i className="fas fa-angle-up" />
-      </a>
+     </CmsLayout>
     </>
   );
 };

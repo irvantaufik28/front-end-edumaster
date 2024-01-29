@@ -9,9 +9,7 @@ import ClassmajorList from "./components/ClassmajorList";
 import HeaderContentGlobal from "../../../components/ui/header/HeaderContentGlobal";
 import config from "../../../config";
 import FormModalClassmajor from "./components/modals/FormModalClassmajor";
-import SideBarList from "../../../components/layouts/SideBarList";
-import TopBarList from "../../../components/layouts/TopBarList";
-import Footer from "../../../components/layouts/Footer";
+import CmsLayout from "../../../components/layouts/CmsLayout";
 
 const ClassmajorPage = () => {
   const navigate = useNavigate();
@@ -128,12 +126,8 @@ const ClassmajorPage = () => {
 
   return (
     <>
-      <div id="wrapper">
-        <SideBarList />
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
-            <TopBarList />
-            <div className="main-content">
+     <CmsLayout>
+     <div className="main-content">
               <HeaderContentGlobal
                 page={"Class Major"}
                 title={"Classmajor"}
@@ -186,14 +180,7 @@ const ClassmajorPage = () => {
                 />
               </div>
             </div>
-          </div>
-          <Footer />
-        </div>
-      </div>
-      <a className="scroll-to-top rounded" href="#page-top">
-        <i className="fas fa-angle-up" />
-      </a>
-
+     </CmsLayout>
       <FormModalClassmajor
         {...formModal}
         onHide={handleCloseForm}

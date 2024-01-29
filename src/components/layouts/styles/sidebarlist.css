@@ -12,4 +12,42 @@
     background-color: rgb(251, 251, 255);
     position: sticky;
     top: 0px;
+}
+
+
+.sidebar-dark {
+    z-index: 991 !important;
   }
+  
+  
+  .navbar-topbar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 99 !important;
+    padding-left: 13vw !important
+  }
+
+  div.inner-list {
+    background: none;
+    width: 100%;
+    min-width: auto;
+    border-radius: 0 !important;
+    background-color: #0735b7 !important;
+
+  }
+
+  .sidebar-wraper {
+    width: 100%;
+    margin-left: unset !important;
+    padding: 0px !important;
+}
+
+.inner-list .collapse-item{
+    color: white  !important; 
+}
+
+.inner-list .collapse-item:hover{
+    background-color: #032891 !important;
+    color: white !important;
+}

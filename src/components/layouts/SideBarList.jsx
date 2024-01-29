@@ -64,12 +64,12 @@ const SideBarList = () => {
           </a>
           <div
             id="dashboard"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
             {cmsAccsess && (
-              <div className="bg-white py-2 collapse-inner rounded">
+              <div className="inner-list py-2 collapse-inner rounded">
                 <a
                   className="collapse-item"
                   onClick={() => handleNavigation("/admin/dashboard")}
@@ -79,7 +79,7 @@ const SideBarList = () => {
               </div>
             )}
             {ecommerceAccsess && (
-              <div className="bg-white py-2 collapse-inner rounded">
+              <div className="inner-list py-2 collapse-inner rounded">
                 <a
                   className="collapse-item"
                   onClick={() => handleNavigation("/ecommerce/dashboard")}
@@ -107,11 +107,11 @@ const SideBarList = () => {
           </a>
           <div
             id="master"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Master Data :</h6>
               <a
                 className="collapse-item"
@@ -157,11 +157,11 @@ const SideBarList = () => {
           </a>
           <div
             id="student"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Student</h6>
               <a
                 className="collapse-item"
@@ -189,11 +189,11 @@ const SideBarList = () => {
           </a>
           <div
             id="staff"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Staff</h6>
               <a
                 className="collapse-item"
@@ -227,11 +227,11 @@ const SideBarList = () => {
           </a>
           <div
             id="classroom"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Manage</h6>
               <a
                 className="collapse-item"
@@ -259,11 +259,11 @@ const SideBarList = () => {
           </a>
           <div
             id="collapseTwo"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Custom Components:</h6>
               <a className="collapse-item" href="buttons.html">
                 Buttons
@@ -289,11 +289,11 @@ const SideBarList = () => {
           </a>
           <div
             id="collapseUtilities"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingUtilities"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Custom Utilities:</h6>
               <a className="collapse-item" href="utilities-color.html">
                 Colors
@@ -329,11 +329,11 @@ const SideBarList = () => {
           </a>
           <div
             id="collapsePages"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingPages"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <h6 className="collapse-header">Login Screens:</h6>
               <a className="collapse-item" href="login.html">
                 Login

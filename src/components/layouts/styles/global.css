@@ -65,3 +65,7 @@
   transform: translateX(-50%);
   white-space: nowrap;
 }
+
+.main-content {
+    padding-top: 100px;
+}

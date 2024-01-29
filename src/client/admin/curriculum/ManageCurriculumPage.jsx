@@ -15,10 +15,8 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import config from "../../../config";
 import FormModalCourseCurriculum from "./components/modals/FormModalCourseCurriculum";
-import SideBarList from "../../../components/layouts/SideBarList";
-import TopBarList from "../../../components/layouts/TopBarList";
-import Footer from "../../../components/layouts/Footer";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import CmsLayout from "../../../components/layouts/CmsLayout";
 
 const ManageCurriculumPage = () => {
   const { id } = useParams();
@@ -150,104 +148,99 @@ const ManageCurriculumPage = () => {
   };
   return (
     <>
-      <div id="wrapper">
-        <SideBarList />
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
-            <TopBarList />
-            <div className="main-content">
-              <HeaderContentGlobal
-                page={"Curriculum"}
-                title={"Curriculum"}
-                type={"Manage"}
-              />
-              <div className="main-content-alpha">
-                <Card
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <Card.Body>
-                    <Row>
-                      <Col md={6}>
-                        <Table>
-                          <tbody>
-                            <tr>
-                              <th className="no-border" width="150">
-                                Curriculum Name
-                              </th>
-                              <td className="no-border">
-                                : <span id="text-name">{curriculum?.name}</span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th className="no-border" width="150">
-                                Grade
-                              </th>
-                              <td className="no-border">
-                                :{" "}
-                                <span id="text-level">{curriculum?.level}</span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                      </Col>
-                      <Col md={6}>
-                        <Table>
-                          <tbody>
-                            <tr>
-                              <th className="no-border" width="150">
-                                Year Group
-                              </th>
-                              <td className="no-border">
-                                :{" "}
-                                <span id="text-year_group">
-                                  {curriculum?.year_group}
-                                </span>
-                              </td>
-                            </tr>
-                            <tr>
-                              <th className="no-border" width="150">
-                                Semester
-                              </th>
-                              <td className="no-border">
-                                :{" "}
-                                <span id="text-semester">
-                                  {" "}
-                                  {curriculum?.semester}
-                                </span>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </Table>
-                      </Col>
-                    </Row>
-                  </Card.Body>
-                </Card>
-
+      <CmsLayout>
+        <div className="main-content">
+          <HeaderContentGlobal
+            page={"Curriculum"}
+            title={"Curriculum"}
+            type={"Manage"}
+          />
+          <div className="main-content-alpha">
+            <Card
+              style={{
+                width: "100%",
+                height: "auto",
+                marginBottom: "20px",
+              }}
+            >
+              <Card.Body>
                 <Row>
                   <Col md={6}>
-                    <div className="title-form-student">Courses List</div>
+                    <Table>
+                      <tbody>
+                        <tr>
+                          <th className="no-border" width="150">
+                            Curriculum Name
+                          </th>
+                          <td className="no-border">
+                            : <span id="text-name">{curriculum?.name}</span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th className="no-border" width="150">
+                            Grade
+                          </th>
+                          <td className="no-border">
+                            : <span id="text-level">{curriculum?.level}</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
                   </Col>
+                  <Col md={6}>
+                    <Table>
+                      <tbody>
+                        <tr>
+                          <th className="no-border" width="150">
+                            Year Group
+                          </th>
+                          <td className="no-border">
+                            :{" "}
+                            <span id="text-year_group">
+                              {curriculum?.year_group}
+                            </span>
+                          </td>
+                        </tr>
+                        <tr>
+                          <th className="no-border" width="150">
+                            Semester
+                          </th>
+                          <td className="no-border">
+                            :{" "}
+                            <span id="text-semester">
+                              {" "}
+                              {curriculum?.semester}
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
 
-                  <div className="button-edit-current-classroom">
-                    <ButtonPrimary
-                      title="Add Course"
-                      icon={<SiAddthis />}
-                      onClick={() => handleAdd()}
-                    />
-                  </div>
+            <Row>
+              <Col md={6}>
+                <div className="title-form-student">Courses List</div>
+              </Col>
 
-                  <Card
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <Card.Body>
+              <div className="button-edit-current-classroom">
+                <ButtonPrimary
+                  title="Add Course"
+                  icon={<SiAddthis />}
+                  onClick={() => handleAdd()}
+                />
+              </div>
+
+              <Card
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  marginBottom: "20px",
+                }}
+              >
+                <Card.Body>
                   {classroomSchedule?.length ? (
                     <Table className="react-basic-table">
                       <thead>
@@ -300,29 +293,23 @@ const ManageCurriculumPage = () => {
                       </Card.Body>
                     </Card>
                   )}
-                  </Card.Body>
-                </Card>
-            
-                  <FormModalCourseCurriculum
-                    {...formCourseCurriculum}
-                    onHide={handleCloseFormCourseCurriculum}
-                    onSuccess={onSubmitSuccess}
-                  />
-                  <OffCanvasAddCourse
-                    {...formOffcanvas}
-                    onHide={handleCloseOffCanvas}
-                    onSuccess={onSubmitSuccess}
-                  />
-                </Row>
-              </div>
-            </div>
+                </Card.Body>
+              </Card>
+
+              <FormModalCourseCurriculum
+                {...formCourseCurriculum}
+                onHide={handleCloseFormCourseCurriculum}
+                onSuccess={onSubmitSuccess}
+              />
+              <OffCanvasAddCourse
+                {...formOffcanvas}
+                onHide={handleCloseOffCanvas}
+                onSuccess={onSubmitSuccess}
+              />
+            </Row>
           </div>
-          <Footer />
         </div>
-      </div>
-      <a className="scroll-to-top rounded" href="#page-top">
-        <i className="fas fa-angle-up" />
-      </a>
+      </CmsLayout>
     </>
   );
 };
