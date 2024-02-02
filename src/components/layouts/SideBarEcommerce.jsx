@@ -66,7 +66,7 @@ const SideBarEcommerce = () => {
           </a>
           <div
             id="dashboard"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
@@ -110,11 +110,11 @@ const SideBarEcommerce = () => {
           </a>
           <div
             id="product"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <a
                 className="collapse-item"
                 onClick={() => handleNavigation("/ecommerce/list-product")}
@@ -146,11 +146,11 @@ const SideBarEcommerce = () => {
           </a>
           <div
             id="order"
-            className="collapse"
+            className="collapse sidebar-wraper"
             aria-labelledby="headingTwo"
             data-parent="#accordionSidebar"
           >
-            <div className="bg-white py-2 collapse-inner rounded">
+            <div className="inner-list py-2 collapse-inner rounded">
               <a
                 className="collapse-item"
                 onClick={() => handleNavigation("/ecommerce/list-order")}

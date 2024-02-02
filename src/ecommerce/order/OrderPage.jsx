@@ -1,12 +1,14 @@
 import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-
 import Box from "@mui/material/Box";
 import EcommerceLayout from "../../components/layouts/EcommerceLayout";
-import { Container } from "react-bootstrap";
 import CustomTabPanel from "../../components/tabs/CustomTabPanel";
 import AllOrderTabs from "./components/all-order-tabs/AllOrderTabs";
+import NotYetPaidTabs from "./components/not-yet-paid-tabs/NotYetPaidTabs";
+import NeedProcessingTab from "./components/need-processing-tab/NeedProcessingTab";
+import DoneTab from "./components/done-tab/DoneTab";
+import CanceledTab from "./components/canceled-tab/CanceledTab";
 
 function a11yProps(index) {
   return {
@@ -24,7 +26,8 @@ const OrderPage = () => {
   return (
     <>
       <EcommerceLayout>
-        <Container>
+     
+          <div className="main-content">
           <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
               <Tabs
@@ -43,19 +46,19 @@ const OrderPage = () => {
              <AllOrderTabs/>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              Item Two
+             <NotYetPaidTabs/>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={2}>
-              Item Three
+              <NeedProcessingTab/>
             </CustomTabPanel> 
             <CustomTabPanel value={value} index={3}>
-              Item Four
+              <DoneTab/>
             </CustomTabPanel>
             <CustomTabPanel value={value} index={4}>
-              Item Five
+              <CanceledTab/>
             </CustomTabPanel>
           </Box>
-        </Container>
+          </div>
       </EcommerceLayout>
     </>
   );

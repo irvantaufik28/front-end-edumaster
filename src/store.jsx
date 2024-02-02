@@ -12,6 +12,7 @@ import curriculumSlice from "./features/curriculumSlice";
 import roleSlice from "./features/roleSlice";
 import categoryProductSlice from "./features/ecommerce/categoryProduct"
 import productSlice from "./features/ecommerce/productSlice";
+import orderSlice from "./features/ecommerce/orderSlice";
 
 const store = configureStore({
   reducer: {
@@ -27,7 +28,8 @@ const store = configureStore({
     curriculum : curriculumSlice,
     role : roleSlice,
     categoryProduct: categoryProductSlice,
-    product: productSlice
+    product: productSlice,
+    order: orderSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

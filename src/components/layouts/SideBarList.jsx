@@ -69,7 +69,7 @@ const SideBarList = () => {
             data-parent="#accordionSidebar"
           >
             {cmsAccsess && (
-              <div className="inner-list py-2 collapse-inner rounded">
+              <div className="bg-white py-2 collapse-inner rounded">
                 <a
                   className="collapse-item"
                   onClick={() => handleNavigation("/admin/dashboard")}
@@ -79,7 +79,7 @@ const SideBarList = () => {
               </div>
             )}
             {ecommerceAccsess && (
-              <div className="inner-list py-2 collapse-inner rounded">
+              <div className="bg-white py-2 collapse-inner rounded">
                 <a
                   className="collapse-item"
                   onClick={() => handleNavigation("/ecommerce/dashboard")}

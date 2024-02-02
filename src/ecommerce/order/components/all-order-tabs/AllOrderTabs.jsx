@@ -3,16 +3,20 @@ import FormCalendar from "../FormCalendar";
 import { useEffect, useRef, useState } from "react";
 import ButtonPrimary from "../../../../components/ui/button/ButtonPrimary";
 import { BiExport } from "react-icons/bi";
-import axios from "axios";
-import Cookies from "js-cookie";
-import config from "../../../../config";
 import { BiDetail } from "react-icons/bi";
-import { Avatar, Button } from "@material-ui/core";
+import { Avatar } from "@material-ui/core";
 import { IoMdChatboxes } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllOrder,
+  orderSelector,
+} from "../../../../features/ecommerce/orderSlice";
 
+import ReactPaginate from "react-paginate";
 const AllOrderTabs = () => {
   const [message, setMessage] = useState("");
-  const [data, setData] = useState({});
+  const dispatch = useDispatch();
+  const data = useSelector(orderSelector.selectAll);
 
   const formatterCurrencyIDR = new Intl.NumberFormat("id-ID", {
     style: "currency",
@@ -20,24 +24,17 @@ const AllOrderTabs = () => {
     minimumFractionDigits: 0,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const apiUrl = config.apiUrl;
-        const token = Cookies.get("token");
-        const response = await axios.get(`${apiUrl}/order`, {
-          headers: {
-            Authorization: token,
-          },
-        });
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil( data?.paging?.total_page);
 
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-    fetchData();
-  }, []);
+  const handlePageChange = (selectedPage) => {
+    setCurrentPage(selectedPage);
+  };
+
+  useEffect(() => {
+    dispatch(getAllOrder({ page: currentPage, size: itemsPerPage }));
+  }, [dispatch, currentPage]);
 
   const calendarHandle = (payload) => {
     console.log(payload);
@@ -166,15 +163,6 @@ const AllOrderTabs = () => {
                             </Col>
                             <Col md={10}>
                               <div className="content-order">
-                                <div className="status-order-name">
-                                  <Button
-                                    color="secondary"
-                                    variant="outlined"
-                                    size="small"
-                                  >
-                                    {item?.status}
-                                  </Button>
-                                </div>
                                 <div>
                                   {itemProduct?.name} x {itemProduct?.qty}
                                 </div>
@@ -189,25 +177,24 @@ const AllOrderTabs = () => {
                   <Col md={2}>
                     <div className="amount-order">
                       <div>Amount to be paid</div>
-                      <div>{formatterCurrencyIDR.format(item?.grand_total_price)}</div>
-                      <div><p>payment method</p></div>
+                      <div>
+                        {formatterCurrencyIDR.format(item?.grand_total_price)}
+                      </div>
+                      <div>
+                        <p>payment method</p>
+                      </div>
                     </div>
                   </Col>
                   <Col md={2}>
-                    <div className="status-card-order">
-                      Status
-                    </div>
-                    <div>
-                      {item?.status}
-                    </div>
+                    <div className="status-card-order">Status</div>
+                    <div>{item?.status}</div>
                     <div></div>
                   </Col>
                   <Col md={2}>
-                    <div className="card-order-action">
-                      Action
+                    <div className="card-order-action">Action</div>
+                    <div className="view-detail-order">
+                      <BiDetail /> View details{" "}
                     </div>
-                    <div className="view-detail-order"><BiDetail/> View details </div>
-
                   </Col>
                 </Row>
               </Card.Body>
@@ -219,6 +206,29 @@ const AllOrderTabs = () => {
           </div>
         )}
       </Row>
+      <div className="container-pagination container">
+        <ReactPaginate
+          previousLabel={"previous"}
+          nextLabel={"next"}
+          breakLabel={"..."}
+          pageCount={totalPages}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={3}
+          onPageChange={(selectedItem) =>
+            handlePageChange(selectedItem.selected + 1)
+          }
+          containerClassName={"pagination justify-content-center"}
+          pageClassName={"page-item"}
+          pageLinkClassName={"page-link"}
+          previousClassName={"page-item"}
+          previousLinkClassName={"page-link"}
+          nextClassName={"page-item"}
+          nextLinkClassName={"page-link"}
+          breakClassName={"page-item"}
+          breakLinkClassName={"page-link"}
+          activeClassName={"active"}
+        />
+      </div>
     </>
   );
 };
