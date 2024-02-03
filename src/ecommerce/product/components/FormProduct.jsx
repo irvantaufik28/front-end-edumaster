@@ -129,7 +129,7 @@ const FormProduct = () => {
             formData.append("folder", "product_foto");
 
             const response = await axios.post(
-              "http://localhost:4000/api/v1/upload",
+              config.apiUrl + "/upload",
               formData,
               {
                 headers: {
