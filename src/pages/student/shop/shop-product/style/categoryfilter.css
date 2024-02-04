@@ -1,0 +1,12 @@
+.list-unstyled {
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Tambahkan style untuk efek hover */
+.list-unstyled li:hover {
+  color: blue !important; /* Atur warna font saat dihover */
+}

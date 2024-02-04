@@ -1,8 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 import { Formik, Form as FormikForm, Field } from "formik";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import example from "../../assets/img/example.webp";
+import { Form } from "react-bootstrap";
 import "./styles/FormSign.css";
 import { useDispatch, useSelector } from "react-redux";
 import { authSelector, signin } from "../../features/authSlice";
@@ -58,7 +57,7 @@ const SigninPage = () => {
         }
 
         if (role === "student") {
-          navigate("/student/profile");
+          navigate("/student-page/home");
         }
       });
     }

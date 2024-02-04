@@ -1,0 +1,12 @@
+.cart-card-product {
+    padding-top: 10px;
+}
+
+.button-min-add-cart {
+    font-size: 20px;
+   cursor: pointer;
+}
+
+.qty-form-cart {
+    width: 50px;
+}

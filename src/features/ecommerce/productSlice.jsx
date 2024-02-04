@@ -39,7 +39,7 @@ export const getProductById = createAsyncThunk("product/detail", async (id) => {
   .find((row) => row.startsWith("token="))
   ?.split("=")[1];
   const apiUrl = config.apiUrl;
-  const response = await axios.get(apiUrl + `/student/${id}`, {
+  const response = await axios.get(apiUrl + `/product/${id}`, {
     headers: {
       authorization : token
     }
@@ -70,7 +70,7 @@ const productSlice = createSlice({
       })
       .addCase(getAllProduct.fulfilled, (state, action) => {
         state.loading = false;
-        state.data = action.payload.data;
+        state.data = action.payload;
         state.errorMessage = null;
       })
       .addCase(getAllProduct.rejected, (state, action) => {
