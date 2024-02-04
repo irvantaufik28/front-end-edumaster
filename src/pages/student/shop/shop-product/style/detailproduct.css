@@ -1,0 +1,9 @@
+.icon-hover-detail-product {
+    border-color: #3b71ca !important;
+    background-color: white !important;
+    color: #3b71ca !important;
+}
+
+.icon-hover-detail-product:hover i {
+    color: #3b71ca !important;
+  }

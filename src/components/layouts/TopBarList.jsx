@@ -27,6 +27,7 @@ const TopBarList = () => {
     navigate('/')
     window.location.reload();
   };
+  
 
   return (
     <>

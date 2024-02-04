@@ -20,11 +20,15 @@ import StaffTeacherCreatePage from "../client/staff-teacher/StaffTeacherCreatePa
 import StaffOfficePage from "../client/staff-office/StaffOfficePage";
 import StaffOfficeCreatePage from "../client/staff-office/StaffOfficeCreatePage";
 import StaffOfficeDetailPage from "../client/staff-office/StaffOfficeDetailPage";
-import EcommeceDashboard from "../ecommerce/dashboard/EcommeceDashboard";
-import ProductPage from "../ecommerce/product/ProductPage";
-import ProductCreatePage from "../ecommerce/product/ProductCreatePage";
-import ProductEditPage from "../ecommerce/product/ProductEditPage";
-import OrderPage from "../ecommerce/order/OrderPage";
+import EcommeceDashboard from "../pages/ecommerce/dashboard/EcommeceDashboard";
+import ProductPage from "../pages/ecommerce/product/ProductPage";
+import ProductCreatePage from "../pages/ecommerce/product/ProductCreatePage";
+import ProductEditPage from "../pages/ecommerce/product/ProductEditPage";
+import OrderPage from "../pages/ecommerce/order/OrderPage";
+import HomePage from "../pages/student/home/HomePage";
+import ShopProduct from "../pages/student/shop/shop-product/ShopProduct";
+import CartPage from "../pages/student/shop/cart/CartPage";
+import ShopDetailProduct from "../pages/student/shop/shop-product/ShopDetailProduct";
 
 const IndexRoutes = () => {
   return (
@@ -74,6 +78,15 @@ const IndexRoutes = () => {
        
         <Route path="/ecommerce/list-order" element={<OrderPage />} />
         </Route>
+        
+        <Route element={<PrivateRoute allowedRoles={["administrator", "student"]} />}>
+        <Route path="/student-page/home" element={<HomePage />} />
+        <Route path="/student-page/school-shop/product" element={<ShopProduct />} />
+        <Route path="/student-page/school-shop/product/:_id" element={<ShopDetailProduct />} />
+        <Route path="/student-page/school-shop/cart" element={<CartPage />} />
+        </Route>
+
+        
       </Routes>
     </Router>
   );

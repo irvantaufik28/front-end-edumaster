@@ -1,0 +1,67 @@
+.card-product {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15) !important;
+    height: 38vh !important;
+    padding: 5px !important;
+    margin-top: 20px !important;
+    grid-gap: 20px !important;
+}
+
+.card-product img {
+    /* height: 20vh; */
+    width: 100%;
+    /* object-fit: contain; */
+    height: 200px;
+    /* margin-top: 10%; */
+}
+
+.card-product-content {
+    cursor: pointer;
+    
+}
+
+.card-product-content:hover .card-product {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-product-content:hover .card-product {
+    border: 2px solid blue; /* Atur warna border yang berbeda saat disorot */
+    transition: border-color 0.3s ease; /* Menambahkan transisi pada perubahan border */
+  }
+.card-product .card-text {
+    margin-left: 0% !important;
+    font-weight: 600;
+}
+
+.card-product a {
+    text-decoration: none !important;
+}
+
+/* .button-product { */
+    /* display: flex; */
+    /* justify-content: space-between; */
+/* } */
+
+.card-product .btn-detail {
+    background-color: #0d6efd !important;
+    border-radius: 6px !important;
+    color: white !important;
+    margin-bottom: 10px;
+}
+
+
+.card-product .btn-flat {
+    background-color: #0d6efd !important;
+    border-radius: 6px !important;
+    color: white !important;
+    margin-bottom: 10px;
+}
+
+/* .carnotfound {
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.active {
+    background: none !important;
+} */
