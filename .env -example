@@ -1,3 +1,7 @@
 VITE_APP_NAME="Edumaster FE"
 VITE_APP_API_BASE_URL="http://localhost:5000/api/"
 VITE_APP_API_BASE_PATH="v1"
+
+VITE_API_URL=http://localhost:8000
+VITE_MIDTRANS_CLIENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+VITE_MIDTRANS_API_URL=https://app.sandbox.midtrans.com

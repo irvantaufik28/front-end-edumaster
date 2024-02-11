@@ -82,7 +82,7 @@ const CartNotication = () => {
           <a
             className="dropdown-item text-center small text-gray-500"
             href="#"
-            onClick={() => handleNavigation("/student-page/school-shop/cart")}
+            onClick={() => handleNavigation("/student-page/shop/cart")}
           >
             Read More
           </a>

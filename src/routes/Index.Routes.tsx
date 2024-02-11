@@ -29,6 +29,7 @@ import HomePage from "../pages/student/home/HomePage";
 import ShopProduct from "../pages/student/shop/shop-product/ShopProduct";
 import CartPage from "../pages/student/shop/cart/CartPage";
 import ShopDetailProduct from "../pages/student/shop/shop-product/ShopDetailProduct";
+import PaymentOrder from "../pages/student/shop/payment/PaymentOrder";
 
 const IndexRoutes = () => {
   return (
@@ -81,9 +82,10 @@ const IndexRoutes = () => {
         
         <Route element={<PrivateRoute allowedRoles={["administrator", "student"]} />}>
         <Route path="/student-page/home" element={<HomePage />} />
-        <Route path="/student-page/school-shop/product" element={<ShopProduct />} />
-        <Route path="/student-page/school-shop/product/:_id" element={<ShopDetailProduct />} />
-        <Route path="/student-page/school-shop/cart" element={<CartPage />} />
+        <Route path="/student-page/shop" element={<ShopProduct />} />
+        <Route path="/student-page/shop/product/:_id" element={<ShopDetailProduct />} />
+        <Route path="/student-page/shop/cart" element={<CartPage />} />
+        <Route path="/student-page/shop/order/:_id" element={<PaymentOrder />} />
         </Route>
 
         

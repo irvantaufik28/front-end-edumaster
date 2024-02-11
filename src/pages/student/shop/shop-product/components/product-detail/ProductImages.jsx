@@ -1,8 +1,19 @@
-import { useSelector } from "react-redux";
-import { productSelector } from "../../../../../../features/ecommerce/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductMainImages, productSelector } from "../../../../../../features/ecommerce/productSlice";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const ProductImages = () => {
+  const {_id} = useParams()
+  const dispatch = useDispatch()
   const product = useSelector(productSelector.selectAll);
+  const mainImage = useSelector(productSelector.productImage)
+
+  useEffect(() => {
+    dispatch(getProductMainImages(_id))
+  }, [dispatch, _id])
+  
+  // console.log(mainImage)
 
   return (
     <>
@@ -18,7 +29,7 @@ const ProductImages = () => {
             <img
               style={{ maxWidth: "100%", maxHeight: "100vh", margin: "auto" }}
               className="rounded-4 fit"
-              src={product?.data?.product_images[0]?.image_url ?? ""}
+              src={mainImage?.image_url}
             />
           </a>
         </div>

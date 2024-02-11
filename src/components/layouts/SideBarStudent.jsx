@@ -183,19 +183,19 @@ const SideBarStudent = () => {
             <div className="inner-list py-2 collapse-inner rounded">
               <a
                 className="collapse-item"
-                onClick={() => handleNavigation("/student-page/school-shop/product")}
+                onClick={() => handleNavigation("/student-page/shop")}
               >
                 Product
               </a>
               <a
                 className="collapse-item"
-                onClick={() => handleNavigation("/student-page/school-shop/cart")}
+                onClick={() => handleNavigation("/student-page/shop/cart")}
               >
                  Cart
               </a>
               <a
                 className="collapse-item"
-                onClick={() => handleNavigation("/student-page/school-shop/payment")}
+                onClick={() => handleNavigation("/student-page/shop/payment")}
               >
                  Payment
               </a>

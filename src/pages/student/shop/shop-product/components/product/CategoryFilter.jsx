@@ -24,8 +24,6 @@ const CategoryFilter = () => {
     alert(id)
 
   }
-
-  console.log(categoryList);
   return (
     <>
       <div className="accordion-item">

@@ -27,7 +27,7 @@ const CardProducts = () => {
       <Row>
       {Array.isArray(products?.data) && products?.data.map((item, index) => (
           <Col key={index} sm={6} md={4} lg={3} className="card-product-content" onClick={()=> {handleNavigation(
-            `/student-page/school-shop/product/${item?._id}`)}}>
+            `/student-page/shop/product/${item?._id}`)}}>
             <Card className="card-product">
               <div>
               <img src={item.product_images[0]?.image_url ?? ""} alt={"nll"} />

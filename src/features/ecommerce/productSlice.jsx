@@ -5,6 +5,7 @@ import axios from "axios";
 
 const initialState = {
   data: {},
+  dataImage: {},
   loading: false,
 };
 
@@ -34,6 +35,21 @@ export const getAllProduct = createAsyncThunk(
 );
 
 export const getProductById = createAsyncThunk("product/detail", async (id) => {
+  const token = document.cookie
+  .split("; ")
+  .find((row) => row.startsWith("token="))
+  ?.split("=")[1];
+  const apiUrl = config.apiUrl;
+  const response = await axios.get(apiUrl + `/product/${id}`, {
+    headers: {
+      authorization : token
+    }
+  });
+  return response.data;
+});
+
+
+export const getProductMainImages = createAsyncThunk("product-images/detail", async (id) => {
   const token = document.cookie
   .split("; ")
   .find((row) => row.startsWith("token="))
@@ -84,6 +100,24 @@ const productSlice = createSlice({
       .addCase(getProductById.pending, (state, action) => {
         state.loading = false;
         state.data = null;
+      })
+      .addCase(getProductMainImages.fulfilled, (state, action) => {
+        let main_image = {};
+        const images = action.payload.data.product_images;
+    
+        const mainImage = images.find(item => item.is_main_image === true);
+    
+        if (mainImage) {
+            main_image = mainImage;
+        } else {
+            main_image = images[0];
+        }
+        state.dataImage = main_image;
+    })
+    
+      .addCase(getProductMainImages.pending, (state, action) => {
+        state.loading = false;
+        state.data = null;
       });
   },
 });
@@ -91,6 +125,7 @@ const productSlice = createSlice({
 export const { setDataProduct, resetProductData } = productSlice.actions;
 export const productSelector = {
     selectAll: (state) => state.product.data,
+    productImage: (state) =>state.product.dataImage,
     loading: (state) => state.product.loading,
     errorMessage: (state) => state.product.errorMessage,
 };
