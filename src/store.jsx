@@ -14,6 +14,7 @@ import categoryProductSlice from "./features/ecommerce/categoryProduct"
 import productSlice from "./features/ecommerce/productSlice";
 import orderSlice from "./features/ecommerce/orderSlice";
 import cartSlice from "./features/ecommerce/cartSlice";
+import userSlice from "./features/userSlice";
 
 const store = configureStore({
   reducer: {
@@ -31,7 +32,8 @@ const store = configureStore({
     categoryProduct: categoryProductSlice,
     product: productSlice,
     order: orderSlice,
-    cart: cartSlice
+    cart: cartSlice,
+    user: userSlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

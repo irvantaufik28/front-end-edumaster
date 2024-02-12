@@ -1,6 +1,6 @@
-import Footer from "./Footer";
+import Footer from "../Footer";
 import SideBarStudent from "./SideBarStudent";
-import TopBarList from "./TopBarList";
+import StudentTopBar from "./StudentTopBar";
 
 // eslint-disable-next-line react/prop-types
 const StudentLayout = ({ children }) => {
@@ -10,7 +10,7 @@ const StudentLayout = ({ children }) => {
           <SideBarStudent />
           <div id="content-wrapper" className="d-flex flex-column">
             <div id="content">
-              <TopBarList />
+              <StudentTopBar />
               {children}
             </div>
             <Footer />

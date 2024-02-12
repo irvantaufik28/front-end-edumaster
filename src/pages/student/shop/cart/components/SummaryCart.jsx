@@ -111,7 +111,7 @@ const SummaryCart = () => {
             type="button"
             className="btn btn-primary btn-lg btn-block"
             onClick={() => {
-              handleNavigation(`/student-page/shop/product`);
+              handleNavigation(`/student-page/shop`);
             }}
           >
             continue shopping

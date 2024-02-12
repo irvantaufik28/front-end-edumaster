@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import "./styles/sidebarlist.css";
+import "../styles/sidebarlist.css";
 import { SiGoogletagmanager } from "react-icons/si";
 import { BsPersonWorkspace } from "react-icons/bs";
 import { TbReportSearch } from "react-icons/tb";
